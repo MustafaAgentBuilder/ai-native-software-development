@@ -68,19 +68,19 @@ In Lesson 1, you set up 3 independent specifications in separate worktrees. Now 
 
 The key insight? With a shared constitution, all 3 planning sessions will maintain consistent quality *without* needing synchronized meetings. Time that would have been spent in coordination gets spent on actual planning. This lesson teaches you to orchestrate parallelization safely and measure its value.
 
-## Review: Your 3 Specs & Integration Contracts
+## Review: Your 3 Specs
 
-Before running anything in parallel, let's solidify what you built in Lesson 1. You created three specifications:
+Before running anything in parallel, let's solidify what you built in Lesson 1. You created three specifications for an Assignment Grader:
 
-- **feature-001-auth**: User authentication and identity management
-- **feature-002-payment**: Payment processing and billing
-- **feature-003-dashboard**: Analytics dashboard and reporting
+- **feature-001-upload**: Students upload assignments (file validation, storage)
+- **feature-002-grade**: Grading logic and scoring (apply rubric, calculate scores)
+- **feature-003-feedback**: Generate and display feedback (based on grades, shown to students)
 
-Each spec is **independent** yet **interdependent**. For example:
+Each spec is **independent** yet has some dependencies:
 
-- feature-002 (payment) depends on user identity from feature-001 (auth)
-- feature-003 (dashboard) needs transaction data from feature-002
-- All three depend on the shared constitution for standards
+- feature-002 (grade) depends on uploaded assignments from feature-001 (upload)
+- feature-003 (feedback) depends on grades from feature-002
+- Features 001 and 002 can start in parallel, Feature 003 waits for both
 
 This is a **realistic decomposition**. Real systems don't have perfectly isolated components. The question is: *how well did you identify these dependencies in your specifications?*
 
@@ -88,30 +88,30 @@ Let's visualize it:
 
 ```
 ┌─────────────┐
-│  feature-001│
-│    (auth)   │
+│ feature-001 │
+│   (upload)  │
 └──────┬──────┘
-       │ provides: user identity
+       │ provides: assignments
        │
        ▼
 ┌─────────────────┐
 │  feature-002    │
-│   (payment)     │
+│    (grade)      │
 └──────┬──────────┘
-       │ provides: transaction data
+       │ provides: scores
        │
        ▼
 ┌─────────────────┐
 │  feature-003    │
-│   (dashboard)   │
+│   (feedback)    │
 └─────────────────┘
 ```
 
-The shared constitution (with standards for API contracts, data models, error handling) is the **glue** that keeps all three aligned without constant synchronization. This is what enables parallelization.
+The shared constitution (with standards for data formats, error handling) is the **glue** that keeps all three aligned without constant synchronization. This is what enables parallelization.
 
 **Pause and Reflect**: Look at your three specifications. Can you identify:
 1. Where each feature depends on another?
-2. What API contracts must be honored between features?
+2. What data formats must be agreed upon between features?
 3. Where the shared constitution prevents misalignment?
 
 ## Running Parallel Planning
@@ -123,9 +123,9 @@ Now you're ready to run three planning sessions simultaneously. This is where ti
 If you ran these sequentially, the timeline looks like:
 
 ```
-Phase 1: Plan feature-001 (auth)        20 minutes
-Phase 2: Plan feature-002 (payment)     20 minutes
-Phase 3: Plan feature-003 (dashboard)   20 minutes
+Phase 1: Plan feature-001 (upload)      20 minutes
+Phase 2: Plan feature-002 (grade)       20 minutes
+Phase 3: Plan feature-003 (feedback)    20 minutes
 ─────────────────────────────────────────────────
 Total:                                   60 minutes
 ```
@@ -137,9 +137,9 @@ Running all three simultaneously:
 ```
 Time:   0m                              20m
         │                               │
-Session1│ Plan feature-001 (auth) ──────┤
-Session2│ Plan feature-002 (payment) ───┤
-Session3│ Plan feature-003 (dashboard) ─┤
+Session1│ Plan feature-001 (upload) ────┤
+Session2│ Plan feature-002 (grade) ─────┤
+Session3│ Plan feature-003 (feedback) ──┤
         │                               │
 ─────────────────────────────────────────────────
 Total:                                 20 minutes
@@ -150,79 +150,27 @@ You save 40 minutes—not because planning is faster, but because time is no lon
 
 ### How to Execute
 
-You need three terminals, each in a different worktree. The easiest way is to use **tmux** (terminal multiplexer) if you're on macOS/Linux, or **iTerm2 split panes** on macOS.
+Open 3 terminal windows or tabs, each in a different worktree.
 
-Here's a bash script to set up a 3-pane tmux layout:
+> **Tip**: Most terminal applications support tabs or split panes. Use whatever works best for you. Tools like tmux, iTerm2, or VS Code's integrated terminal all work fine.
 
+**Navigate each terminal to its worktree and run the command:**
+
+**Terminal 1:**
 ```bash
-#!/bin/bash
-# setup-parallel-planning.sh
-# Creates a tmux session with 3 panes for parallel planning
-
-set -e
-
-SESSION_NAME="parallel-planning"
-BASE_DIR=$(pwd)
-
-# Kill any existing session
-tmux kill-session -t "$SESSION_NAME" 2>/dev/null || true
-
-# Create new session (creates first pane)
-tmux new-session -d -s "$SESSION_NAME" -x 250 -y 50
-
-# Split horizontally to create second pane
-tmux split-window -h -t "$SESSION_NAME:0"
-
-# Split the right pane vertically to create third pane
-tmux split-window -v -t "$SESSION_NAME:0.1"
-
-# Navigate to each worktree and label the pane
-tmux send-keys -t "$SESSION_NAME:0.0" "cd $BASE_DIR/feature-001-auth && pwd" Enter
-tmux send-keys -t "$SESSION_NAME:0.0" "echo 'Session 1: feature-001 (auth)'" Enter
-
-tmux send-keys -t "$SESSION_NAME:0.1" "cd $BASE_DIR/feature-002-payment && pwd" Enter
-tmux send-keys -t "$SESSION_NAME:0.1" "echo 'Session 2: feature-002 (payment)'" Enter
-
-tmux send-keys -t "$SESSION_NAME:0.2" "cd $BASE_DIR/feature-003-dashboard && pwd" Enter
-tmux send-keys -t "$SESSION_NAME:0.2" "echo 'Session 3: feature-003 (dashboard)'" Enter
-
-# Attach to session
-tmux attach-session -t "$SESSION_NAME"
-```
-
-**How it works:**
-
-1. **`tmux new-session`** creates the first pane (Session 1)
-2. **First `split-window -h`** splits horizontally, creating Session 2 on the right
-3. **Second `split-window -v`** splits the right pane vertically, creating Session 3
-4. **`send-keys`** navigates each pane to its worktree and displays a label
-5. **`attach-session`** connects you to the session so you can interact with all panes
-
-To use this script:
-
-```bash
-chmod +x setup-parallel-planning.sh
-./setup-parallel-planning.sh
-```
-
-Now you have one terminal window showing three panes side-by-side (or arranged in your preferred layout). Each pane is in a different worktree.
-
-### Running the Commands
-
-With your tmux session open, you can now run `/sp.plan` in each pane simultaneously. Here's the workflow:
-
-**In Pane 1 (feature-001-auth):**
-```bash
+cd grader-upload
 /sp.plan
 ```
 
-**In Pane 2 (feature-002-payment):**
+**Terminal 2:**
 ```bash
+cd grader-grade
 /sp.plan
 ```
 
-**In Pane 3 (feature-003-dashboard):**
+**Terminal 3:**
 ```bash
+cd grader-feedback
 /sp.plan
 ```
 
@@ -253,29 +201,26 @@ Compare your three plans using this rubric:
 Let's say your three plans came back with these metrics:
 
 ```
-feature-001 (auth):
+feature-001 (upload):
   - Length: 2.5 pages ✓
   - Tasks: 12 ✓
   - Dependencies: 0 (foundational) ✓
   → Good
 
-feature-002 (payment):
+feature-002 (grade):
   - Length: 2.8 pages ✓
   - Tasks: 15 ✓
-  - Dependencies: 2 (depends on User ID, Transaction ID format) ✓
+  - Dependencies: 1 (depends on upload format from feature-001) ✓
   → Good
 
-feature-003 (dashboard):
-  - Length: 12 pages ✗
-  - Tasks: 45 ✗
-  - Dependencies: 8 (depends on data from both feature-001 and feature-002) ✗
-  → Bad
+feature-003 (feedback):
+  - Length: 3.2 pages ✓
+  - Tasks: 18 ✓
+  - Dependencies: 2 (depends on grades from feature-002, assignment metadata from feature-001) ✓
+  → Good
 ```
 
-What does this tell you? **The dashboard decomposition was too ambitious.** It should have been split into:
-
-- feature-003a: Basic dashboard (transaction list, user stats)
-- feature-003b: Advanced analytics (trends, predictions)
+All three features have balanced complexity. If one feature had 12 pages and 45 tasks, that would signal **the decomposition was too ambitious** and should be split further.
 
 A plan that's 12 pages signals that the decomposition was poor. At 7-9 agent scale, bad decomposition becomes unmanageable. Imagine trying to run 15 planning sessions where half of them result in 12-page complexity avalanches. You'd spend more time coordinating across complex dependencies than you saved through parallelization.
 
@@ -316,19 +261,19 @@ Tasks are the tactical specification—the actual, testable checklist of work. R
 
 ### The Process
 
-In your tmux session, you still have the three panes open. Now run:
+In each of your three terminals, run `/sp.tasks`:
 
-**In Pane 1 (feature-001-auth):**
+**Terminal 1 (feature-001-upload):**
 ```bash
 /sp.tasks
 ```
 
-**In Pane 2 (feature-002-payment):**
+**Terminal 2 (feature-002-grade):**
 ```bash
 /sp.tasks
 ```
 
-**In Pane 3 (feature-003-dashboard):**
+**Terminal 3 (feature-003-feedback):**
 ```bash
 /sp.tasks
 ```
@@ -354,153 +299,9 @@ Here's where terminal management becomes important. With three planning sessions
 2. Did any session error out?
 3. Are all three progressing at similar speed?
 
-Rather than jumping between panes constantly, use a monitoring script to check status.
+You can switch between terminals to check progress, but avoid constantly jumping between them.
 
-## Terminal Management Best Practices
-
-Managing 3 parallel sessions is manageable. Managing 10 is chaos without good practices.
-
-### tmux: The Power User Approach
-
-If you're on macOS/Linux, tmux is the standard tool for multiplexing terminals. Here's a terminal management script that organizes everything:
-
-```bash
-#!/bin/bash
-# parallel-session-monitor.sh
-# Monitors 3 parallel planning/task sessions
-
-SESSIONS=("parallel-planning")
-SESSION="parallel-planning"
-PANE_COUNT=3
-
-echo "=== Parallel Session Monitor ==="
-echo "Session: $SESSION"
-echo ""
-
-# Check if session exists
-if ! tmux has-session -t "$SESSION" 2>/dev/null; then
-    echo "ERROR: Session $SESSION not found"
-    exit 1
-fi
-
-# Monitor each pane
-for i in $(seq 0 $((PANE_COUNT-1))); do
-    echo "─────────────────────────────────"
-    echo "Pane $i Status:"
-
-    # Get pane details
-    tmux capture-pane -t "$SESSION:0.$i" -p | tail -5
-    echo ""
-done
-
-echo "─────────────────────────────────"
-echo "Tip: Press 'q' to exit this view"
-echo "Use tmux shortcuts to navigate:"
-echo "  Ctrl+B (or your prefix key) then:"
-echo "  - Arrow keys to move between panes"
-echo "  - [ to enter copy mode"
-echo "  - z to zoom a pane"
-```
-
-Save this as `monitor-sessions.sh`, then run it periodically to check status without manually jumping between panes.
-
-### iTerm2: The macOS Alternative
-
-If you prefer iTerm2 (macOS), use split panes instead of tmux:
-
-1. Open iTerm2
-2. Create 3 tabs, or use split panes:
-   - Cmd+D: Split pane vertically
-   - Cmd+Shift+D: Split pane horizontally
-3. Navigate each pane to a different worktree
-4. Run commands simultaneously
-
-While less powerful than tmux, iTerm2 splits are faster to set up and don't require learning tmux shortcuts.
-
-### Naming Conventions: Clarity at Scale
-
-Whether using tmux or iTerm2, label your sessions clearly. Use a naming convention like:
-
-```
-Session: dev-2024-11-auth
-  Pane 1: feature-001-auth-planning
-  Pane 2: feature-002-payment-planning
-  Pane 3: feature-003-dashboard-planning
-```
-
-This prevents the confusion that comes with 10-15 parallel sessions where you accidentally run `/sp.tasks` in the wrong pane.
-
-**Exercise 1: Set Up Your Terminal Layout**
-
-1. Run the `setup-parallel-planning.sh` script to create a 3-pane tmux session
-2. Verify all three panes are in the correct worktrees (use `pwd` in each)
-3. Test switching between panes using tmux shortcuts (Ctrl+B + arrow keys)
-4. Take a screenshot showing all three panes labeled and ready
-
-## Reflection: Parallelization Value
-
-Now that you've experienced parallel planning, let's quantify the value and think about scaling.
-
-### Time Tracking Exercise
-
-Document your actual time in this exercise:
-
-```
-Sequential baseline (estimated): 60 minutes
-  - Plan feature-001: 20 min
-  - Plan feature-002: 20 min
-  - Plan feature-003: 20 min
-
-Parallel execution (actual): _____ minutes
-  - Start time: _____
-  - All three complete: _____
-  - Elapsed: _____
-
-Time saved: _____ minutes
-Efficiency gain: Sequential / Parallel = _____ x
-
-Sequential baseline (tasks): 60 minutes
-Parallel execution (tasks): _____ minutes
-Total time saved across plan + tasks: _____ minutes
-```
-
-Most teams see 2-2.5x speedup. If you're seeing less, check:
-
-1. Are all three panes actually running simultaneously, or did you run them sequentially?
-2. Did any session stall waiting for input?
-3. Are your 3 features genuinely independent?
-
-### Reflection Questions
-
-**Question 1: Independence Validation**
-
-Looking at your three plans and task lists, did parallelization reveal any hidden dependencies you didn't catch in the specification phase? List them.
-
-**Question 2: Constitutional Alignment**
-
-Did all three plans follow the same patterns for API design, error handling, and data models? If yes, write down one example of how the shared constitution ensured alignment. If no, what diverged?
-
-**Question 3: Decomposition Confidence**
-
-On a scale of 1-10, how confident are you that these three features can be implemented independently without major integration surprises? What would increase your confidence?
-
-**Question 4: Scaling to 7-9 agents**
-
-Imagine you had 10 parallel decompositions instead of 3. How would parallel planning change?
-
-- What would become harder?
-- What would stay the same?
-- What new tools or practices would you need?
-
-Write a brief paragraph exploring these questions. You're not expected to have all the answers—this is about developing intuition for what breaks at scale.
-
-### Journaling: When Does Parallel Planning Add Value?
-
-Not every feature benefits from parallel planning. Write down:
-
-1. **When parallel planning is valuable** (features are truly independent, teams are distributed, time pressure is high)
-2. **When sequential planning is better** (features have tight coupling, team is small, design needs are exploratory)
-3. **For your three features**, which was it? Why?
+> **Tip**: At 10+ sessions, you'll need better tools (tmux, terminal multiplexers, or automated orchestration). For now with 3, simple tabs/windows work fine.
 
 ---
 
@@ -572,19 +373,3 @@ AI plans often look reasonable but miss edge cases. When Claude Code suggests a 
 3. **Trusting but verifying**: Use AI to brainstorm, then validate against your domain knowledge
 
 The skill here is not "believe the AI" but "AI + your judgment = better thinking."
-
----
-
-**Your Checkpoint**: By the end of this lesson, you should have:
-
-- ✓ 3 specifications set up in worktrees (from Lesson 1)
-- ✓ 3 plans generated in parallel (~20 min)
-- ✓ 3 task lists generated in parallel (~20 min)
-- ✓ Evaluated your decomposition quality using the rubric
-- ✓ Identified any hidden dependencies or decomposition issues
-- ✓ Reflected on how parallel planning scales to 7-9 agents
-- ✓ Designed a terminal management strategy for larger-scale parallelization
-
-You now understand that **decomposition quality is proven through parallelization**. Good decomposition = clean parallel planning. Bad decomposition = chaos. This principle scales directly from 3 agents to 10, to 100.
-
-In Lesson 3, you'll implement these features in parallel and watch decomposition quality translate to clean merges—or conflict-free integration proving your work can truly be done independently.

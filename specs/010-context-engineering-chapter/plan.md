@@ -346,15 +346,15 @@ Students can apply progressive loading strategy to avoid context overload.
 4. **HOW: Implementing Progressive Loading** (300 words)
    - **Phase 1 Example**: High-level structure analysis
      ```bash
-     claude-code prompt "Analyze directory structure without reading files. What's the architecture?"
+     claude prompt "Analyze directory structure without reading files. What's the architecture?"
      ```
    - **Phase 2 Example**: Load relevant module
      ```bash
-     claude-code prompt "Now read only authentication module: src/auth/"
+     claude prompt "Now read only authentication module: src/auth/"
      ```
    - **Phase 3 Example**: Implement task
      ```bash
-     claude-code prompt "Implement OAuth login following patterns you learned"
+     claude prompt "Implement OAuth login following patterns you learned"
      ```
    - Step-by-step walkthrough with explanations
 

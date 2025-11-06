@@ -200,7 +200,7 @@ If **any** of these are true → Time to compress!
 **Template Prompt for Claude Code:**
 
 ```bash
-claude-code prompt "Create a compression checkpoint of our session. 
+claude prompt "Create a compression checkpoint of our session. 
 Summarize in this format:
 
 # SESSION_CHECKPOINT.md
@@ -324,7 +324,7 @@ Messages: 23
 
 ```bash
 # New terminal session or next day
-claude-code prompt "I'm resuming work on the auth project. 
+claude prompt "I'm resuming work on the auth project. 
 Read SESSION_CHECKPOINT.md to understand what we've built so far.
 
 Then let's continue with the next task: implementing email verification."
@@ -443,15 +443,15 @@ You have three options:
 
 ```bash
 # Terminal 1 (Task A: Auth Feature)
-claude-code prompt "Working on authentication module"
+claude prompt "Working on authentication module"
 # ... all auth work here ...
 
 # Terminal 2 (Task B: Payment Bug)
-claude-code prompt "Working on payment processing bug"
+claude prompt "Working on payment processing bug"
 # ... all payment work here ...
 
 # Terminal 3 (Task C: Documentation)
-claude-code prompt "Updating project documentation"
+claude prompt "Updating project documentation"
 # ... all doc work here ...
 ```
 
@@ -474,11 +474,11 @@ claude-code prompt "Updating project documentation"
 
 ```bash
 # Working on Task A
-claude-code prompt "Build auth feature..."
+claude prompt "Build auth feature..."
 # ... work ...
 
 # Explicit switch
-claude-code prompt "=== CONTEXT SWITCH ===
+claude prompt "=== CONTEXT SWITCH ===
 
 Forget everything about authentication. 
 
@@ -622,7 +622,7 @@ Practice thinking about compression and isolation.
 ### Prompt 1: When to Compress
 
 ```bash
-claude-code prompt "I've been working with Claude Code for an hour on a Python project. We've built 2 features and had about 20 back-and-forth messages. I want to keep working, but I'm noticing the AI is taking longer to respond.
+claude prompt "I've been working with Claude Code for an hour on a Python project. We've built 2 features and had about 20 back-and-forth messages. I want to keep working, but I'm noticing the AI is taking longer to respond.
 
 Should I:
 A) Just keep going
@@ -644,7 +644,7 @@ What's the best practice here?"
 ### Prompt 2: Practicing Compression
 
 ```bash
-claude-code prompt "I'm about to compress my context. Here's what I've done in this session:
+claude prompt "I'm about to compress my context. Here's what I've done in this session:
 - Built a user authentication system using JWT
 - Decided to use Redis for token blacklisting
 - Created login, logout, and refresh endpoints
@@ -672,7 +672,7 @@ Make it concise but specific enough to resume work."
 ### Prompt 3: Understanding Isolation
 
 ```bash
-claude-code prompt "In one day, I need to:
+claude prompt "In one day, I need to:
 1. Build a new payment integration feature
 2. Fix a critical security bug in authentication
 3. Update documentation

@@ -188,7 +188,7 @@ You've just joined a Python FastAPI project with 50+ files. You need to add a ne
 ### 🚫 The Wrong Way (All-at-Once)
 
 ```bash
-claude-code prompt "Read all files in src/, tests/, and docs/ so you 
+claude prompt "Read all files in src/, tests/, and docs/ so you 
 understand the entire project"
 ```
 
@@ -203,7 +203,7 @@ understand the entire project"
 **Goal:** Understand project structure without reading file contents.
 
 ```bash
-claude-code prompt "Analyze the directory structure of this project without 
+claude prompt "Analyze the directory structure of this project without 
 reading file contents yet. Tell me:
 
 1. What are the main directories?
@@ -231,7 +231,7 @@ Just analyze the structure—don't read files yet."
 **Goal:** Understand the specific area relevant to your task.
 
 ```bash
-claude-code prompt "Now I need to understand how user-related features work. 
+claude prompt "Now I need to understand how user-related features work. 
 Read these specific files:
 
 1. src/models/user.py - to see the User model
@@ -260,7 +260,7 @@ Analyze the patterns: How do we structure services? What's the code style?"
 **Goal:** Build the new feature with full context of relevant patterns.
 
 ```bash
-claude-code prompt "Following the exact patterns I saw in user_service.py, 
+claude prompt "Following the exact patterns I saw in user_service.py, 
 create a new profile management feature:
 
 1. Add profile fields to User model (bio, avatar_url, social_links)
@@ -473,7 +473,7 @@ Now let's practice progressive loading thinking.
 ### Prompt 1: Understanding the Concept
 
 ```bash
-claude-code prompt "I'm starting work on a Python project with 30 files. Should I ask my AI to read all files first, or load them progressively as needed? Why? Explain using the three-phase progressive loading approach."
+claude prompt "I'm starting work on a Python project with 30 files. Should I ask my AI to read all files first, or load them progressively as needed? Why? Explain using the three-phase progressive loading approach."
 ```
 
 **Expected Outcome:**
@@ -488,7 +488,7 @@ claude-code prompt "I'm starting work on a Python project with 30 files. Should 
 ### Prompt 2: Creating a Loading Plan
 
 ```bash
-claude-code prompt "I need to add user authentication to a FastAPI project I just joined. The project has 40+ files. I want to use progressive context loading.
+claude prompt "I need to add user authentication to a FastAPI project I just joined. The project has 40+ files. I want to use progressive context loading.
 
 Create a 3-phase loading plan for me:
 - Phase 1 (Overview): What should I analyze first?
@@ -511,7 +511,7 @@ src/api/, src/services/, src/models/, tests/"
 ### Prompt 3: Real-World Application
 
 ```bash
-claude-code prompt "I loaded 20 files into my AI context at the start of my session. Now I'm only using 3 of them for my current task. The other 17 are just sitting there taking up space.
+claude prompt "I loaded 20 files into my AI context at the start of my session. Now I'm only using 3 of them for my current task. The other 17 are just sitting there taking up space.
 
 1. What problem does this cause?
 2. What should I have done instead?

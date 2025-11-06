@@ -1,7 +1,7 @@
 ---
 title: "SpecKit-Orchestrated Autonomous Execution"
 chapter: 32
-lesson: 7
+lesson: 6
 duration_minutes: 90
 
 # HIDDEN SKILLS METADATA (Institutional Integration Layer)
@@ -75,7 +75,7 @@ version: "1.0.0"
 
 You've learned to decompose systems into parallelizable units (Lessons 1-4) and automated their coordination through validation and shared context (Lessons 5-6). Now comes the payoff: **watching 5-10 autonomous AI agent sessions execute independently while you focus on strategy.**
 
-In Lesson 6, you experienced *contracts* as the bridge between human intention and autonomous work. This lesson shows you how **SpecKit Plus itself becomes your orchestrator**—not through complex bash scripts, but through the same tools you've been using all along: `/sp.specify`, `/sp.plan`, `/sp.tasks`, and simple completion hooks.
+In Lesson 5, you experienced *contracts* as the bridge between human intention and autonomous work. This lesson shows you how **SpecKit Plus itself becomes your orchestrator**—not through complex bash scripts, but through the same tools you've been using all along: `/sp.specify`, `/sp.plan`, `/sp.tasks`, and simple completion hooks.
 
 The journey unfolds in five phases:
 
@@ -93,9 +93,9 @@ This is not simulation. You walk away from your computer. The agents work. They 
 
 Before diving into execution, let's clarify what makes this approach different from traditional scripting orchestration.
 
-### What Changed from Lesson 6
+### What Changed from Lesson 5
 
-In Lesson 6, you used contracts (specifications) to define what each agent MUST achieve. Those contracts lived in spec.md and plan.md. Helpful, but you still managed agents manually across 5 terminals.
+In Lesson 5, you used contracts (specifications) to define what each agent MUST achieve. Those contracts lived in spec.md and plan.md. Helpful, but you still managed agents manually across 5 terminals.
 
 **Now, in Lesson 7**, contracts become the *entire coordination layer*. Here's what shifts:
 
@@ -268,7 +268,7 @@ Here's what a well-formed specification looks like (this is what you'd pass to `
 1. After `/sp.specify` completes, review contract.md
 2. For each feature, verify:
    - [ ] Responsibility is unambiguous
-   - [ ] API contracts are specific (not "integration with payment" but `POST /payments with body &#123; cart_id, user_id &#125;`)
+   - [ ] API contracts are specific (not "integration with payment" but specific like: `POST /payments` with body containing cart_id and user_id)
    - [ ] Dependencies are listed (Feature 3 depends on 1 and 2)
    - [ ] No circular dependencies (Feature A depends on B, and B depends on A)
 3. If contracts are unclear, refine and regenerate
@@ -493,73 +493,47 @@ Each session opens Claude Code in its worktree. The agent reads:
 3. `tasks.md` (what are my specific tasks?)
 4. And executes the feature implementation
 
-### Spawning Sessions: The Tmux Approach
+### Spawning Sessions
 
-If managing 5 terminal windows feels chaotic, use tmux:
+Open 5-10 terminal windows or tabs, one for each feature.
 
-**Code Example 4: tmux Session Spawning Script**
+> **Tip**: Use whatever terminal tool you prefer—separate windows, tabs, tmux, VS Code's integrated terminal, or any other multiplexer. The goal is to run multiple Claude sessions simultaneously.
 
-Create `spawn-sessions.sh`:
+**For each worktree, navigate and start Claude:**
 
+**Terminal 1:**
 ```bash
-#!/bin/bash
-# Spawn 5 Claude Code sessions in tmux windows
-# Each session inherits contract.md and tasks.md
-
-PROJECT_DIR=$(pwd)
-SESSION_NAME="ecommerce-orchestration"
-
-# Create new tmux session
-tmux new-session -d -s $SESSION_NAME
-
-# Window 1: Main orchestrator (for monitoring)
-tmux new-window -t $SESSION_NAME -n "main"
-tmux send-keys -t $SESSION_NAME:main "cd $PROJECT_DIR && echo 'Main orchestrator ready. Monitor output below:' && tail -f orchestrator-status.log" Enter
-
-# Window 2: Session 1 - Authentication
-tmux new-window -t $SESSION_NAME -n "auth"
-tmux send-keys -t $SESSION_NAME:auth "cd $PROJECT_DIR/worktree-001-auth && echo 'Starting Feature 1: Authentication' && claude" Enter
-
-# Window 3: Session 2 - Products (after auth completes)
-tmux new-window -t $SESSION_NAME -n "products"
-tmux send-keys -t $SESSION_NAME:products "cd $PROJECT_DIR/worktree-002-products && echo 'Feature 2: Products (waiting for auth)' && claude" Enter
-
-# Window 4: Session 3 - Cart
-tmux new-window -t $SESSION_NAME -n "cart"
-tmux send-keys -t $SESSION_NAME:cart "cd $PROJECT_DIR/worktree-003-cart && echo 'Feature 3: Cart (waiting for products)' && claude" Enter
-
-# Window 5: Session 4 - Payments
-tmux new-window -t $SESSION_NAME -n "payments"
-tmux send-keys -t $SESSION_NAME:payments "cd $PROJECT_DIR/worktree-004-payments && echo 'Feature 4: Payments (waiting for cart)' && claude" Enter
-
-# Window 6: Session 5 - Orders
-tmux new-window -t $SESSION_NAME -n "orders"
-tmux send-keys -t $SESSION_NAME:orders "cd $PROJECT_DIR/worktree-005-orders && echo 'Feature 5: Orders (waiting for payments)' && claude" Enter
-
-echo "5 sessions spawned in tmux session '$SESSION_NAME'"
-echo "To attach: tmux attach-session -t $SESSION_NAME"
-echo "Switch windows: Ctrl-B n (next), Ctrl-B p (previous)"
-echo "Exit: Ctrl-B d (detach)"
+cd worktree-001-auth
+claude
 ```
 
-**Important Note on Dependencies**: This script spawns all sessions immediately for demonstration. In practice, you would add wait logic between dependent features. For example, before starting the products session, add:
-
+**Terminal 2:**
 ```bash
-# Wait for auth to complete before starting products
-while [ ! -f $PROJECT_DIR/worktree-001-auth/.completed ]; do
-  sleep 10
-done
+cd worktree-002-products
+claude
 ```
 
-This ensures Feature 2 doesn't start until Feature 1 completes, respecting the dependency chain defined in contract.md.
-
-**Run it**:
-
+**Terminal 3:**
 ```bash
-bash spawn-sessions.sh
+cd worktree-003-cart
+claude
 ```
 
-Now you have 5 Claude sessions running in parallel, each reading the same contract.md and tasks.md, each building a different feature.
+**Terminal 4:**
+```bash
+cd worktree-004-payments
+claude
+```
+
+**Terminal 5:**
+```bash
+cd worktree-005-orders
+claude
+```
+
+Each Claude session will read the contract.md and tasks.md in its worktree and begin autonomous execution.
+
+> **Important**: If features have dependencies (e.g., Feature 2 depends on Feature 1), start dependent features AFTER their prerequisites complete. Check contract.md for the dependency order.
 
 ---
 
@@ -608,64 +582,6 @@ The `.hooks/task-completion.sh` script writes to `orchestrator-status.log`:
 🎉 All 5 sessions complete!
 ```
 
-### Integration Validation Checklist
-
-**Code Example 5: Contract Validation After Completion**
-
-After agents finish, you review against the original contracts:
-
-```markdown
-# Integration Validation Checklist
-
-## Feature 1: Authentication
-- [ ] API contract satisfied: POST /register exists and returns { user_id, token }
-- [ ] API contract satisfied: POST /login exists and returns token
-- [ ] API contract satisfied: GET /verify returns { is_valid: boolean }
-- [ ] Data contract satisfied: User schema matches { id, email, password_hash, created_at }
-- [ ] Tests passing: Unit tests for auth logic complete
-- [ ] Integration ready: Other features can now integrate
-
-## Feature 2: Product Catalog
-- [ ] API contract satisfied: GET /products returns paginated products
-- [ ] API contract satisfied: GET /products/:id returns single product
-- [ ] API contract satisfied: POST /products creates product (requires Feature 1 auth)
-- [ ] Data contract satisfied: Product schema matches { id, name, price, inventory }
-- [ ] Integration with Feature 1: Product creation requires valid auth token ✓
-- [ ] Tests passing: Integration tests with Feature 1 complete ✓
-
-## Feature 3: Shopping Cart
-- [ ] API contract satisfied: GET /cart/:user_id returns cart
-- [ ] API contract satisfied: POST /cart/items adds items (requires Feature 2 product validation)
-- [ ] Data contract satisfied: Cart schema matches { id, user_id, items[] }
-- [ ] Integration with Feature 2: Cart validates product_id exists ✓
-- [ ] Integration with Feature 1: Cart requires user authentication ✓
-- [ ] Tests passing: Integration tests with Features 1 and 2 complete ✓
-
-## Feature 4: Payment Processing
-- [ ] API contract satisfied: POST /payments processes transaction
-- [ ] API contract satisfied: GET /payment-status returns status
-- [ ] Data contract satisfied: Transaction schema matches { id, user_id, amount, status }
-- [ ] Integration with Feature 3: Payment validates cart exists and is valid ✓
-- [ ] Integration with Feature 1: Payment requires authenticated user ✓
-- [ ] Security review: Secrets in environment variables, never hardcoded ✓
-- [ ] Tests passing: Payment validation tests complete ✓
-
-## Feature 5: Order History
-- [ ] API contract satisfied: GET /orders/:user_id returns order history
-- [ ] API contract satisfied: GET /orders/:user_id/:order_id returns specific order
-- [ ] Data contract satisfied: Order schema matches { id, user_id, items[], total, created_at }
-- [ ] Integration with Feature 4: Order history queries transactions correctly ✓
-- [ ] Integration with Feature 1: Order retrieval requires user authentication ✓
-- [ ] Tests passing: End-to-end tests complete ✓
-
-## Overall System Integration
-- [ ] All 5 features merge cleanly (no merge conflicts)
-- [ ] Integration tests pass (all features working together)
-- [ ] Performance acceptable (no unexpected bottlenecks)
-- [ ] Security review passed (no hardcoded secrets, proper auth)
-- [ ] Ready for next phase (deployment or further features)
-```
-
 ---
 
 ## Phase 5: Strategic Review (5 minutes)
@@ -697,35 +613,6 @@ Your questions now are:
    - Deploy? (covered in Parts 10-11)
    - Add more features? (repeat Lesson 7 workflow)
    - Iterate on existing features? (specs from orchestration inform refinement)
-
----
-
-## Reflection: Creative Independence Achieved (5 minutes)
-
-Pause here and journal. This moment is significant.
-
-### Backward Reference to Lesson 6
-
-In Lesson 6, you used contracts to define what agents should build. You still monitored manually across 5 terminals.
-
-**Now**, with completion hooks and structured specifications, you've shifted: from **managing execution** to **guiding strategy**.
-
-This is the skill that scales beyond AI agents. Technical leaders who manage 10-person teams do this: define clear responsibilities (contracts), empower autonomy (specifications), review results strategically (validation).
-
-### Forward Reference to Capstone (Lesson 8)
-
-You'll build a real 3-5 feature system using this exact workflow. Time the execution. Measure the speedup vs manual sequential development. This becomes your portfolio proof.
-
-### Scaling Beyond 5 Agents
-
-**Question for reflection**: "What changes as I scale from 5 agents to 10? To 15?"
-
-**Answer**:
-- **5 agents**: Contracts, hooks, manual monitoring = manageable
-- **10 agents**: Same pattern, but need structured logging and progress dashboards
-- **15+ agents**: Automation scripts become necessary (Lesson 8 advanced topic)
-
-The pattern remains the same. The tooling scales. **The bottleneck is always decomposition quality.**
 
 ---
 

@@ -271,46 +271,117 @@ Content complexity MUST match the target audience for each part of the book. The
   - NOT: "What if you need to use different packages in production and development?"
   - YES: "Install the packages this project needs"
 
-#### 2. Concept-First Pattern
+#### 2. Graduated Teaching Pattern (Book → AI Companion → AI Orchestration)
 
-**Structure for every new tool/command/concept:**
+**CRITICAL**: Follow three-tier teaching pattern from Constitution Principle 13.
 
-1. **WHAT** (Concept) — Explain without jargon
+**Tier 1: Foundational Concepts (Book Teaches Directly)**
+- Book explains stable, foundational concepts clearly
+- Direct explanation with analogies and diagrams
+- No "Ask your AI: What is X?" for basic concepts
+- Examples: Markdown `#` headings, Python variables, git `commit`
 
-   - Use non-programmer examples and analogies
-   - Real-world parallel before technical definition
-   - Visual diagram if possible
+**Tier 2: Complex Execution (AI Companion)**
+- AI handles complex syntax students shouldn't memorize
+- Student directs (specification), AI executes, student observes
+- Examples: Markdown tables, Docker multi-stage builds, git rebase
 
-2. **WHY** (Value) — Why does this matter for their work?
+**Tier 3: Scaling & Automation (AI Orchestration)**
+- AI automates 10+ item operations and multi-file workflows
+- Student orchestrates (strategy), AI manages (tactics)
+- Examples: 10 parallel worktrees, batch conversions, project refactoring
 
-   - Business context, not technical elegance
-   - Frame around shipping products or solving problems
+**Structure by Tier:**
 
-3. **HOW** (Command) — Now show the actual command
+**Tier 1 Example (Book Teaches):**
+```markdown
+## Markdown Headings
 
-   - Simple version first
-   - Explain each part
+Use `#` for headings. More `#` = smaller heading:
+# Heading 1 (largest)
+## Heading 2
 
-4. **PRACTICE** (Try With AI) — Interactive learning
-   - Use Claude Code, Gemini CLI, or similar
-   - Real scenarios, not hypotheticals
+Use `**` for bold, `*` for italic.
+```
 
-#### 3. AI-as-Partner Pattern
+**Tier 2 Example (AI Companion):**
+```markdown
+## Creating Tables (With AI Companion)
 
-For non-programmers, position the AI agent as the decision-maker:
+Tables have complex syntax. Let your AI handle it.
 
-- **Phrases to use:**
+**Tell your AI:** "Create a markdown table with columns X, Y, Z and 5 rows."
 
-  - "Your agent knows which tool to use"
-  - "Different tools exist. Your agent chooses the right one"
-  - "You don't memorize commands. Your agent executes. You understand."
-  - "Your job: understand concepts, supervise execution, ask questions"
+[Student learns specification skills, not pipe syntax]
+```
 
-- **Student responsibility:**
-  - Understand WHAT is happening
-  - Ask "Is this safe?" questions
-  - Request explanations before proceeding
-  - NOT responsible for: memorizing syntax, choosing tools, handling edge cases
+**Tier 3 Example (AI Orchestration):**
+```markdown
+## Lesson 1: Manual Setup (Foundation)
+Open 3 terminal windows manually
+Navigate each to worktree
+Run commands in each terminal
+
+[Learn by doing - hands-on experience]
+
+## Lesson 2: AI Orchestration (Scaling)
+Tell your AI: "Set up 10 worktrees for features 1-10"
+
+[Learn orchestration mindset]
+```
+
+**Decision Matrix:**
+
+| If concept is... | Then... |
+|-----------------|---------|
+| **Stable & foundational** | Book teaches directly |
+| **Complex syntax** | AI companion handles (student specifies) |
+| **Scaling operation** (10+ items) | AI orchestrates (student supervises) |
+
+**NEVER DO:**
+- ❌ "Ask your AI: What are markdown headings?" (Book should teach foundational)
+- ❌ Make students manually type table syntax (AI companion should handle)
+- ❌ Make students set up 10 worktrees manually (AI orchestration should automate)
+
+**ALWAYS DO:**
+- ✅ Book explains foundational concepts clearly
+- ✅ "Tell your AI: Create X" for complex syntax
+- ✅ "Tell your AI: Set up 10 X" for scaling operations
+
+#### 3. AI's Role: Execution and Validation, NOT Concept Teaching
+
+**What AI Does:**
+- ✅ Execute complex setup (environments, configurations)
+- ✅ Handle scaling (10+ parallel operations)
+- ✅ Validate student work
+- ✅ Troubleshoot errors
+- ✅ Explore extensions
+
+**What AI Doesn't Do:**
+- ❌ Teach basic concepts (book does this)
+- ❌ Replace foundational explanations
+- ❌ Be first source of concept learning
+- ❌ Add cognitive load through "ask AI" conversations
+- ❌ Require learner to "ask the right questions" for basics
+
+**Student Responsibility by Tier:**
+
+**Tier 1 (Foundational):**
+- Read book explanation
+- Execute manually to understand
+- Understand WHAT is happening
+- Ask "Is this safe?" questions
+
+**Tier 2 (Complex):**
+- Specify what you want (requirements)
+- Observe how AI approaches it
+- Understand the strategy (not memorize syntax)
+
+**Tier 3 (Orchestration):**
+- Direct AI strategically
+- Supervise execution
+- Validate results
+- NOT responsible for: tactical execution details
 
 #### 4. Error Literacy
 

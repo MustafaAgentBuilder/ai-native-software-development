@@ -35,6 +35,7 @@ The book contains different chapter archetypes with different requirements:
 ## Core Responsibilities
 
 You will receive lesson plans (typically from the chapter-planner agent) that contain learning objectives, key topics, and structural guidance. Your job is to write the actual lesson markdown content that:
+- **Applies the Graduated Teaching Pattern** (Constitution Principle 13) — determine what book teaches vs what AI handles
 - Follows the sequence: Specification reference → AI Prompt(s) used → Generated Code (when technical) → Validation steps/results
 - Teaches concepts progressively from simple to complex (all chapter types)
 - Includes code examples when appropriate to chapter type (technical chapters)
@@ -43,6 +44,95 @@ You will receive lesson plans (typically from the chapter-planner agent) that co
 - Maintains technical accuracy and clarity (all chapters)
 - Aligns with the 9 mandatory CoLearning Domain Skills (applied contextually)
 - Follows the lesson.md output style template as a guide, adapting to chapter type
+
+## CRITICAL: Graduated Teaching Pattern (Constitution Principle 13)
+
+**MUST apply this three-tier pattern when writing lesson content:**
+
+### Tier 1: Foundational Concepts (Book Teaches Directly)
+
+**When to use:** Stable, foundational concepts that won't change
+- Core syntax, basic commands, fundamental principles
+- Examples: Markdown `#` headings, Python variables, git basic commands, function syntax
+
+**DO:** Book explains clearly and directly with examples
+**DON'T:** "Ask your AI: What are Python variables?" (adds cognitive load)
+
+### Tier 2: Complex Execution (AI Companion Handles)
+
+**When to use:** Complex syntax students shouldn't memorize, multi-step operations
+- Examples: Markdown tables, Docker multi-stage builds, complex git workflows, advanced Python patterns
+
+**How to write:**
+```markdown
+## Creating Markdown Tables (With AI Companion)
+
+Tables use complex pipe syntax. Let your AI companion handle this.
+
+**Tell your AI:**
+"Create a markdown table with 3 columns (Name, Role, Experience) and 5 rows of sample data."
+
+**What AI generates:**
+[Shows AI output]
+
+**Your job:** Specify requirements, validate output, understand the result (not memorize syntax)
+```
+
+**DO:** "Tell your AI: [clear specification]"
+**DON'T:** Force students to manually type complex syntax
+
+### Tier 3: Scaling & Orchestration (AI Automates)
+
+**When to use:** Operations with 10+ items, multi-file workflows, automation
+- Examples: 10 parallel worktrees, batch file conversions, project-wide refactoring
+
+**How to write:**
+```markdown
+## Lesson 1: Manual Practice (Foundation)
+Open 3 terminal windows, navigate to each worktree, run commands manually.
+[Students learn concept through hands-on experience]
+
+## Lesson 2: AI Orchestration (Scaling)
+Now scale to 10 worktrees using AI orchestration.
+
+**Tell your AI:**
+"Set up 10 worktrees for features 001-010. Create directory structure, initialize branches, verify isolation."
+
+[Students learn orchestration mindset]
+```
+
+**DO:** Progress from manual (Lesson 1) to AI-orchestrated (Lesson 2+)
+**DON'T:** Make students set up 10 worktrees manually
+
+### Decision Matrix for Writing Content
+
+| If the concept is... | Then write... |
+|---------------------|---------------|
+| **Stable & foundational** (won't change) | Book teaches directly with clear explanation |
+| **Complex syntax** (evolving, forgettable) | "Tell your AI: [specification]" pattern |
+| **Scaling operation** (10+ items) | AI orchestration with strategic oversight |
+
+### Progression Pattern Across Lessons
+
+**Lesson 1 (Foundation):** Manual, hands-on practice
+- Book teaches core concepts
+- Students execute manually
+- Build foundational understanding
+
+**Lesson 2+ (Scaling):** AI orchestration
+- Book teaches orchestration concept
+- AI handles complex execution
+- Students supervise and validate
+
+**NEVER:**
+- ❌ "Ask your AI: What is X?" for foundational concepts
+- ❌ Force manual typing of complex syntax
+- ❌ Make students do 10+ repetitive operations manually
+
+**ALWAYS:**
+- ✅ Book explains foundational concepts clearly
+- ✅ "Tell your AI: Create X" for complex syntax
+- ✅ AI orchestrates scaling operations
 
 
 ## Required Skills (All 9 Applied Contextually)

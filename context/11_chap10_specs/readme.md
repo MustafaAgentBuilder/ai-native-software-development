@@ -26,17 +26,17 @@ Consider two developers working on the same task:
 
 **Developer A** (Poor Context Management):
 ```bash
-claude-code prompt "Create a user authentication system"
+claude prompt "Create a user authentication system"
 ```
 Result: Generic implementation that doesn't match their tech stack, ignores their existing patterns, and requires hours of refactoring.
 
 **Developer B** (Good Context Engineering):
 ```bash
 # First, loads project context
-claude-code prompt "Analyze our project structure in src/, understand our existing auth patterns in src/auth/oauth.py, and note our dependencies in requirements.txt"
+claude prompt "Analyze our project structure in src/, understand our existing auth patterns in src/auth/oauth.py, and note our dependencies in requirements.txt"
 
 # Then requests implementation
-claude-code prompt "Create a user authentication system that:
+claude prompt "Create a user authentication system that:
 - Follows our existing OAuth pattern in src/auth/oauth.py
 - Uses our database models from src/models/user.py
 - Matches our FastAPI route structure in src/api/
@@ -139,7 +139,7 @@ Given these constraints, effective AIDD requires strategic context management:
 **1. Load Essential Context Early**
 ```bash
 # Session start
-claude-code prompt "Read and understand:
+claude prompt "Read and understand:
 - Project structure: src/, tests/, docs/
 - Tech stack: requirements.txt, package.json
 - Coding standards: CONTRIBUTING.md
@@ -150,13 +150,13 @@ claude-code prompt "Read and understand:
 ```bash
 # Don't load all files upfront
 # Instead, load as needed
-claude-code prompt "Implement user service. First, read src/services/product_service.py to understand our service pattern, then implement user service following the same structure."
+claude prompt "Implement user service. First, read src/services/product_service.py to understand our service pattern, then implement user service following the same structure."
 ```
 
 **3. Periodic Context Compression**
 ```bash
 # After several interactions
-claude-code prompt "Summarize our progress so far: what have we built, what decisions have we made, and what's next? Keep it under 200 words."
+claude prompt "Summarize our progress so far: what have we built, what decisions have we made, and what's next? Keep it under 200 words."
 
 # Then start fresh with the summary
 # This "compacts" your conversation history
@@ -193,7 +193,7 @@ Different AI models excel at different development tasks:
 **Model Selection Strategy:**
 ```bash
 # For new feature with complex logic → Claude
-claude-code prompt "Design and implement a payment processing system with retry logic, idempotency, and comprehensive error handling"
+claude prompt "Design and implement a payment processing system with retry logic, idempotency, and comprehensive error handling"
 
 # For understanding large codebase → Gemini
 gemini chat --session analysis "Read all files in src/ (50+ files) and create an architectural diagram showing how components interact"
@@ -206,7 +206,7 @@ In AIDD, "tools" are not just external APIs—they're sources of critical develo
 **File System Tools:**
 ```bash
 # Claude Code can read your file system
-claude-code prompt "Analyze the directory structure of src/ and tests/ and suggest improvements to organization"
+claude prompt "Analyze the directory structure of src/ and tests/ and suggest improvements to organization"
 
 # Gemini CLI with file access
 gemini chat "Read src/database/models.py and generate SQLAlchemy migration scripts"
@@ -215,25 +215,25 @@ gemini chat "Read src/database/models.py and generate SQLAlchemy migration scrip
 **Bash/Terminal Tools:**
 ```bash
 # AI can execute commands to gather context
-claude-code prompt "Run 'pytest --collect-only' to see all existing tests, then generate tests for the new user service following existing patterns"
+claude prompt "Run 'pytest --collect-only' to see all existing tests, then generate tests for the new user service following existing patterns"
 
 # Check dependencies
-claude-code prompt "Run 'pip list' to see installed packages, then implement the feature using only available dependencies"
+claude prompt "Run 'pip list' to see installed packages, then implement the feature using only available dependencies"
 ```
 
 **Git Tools:**
 ```bash
 # Git history as context
-claude-code prompt "Run 'git log --oneline -20' to see recent changes, then analyze if my new feature conflicts with recent work"
+claude prompt "Run 'git log --oneline -20' to see recent changes, then analyze if my new feature conflicts with recent work"
 
 # Diff context
-claude-code prompt "Run 'git diff main' to see my changes, then review for potential issues"
+claude prompt "Run 'git diff main' to see my changes, then review for potential issues"
 ```
 
 **Search Tools:**
 ```bash
 # Code search for context
-claude-code prompt "Search the codebase for all uses of 'authenticate' function to understand current authentication patterns before implementing new auth"
+claude prompt "Search the codebase for all uses of 'authenticate' function to understand current authentication patterns before implementing new auth"
 ```
 
 ### 3. Knowledge and Memory in AIDD
@@ -259,10 +259,10 @@ Knowledge and memory in AIDD context consists of multiple layers:
 **Loading Strategy:**
 ```bash
 # At session start
-claude-code prompt "Read README.md, CONTRIBUTING.md, and ARCHITECTURE.md to understand the project"
+claude prompt "Read README.md, CONTRIBUTING.md, and ARCHITECTURE.md to understand the project"
 
 # For specific tasks
-claude-code prompt "Before implementing the API endpoint, read API_DOCS.md to understand our API conventions"
+claude prompt "Before implementing the API endpoint, read API_DOCS.md to understand our API conventions"
 ```
 
 #### Dynamic Memory Layer: Conversation History
@@ -278,13 +278,13 @@ claude-code prompt "Before implementing the API endpoint, read API_DOCS.md to un
 
 **1. Explicit Memory Creation:**
 ```bash
-claude-code prompt "Important decision: We're using JWT with 15-minute access tokens and 7-day refresh tokens. Remember this for all future authentication implementations."
+claude prompt "Important decision: We're using JWT with 15-minute access tokens and 7-day refresh tokens. Remember this for all future authentication implementations."
 ```
 
 **2. Memory Checkpoints:**
 ```bash
 # After major milestone
-claude-code prompt "Create a summary of what we've built so far:
+claude prompt "Create a summary of what we've built so far:
 - Features implemented
 - Architecture decisions
 - Known issues or TODOs
@@ -295,7 +295,7 @@ Format as a PROGRESS.md file."
 
 **3. Architectural Decision Records (ADRs):**
 ```bash
-claude-code prompt "Create an ADR documenting our decision to use Redis for session storage instead of database sessions. Include context, decision, consequences, and alternatives considered."
+claude prompt "Create an ADR documenting our decision to use Redis for session storage instead of database sessions. Include context, decision, consequences, and alternatives considered."
 ```
 
 #### Code Pattern Memory: Learning from Existing Code
@@ -303,7 +303,7 @@ claude-code prompt "Create an ADR documenting our decision to use Redis for sess
 **Teaching AI Your Patterns:**
 ```bash
 # Show examples of your patterns
-claude-code prompt "Here are three examples of our service classes:
+claude prompt "Here are three examples of our service classes:
 
 src/services/user_service.py
 src/services/product_service.py  
@@ -348,7 +348,7 @@ In AIDD, guardrails ensure AI-generated code meets quality and security standard
 **Style and Convention Enforcement:**
 ```bash
 # Explicit guardrails in prompt
-claude-code prompt "Implement user authentication with these guardrails:
+claude prompt "Implement user authentication with these guardrails:
 - MUST follow PEP 8 style (enforce with Black formatter)
 - MUST include type hints on all functions
 - MUST have docstrings (Google style)
@@ -358,7 +358,7 @@ claude-code prompt "Implement user authentication with these guardrails:
 
 **Architectural Guardrails:**
 ```bash
-claude-code prompt "Add new feature with these constraints:
+claude prompt "Add new feature with these constraints:
 - MUST NOT introduce new dependencies
 - MUST follow existing layered architecture (API -> Service -> Repository)
 - MUST NOT bypass existing authentication middleware
@@ -369,7 +369,7 @@ claude-code prompt "Add new feature with these constraints:
 
 **Preventing Vulnerable Code:**
 ```bash
-claude-code prompt "Implement password reset functionality with security guardrails:
+claude prompt "Implement password reset functionality with security guardrails:
 - MUST use cryptographically secure random tokens (secrets.token_urlsafe)
 - MUST implement rate limiting (5 requests per hour per email)
 - MUST use parameterized queries (never raw SQL)
@@ -380,7 +380,7 @@ claude-code prompt "Implement password reset functionality with security guardra
 
 **Compliance Guardrails:**
 ```bash
-claude-code prompt "Implement user data export for GDPR compliance:
+claude prompt "Implement user data export for GDPR compliance:
 - MUST include ALL user data across all tables
 - MUST properly anonymize related data if user deleted
 - MUST log data export requests with timestamp and IP
@@ -392,7 +392,7 @@ claude-code prompt "Implement user data export for GDPR compliance:
 
 **Enforcing Test Quality:**
 ```bash
-claude-code prompt "Generate tests with these guardrails:
+claude prompt "Generate tests with these guardrails:
 - MUST test happy path AND edge cases
 - MUST mock external dependencies (databases, APIs)
 - MUST follow AAA pattern (Arrange, Act, Assert)
@@ -409,28 +409,28 @@ Orchestration in AIDD means coordinating multiple AI interactions across a devel
 **Single-Feature Development Flow:**
 ```bash
 # Session 1: Research and design
-claude-code prompt "Analyze existing authentication systems in our codebase and propose an architecture for adding OAuth social login"
+claude prompt "Analyze existing authentication systems in our codebase and propose an architecture for adding OAuth social login"
 
 # Session 2: Implementation  
-claude-code prompt "Implement the OAuth social login architecture we designed"
+claude prompt "Implement the OAuth social login architecture we designed"
 
 # Session 3: Testing
-claude-code prompt "Generate comprehensive tests for the OAuth implementation"
+claude prompt "Generate comprehensive tests for the OAuth implementation"
 
 # Session 4: Documentation
-claude-code prompt "Create API documentation and usage examples for the new OAuth endpoints"
+claude prompt "Create API documentation and usage examples for the new OAuth endpoints"
 ```
 
 **Multi-Day Project Orchestration:**
 ```bash
 # Day 1: Foundation
-claude-code prompt "Set up project structure and base models for inventory management system"
+claude prompt "Set up project structure and base models for inventory management system"
 
 # Day 2: Core features (load previous context)
-claude-code prompt "Continuing from yesterday's work, implement CRUD operations for inventory items"
+claude prompt "Continuing from yesterday's work, implement CRUD operations for inventory items"
 
 # Day 3: Advanced features (reference earlier decisions)
-claude-code prompt "Add barcode scanning and low-stock alerts to the inventory system we built"
+claude prompt "Add barcode scanning and low-stock alerts to the inventory system we built"
 ```
 
 #### Task Decomposition and Sub-Agents
@@ -441,22 +441,22 @@ For complex features, break into sub-tasks:
 
 ```bash
 # Master prompt (architecture)
-claude-code prompt "Design a complete checkout system with cart, payment, and order processing. Break this into 5 implementable components with clear interfaces."
+claude prompt "Design a complete checkout system with cart, payment, and order processing. Break this into 5 implementable components with clear interfaces."
 
 # Sub-task 1: Shopping cart
-claude-code prompt "Implement the shopping cart service as designed. Focus only on cart operations (add, remove, update, get cart)."
+claude prompt "Implement the shopping cart service as designed. Focus only on cart operations (add, remove, update, get cart)."
 
 # Sub-task 2: Payment processing
-claude-code prompt "Implement payment processing integration with Stripe API as designed."
+claude prompt "Implement payment processing integration with Stripe API as designed."
 
 # Sub-task 3: Order creation
-claude-code prompt "Implement order creation service that uses cart and payment services."
+claude prompt "Implement order creation service that uses cart and payment services."
 
 # Sub-task 4: Inventory updates
-claude-code prompt "Implement inventory update service that reduces stock after successful orders."
+claude prompt "Implement inventory update service that reduces stock after successful orders."
 
 # Sub-task 5: Integration
-claude-code prompt "Create the checkout orchestrator that coordinates all services into a complete checkout flow."
+claude prompt "Create the checkout orchestrator that coordinates all services into a complete checkout flow."
 ```
 
 ## Advanced Context Engineering Strategies for AIDD
@@ -473,7 +473,7 @@ Now let's dive into sophisticated techniques for managing context in real-world 
 
 **Phase 1: High-Level Overview**
 ```bash
-claude-code prompt "Give me a high-level overview of the project structure:
+claude prompt "Give me a high-level overview of the project structure:
 - What are the main directories?
 - What's the general architecture?
 - What are the key technologies?
@@ -483,7 +483,7 @@ Don't read files yet, just analyze directory structure."
 
 **Phase 2: Relevant Module Context**
 ```bash
-claude-code prompt "Now read only the authentication module files:
+claude prompt "Now read only the authentication module files:
 - src/auth/__init__.py
 - src/auth/service.py
 - src/auth/models.py
@@ -493,7 +493,7 @@ Understand the existing authentication patterns."
 
 **Phase 3: Task-Specific Deep Dive**
 ```bash
-claude-code prompt "Now implement the OAuth login feature following the patterns you learned from existing auth code."
+claude prompt "Now implement the OAuth login feature following the patterns you learned from existing auth code."
 ```
 
 **Benefits:**
@@ -512,7 +512,7 @@ claude-code prompt "Now implement the OAuth login feature following the patterns
 
 **Step 1: Trigger Compression (every 10-15 interactions or when feeling context degradation)**
 ```bash
-claude-code prompt "Compress our conversation history. Create a summary document including:
+claude prompt "Compress our conversation history. Create a summary document including:
 
 # PROJECT_STATE.md
 
@@ -537,7 +537,7 @@ Keep it concise - under 500 words."
 **Step 2: Start Fresh Session**
 ```bash
 # New session, load compressed context
-claude-code prompt "Read PROJECT_STATE.md to understand current project status, then continue with [next task]."
+claude prompt "Read PROJECT_STATE.md to understand current project status, then continue with [next task]."
 ```
 
 **Benefits:**
@@ -557,19 +557,19 @@ claude-code prompt "Read PROJECT_STATE.md to understand current project status, 
 **Option A: Separate Terminal Sessions**
 ```bash
 # Terminal 1: Feature A
-claude-code prompt "Working on user authentication module"
+claude prompt "Working on user authentication module"
 
 # Terminal 2: Feature B  
-claude-code prompt "Working on payment processing module"
+claude prompt "Working on payment processing module"
 
 # Terminal 3: Bug fixes
-claude-code prompt "Debugging production issues"
+claude prompt "Debugging production issues"
 ```
 
 **Option B: Context Switching with Markers**
 ```bash
 # Switch context explicitly
-claude-code prompt "=== CONTEXT SWITCH ===
+claude prompt "=== CONTEXT SWITCH ===
 Forget about the authentication work.
 Now focusing on: Payment processing module
 Relevant files: src/payments/
@@ -601,10 +601,10 @@ gemini chat --session testing "Working on test suite"
 **Explicit File Loading:**
 ```bash
 # Instead of vague request
-claude-code prompt "Fix the bug in the authentication system"  # AI might read all files
+claude prompt "Fix the bug in the authentication system"  # AI might read all files
 
 # Explicit file targeting
-claude-code prompt "Fix the JWT token expiration bug. Only read these files:
+claude prompt "Fix the JWT token expiration bug. Only read these files:
 - src/auth/jwt_handler.py
 - src/auth/middleware.py
 - tests/test_jwt.py
@@ -614,7 +614,7 @@ Don't read other files unless specifically needed."
 
 **Context Budget Management:**
 ```bash
-claude-code prompt "I have a complex task requiring multiple files. Let's manage context budget:
+claude prompt "I have a complex task requiring multiple files. Let's manage context budget:
 
 1. First, tell me which files you need to read for this task
 2. I'll confirm which are most critical
@@ -627,13 +627,13 @@ Task: Refactor authentication to support multiple identity providers"
 **Layered File Access:**
 ```bash
 # Layer 1: Interfaces only
-claude-code prompt "Read only the interface/abstract class files to understand the architecture"
+claude prompt "Read only the interface/abstract class files to understand the architecture"
 
 # Layer 2: Specific implementation
-claude-code prompt "Now read the JWT implementation specifically"
+claude prompt "Now read the JWT implementation specifically"
 
 # Layer 3: Related code
-claude-code prompt "If needed, read related utility functions"
+claude prompt "If needed, read related utility functions"
 ```
 
 ### Strategy 5: Structured Note-Taking (Agentic Memory)
@@ -647,7 +647,7 @@ claude-code prompt "If needed, read related utility functions"
 **Create Memory Files:**
 
 ```bash
-claude-code prompt "Create these memory files:
+claude prompt "Create these memory files:
 
 ## DECISIONS.md
 - Record architectural decisions
@@ -671,10 +671,10 @@ Update these files as we work, so we can reference them in future sessions."
 **Using Memory Files:**
 ```bash
 # Start new session
-claude-code prompt "Read DECISIONS.md and PATTERNS.md, then implement the next feature following established patterns and previous decisions."
+claude prompt "Read DECISIONS.md and PATTERNS.md, then implement the next feature following established patterns and previous decisions."
 
 # Update during work
-claude-code prompt "Update TODO.md: Mark 'OAuth implementation' as complete, add 'Write OAuth tests' as next task."
+claude prompt "Update TODO.md: Mark 'OAuth implementation' as complete, add 'Write OAuth tests' as next task."
 ```
 
 **Memory File Template:**
@@ -707,7 +707,7 @@ claude-code prompt "Update TODO.md: Mark 'OAuth implementation' as complete, add
 
 **Pattern Examples:**
 ```bash
-claude-code prompt "Here's an example of our service layer pattern:
+claude prompt "Here's an example of our service layer pattern:
 
 \`\`\`python
 class UserService:
@@ -744,7 +744,7 @@ Create ProductService following this EXACT pattern:
 
 **Error Handling Examples:**
 ```bash
-claude-code prompt "Here's how we handle errors in API routes:
+claude prompt "Here's how we handle errors in API routes:
 
 \`\`\`python
 @router.post(\"/users\")
@@ -766,7 +766,7 @@ Apply this exact error handling pattern to the new payment endpoint."
 
 **Test Pattern Examples:**
 ```bash
-claude-code prompt "Here's our test structure:
+claude prompt "Here's our test structure:
 
 \`\`\`python
 class TestUserService:
@@ -804,7 +804,7 @@ Create tests for ProductService following this exact structure."
 
 **Architecture Agent:**
 ```bash
-claude-code prompt "You are a software architect. Based on these requirements:
+claude prompt "You are a software architect. Based on these requirements:
 [requirements]
 
 Design:
@@ -819,7 +819,7 @@ Don't implement yet - just design."
 
 **Implementation Agent:**
 ```bash
-claude-code prompt "You are a backend developer. Here's the architecture:
+claude prompt "You are a backend developer. Here's the architecture:
 [paste architecture from above]
 
 Implement Component 1: User Authentication Service
@@ -828,7 +828,7 @@ Follow the design exactly. Ask questions if anything is unclear."
 
 **Testing Agent:**
 ```bash
-claude-code prompt "You are a QA engineer. Here's the implemented authentication service:
+claude prompt "You are a QA engineer. Here's the implemented authentication service:
 [paste implementation]
 
 Create comprehensive test suite:
@@ -841,7 +841,7 @@ Create comprehensive test suite:
 
 **Documentation Agent:**
 ```bash
-claude-code prompt "You are a technical writer. Here's the completed feature:
+claude prompt "You are a technical writer. Here's the completed feature:
 [paste implementation]
 
 Create:
@@ -867,7 +867,7 @@ Create:
 
 **Lazy Context Loading:**
 ```bash
-claude-code prompt "I need to add social login (Google, GitHub) to our authentication system.
+claude prompt "I need to add social login (Google, GitHub) to our authentication system.
 
 First, tell me which files you need to understand:
 1. To understand current authentication
@@ -890,19 +890,19 @@ Should I proceed with reading these?
 **Progressive Disclosure:**
 ```bash
 # Start minimal
-claude-code prompt "Implement OAuth login. Start by asking what you need to know."
+claude prompt "Implement OAuth login. Start by asking what you need to know."
 
 # AI asks questions
 # AI: "Which OAuth providers? What's your existing auth method? Where should I integrate?"
 
 # You answer
-claude-code prompt "Google and GitHub. JWT-based auth in src/auth/. Integrate as alternative to password login."
+claude prompt "Google and GitHub. JWT-based auth in src/auth/. Integrate as alternative to password login."
 
 # AI asks for specific files
 # AI: "Can I read src/auth/jwt_handler.py to understand token generation?"
 
 # You approve
-claude-code prompt "Yes, read that file."
+claude prompt "Yes, read that file."
 
 # AI implements with perfect context
 ```
@@ -918,7 +918,7 @@ You're building a blog API with posts, comments, and user management using FastA
 
 ```bash
 # Step 1: Initialize project context
-claude-code prompt "I'm starting a new project: Blog API
+claude prompt "I'm starting a new project: Blog API
 
 Tech Stack:
 - Python 3.11
@@ -945,7 +945,7 @@ Generate:
 
 ```bash
 # Step 2: Establish code patterns
-claude-code prompt "Before we implement features, let's establish our coding patterns.
+claude prompt "Before we implement features, let's establish our coding patterns.
 
 Create PATTERNS.md documenting:
 1. Service Layer Pattern (how services should be structured)
@@ -959,7 +959,7 @@ Use actual code examples for each pattern."
 
 ```bash
 # Step 3: Create memory infrastructure
-claude-code prompt "Create these tracking files:
+claude prompt "Create these tracking files:
 
 1. DECISIONS.md - Architectural decisions
 2. TODO.md - Feature backlog
@@ -972,7 +972,7 @@ Initialize them with our first decision: 'Using layered architecture (API -> Ser
 
 ```bash
 # Load project context at session start
-claude-code prompt "Read:
+claude prompt "Read:
 - PATTERNS.md (understand our patterns)
 - DECISIONS.md (understand our architecture)
 - TODO.md (see what's next)
@@ -982,7 +982,7 @@ Then confirm you understand the project structure and patterns before we proceed
 
 ```bash
 # Implement first feature with full context
-claude-code prompt "Implement User Management following our patterns in PATTERNS.md:
+claude prompt "Implement User Management following our patterns in PATTERNS.md:
 
 Requirements:
 1. User model with fields: id, email, username, hashed_password, created_at
@@ -1006,7 +1006,7 @@ Follow exact patterns from PATTERNS.md"
 
 ```bash
 # Update memory after implementation
-claude-code prompt "Update TODO.md:
+claude prompt "Update TODO.md:
 - Mark 'User Management' as complete
 - Add 'Post Management' as next task
 - Add 'Authentication' as future task
@@ -1019,7 +1019,7 @@ Update DECISIONS.md with decision:
 
 ```bash
 # Start with context refresh
-claude-code prompt "Read TODO.md and PATTERNS.md to refresh context.
+claude prompt "Read TODO.md and PATTERNS.md to refresh context.
 
 Next task from TODO: Implement Post Management
 
@@ -1033,7 +1033,7 @@ Then tell me if you understand the pattern and are ready to implement Post Manag
 
 ```bash
 # Implement with reference to existing code
-claude-code prompt "Implement Post Management following the EXACT same pattern as User Management:
+claude prompt "Implement Post Management following the EXACT same pattern as User Management:
 
 Requirements:
 1. Post model: id, title, content, author_id (FK to User), created_at, updated_at
@@ -1053,7 +1053,7 @@ Generate all necessary files following established patterns."
 
 ```bash
 # Context compression checkpoint
-claude-code prompt "We've now implemented User and Post management. Create a checkpoint summary:
+claude prompt "We've now implemented User and Post management. Create a checkpoint summary:
 
 ## CHECKPOINT_001.md
 
@@ -1079,7 +1079,7 @@ Keep it concise - 300 words max."
 
 ```bash
 # Load checkpoint and relevant context
-claude-code prompt "Read CHECKPOINT_001.md to understand project status.
+claude prompt "Read CHECKPOINT_001.md to understand project status.
 
 Next feature: Comment System
 This touches multiple existing features (Users, Posts).
@@ -1094,7 +1094,7 @@ Don't implement yet - just design and explain."
 
 ```bash
 # Implement with complex context
-claude-code prompt "Approved. Implement Comment System:
+claude prompt "Approved. Implement Comment System:
 
 Requirements:
 1. Comment model: id, content, author_id (FK User), post_id (FK Post), parent_id (self-referential for nested comments), created_at
@@ -1114,7 +1114,7 @@ This is complex - ask questions before implementing if anything is unclear about
 
 ```bash
 # Context for testing session
-claude-code prompt "Read all implemented services:
+claude prompt "Read all implemented services:
 - src/services/user_service.py
 - src/services/post_service.py
 - src/services/comment_service.py
@@ -1135,7 +1135,7 @@ Aim for 85%+ coverage."
 
 ```bash
 # Documentation context
-claude-code prompt "We're ready to document the API. Read:
+claude prompt "We're ready to document the API. Read:
 - All API route files in src/api/routes/
 - All schema files in src/schemas/
 
@@ -1163,7 +1163,7 @@ Both tools handle context differently. Understanding these differences helps you
 **Context Loading:**
 ```bash
 # Claude Code automatically explores relevant files
-claude-code prompt "Refactor authentication to support multiple identity providers"
+claude prompt "Refactor authentication to support multiple identity providers"
 # Claude will identify and read relevant auth files intelligently
 ```
 
@@ -1176,12 +1176,12 @@ claude-code prompt "Refactor authentication to support multiple identity provide
 **Example Session:**
 ```bash
 # Start broad
-claude-code prompt "Analyze this FastAPI project structure and identify areas for improvement"
+claude prompt "Analyze this FastAPI project structure and identify areas for improvement"
 
 # Claude explores and reports findings
 
 # Implement improvements
-claude-code prompt "Refactor the authentication module based on your analysis"
+claude prompt "Refactor the authentication module based on your analysis"
 
 # Claude reads necessary files and implements coherent changes
 ```
@@ -1242,13 +1242,13 @@ For complex projects, use both tools strategically:
 gemini chat --session analysis "Read all 200 files in src/ and docs/ and create a comprehensive project report including architecture, patterns, and potential issues"
 
 # Use Claude Code for implementation (better reasoning)
-claude-code prompt "Based on the analysis from Gemini [paste relevant parts], refactor the authentication module to follow microservices pattern"
+claude prompt "Based on the analysis from Gemini [paste relevant parts], refactor the authentication module to follow microservices pattern"
 
 # Use Gemini for documentation (needs access to many files)
 gemini chat --session docs "Read all implemented files and generate API documentation with examples"
 
 # Use Claude Code for complex debugging (better reasoning)
-claude-code prompt "Debug the intermittent race condition in the payment processing that occurs under high load"
+claude prompt "Debug the intermittent race condition in the payment processing that occurs under high load"
 ```
 
 ## Common Context Engineering Pitfalls in AIDD
@@ -1257,7 +1257,7 @@ claude-code prompt "Debug the intermittent race condition in the payment process
 
 **Bad Practice:**
 ```bash
-claude-code prompt "Read the entire src/ directory (100 files) and implement a new authentication system"
+claude prompt "Read the entire src/ directory (100 files) and implement a new authentication system"
 ```
 
 **Why It's Bad:**
@@ -1269,13 +1269,13 @@ claude-code prompt "Read the entire src/ directory (100 files) and implement a n
 **Good Practice:**
 ```bash
 # Step 1: Understand high-level structure
-claude-code prompt "Analyze the directory structure of src/ without reading files. Tell me where authentication-related code likely lives."
+claude prompt "Analyze the directory structure of src/ without reading files. Tell me where authentication-related code likely lives."
 
 # Step 2: Load only relevant context
-claude-code prompt "Now read only the authentication-related files you identified"
+claude prompt "Now read only the authentication-related files you identified"
 
 # Step 3: Implement
-claude-code prompt "Implement the new authentication feature following existing patterns"
+claude prompt "Implement the new authentication feature following existing patterns"
 ```
 
 ### Pitfall 2: Losing Context Between Sessions
@@ -1283,29 +1283,29 @@ claude-code prompt "Implement the new authentication feature following existing 
 **Bad Practice:**
 ```bash
 # Day 1
-claude-code prompt "Implement user management"
+claude prompt "Implement user management"
 
 # Day 2 (new session, no context loading)
-claude-code prompt "Add post management"
+claude prompt "Add post management"
 # AI has no idea about the user management implementation!
 ```
 
 **Good Practice:**
 ```bash
 # Day 1
-claude-code prompt "Implement user management"
+claude prompt "Implement user management"
 # ... implementation ...
-claude-code prompt "Create PROGRESS.md documenting what we built and the patterns we established"
+claude prompt "Create PROGRESS.md documenting what we built and the patterns we established"
 
 # Day 2 (new session, load context)
-claude-code prompt "Read PROGRESS.md to understand what we built yesterday. Then implement post management following the same patterns."
+claude prompt "Read PROGRESS.md to understand what we built yesterday. Then implement post management following the same patterns."
 ```
 
 ### Pitfall 3: Mixing Contexts Without Boundaries
 
 **Bad Practice:**
 ```bash
-claude-code prompt "I'm working on authentication but also need to fix this bug in the payment system and also redesign the database schema"
+claude prompt "I'm working on authentication but also need to fix this bug in the payment system and also redesign the database schema"
 ```
 
 **Why It's Bad:**
@@ -1316,10 +1316,10 @@ claude-code prompt "I'm working on authentication but also need to fix this bug 
 **Good Practice:**
 ```bash
 # Complete one task first
-claude-code prompt "Focus only on authentication: implement JWT token validation middleware"
+claude prompt "Focus only on authentication: implement JWT token validation middleware"
 
 # Then explicitly switch context
-claude-code prompt "Authentication is complete. Now switching context to payment system bug. Forget about auth for now. Here's the payment bug: [details]"
+claude prompt "Authentication is complete. Now switching context to payment system bug. Forget about auth for now. Here's the payment bug: [details]"
 ```
 
 ### Pitfall 4: Not Maintaining Architectural Memory
@@ -1327,21 +1327,21 @@ claude-code prompt "Authentication is complete. Now switching context to payment
 **Bad Practice:**
 ```bash
 # No record of decisions
-claude-code prompt "Implement feature X"
+claude prompt "Implement feature X"
 # AI makes architectural choice
 
 # Later...
-claude-code prompt "Implement feature Y"
+claude prompt "Implement feature Y"
 # AI makes contradictory architectural choice!
 ```
 
 **Good Practice:**
 ```bash
 # Document decisions
-claude-code prompt "Implement feature X. After implementation, update DECISIONS.md with any architectural decisions made."
+claude prompt "Implement feature X. After implementation, update DECISIONS.md with any architectural decisions made."
 
 # Later, load decisions
-claude-code prompt "Read DECISIONS.md. Implement feature Y following the same architectural approach we used for feature X."
+claude prompt "Read DECISIONS.md. Implement feature Y following the same architectural approach we used for feature X."
 ```
 
 ### Pitfall 5: Ignoring Context Budget
@@ -1349,16 +1349,16 @@ claude-code prompt "Read DECISIONS.md. Implement feature Y following the same ar
 **Bad Practice:**
 ```bash
 # Never checking context usage
-claude-code prompt "Let's add another feature"
-claude-code prompt "And another feature"  
-claude-code prompt "And fix this bug"
+claude prompt "Let's add another feature"
+claude prompt "And another feature"  
+claude prompt "And fix this bug"
 # ... conversation continues indefinitely until context degradation is severe
 ```
 
 **Good Practice:**
 ```bash
 # Every 10-15 interactions or major feature
-claude-code prompt "We've been working for a while. Create a context checkpoint:
+claude prompt "We've been working for a while. Create a context checkpoint:
 1. Summarize what we've built
 2. Document key patterns and decisions
 3. List what's next
@@ -1367,7 +1367,7 @@ Save to CHECKPOINT_[date].md"
 
 # Start fresh session
 # Load checkpoint in new session
-claude-code prompt "Read CHECKPOINT_2025_01_15.md and continue from there"
+claude prompt "Read CHECKPOINT_2025_01_15.md and continue from there"
 ```
 
 ## Measuring Context Engineering Effectiveness

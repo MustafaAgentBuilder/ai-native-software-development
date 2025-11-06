@@ -1,7 +1,7 @@
 ---
 title: "Scaling Decomposition Thinking: From 3 to 5+ Features"
 chapter: 32
-lesson: 5
+lesson: 4
 duration_minutes: 90
 
 # HIDDEN SKILLS METADATA (Institutional Integration Layer)
@@ -69,15 +69,13 @@ version: "1.0.0"
 
 # Scaling Decomposition Thinking: From 3 to 5+ Features
 
-You've done something remarkable. Over the past three lessons, you've mastered coordinating multiple AI agents in parallel, using specifications as your communication tool. You took a complex project, decomposed it into independent features, assigned each to an agent, and brought them together in a coherent whole—all without a single synchronous meeting.
+You've done something remarkable. Over the past four lessons, you've mastered coordinating multiple AI agents in parallel, using specifications as your communication tool. You took a complex project, decomposed it into independent features, assigned each to an agent, and brought them together in a coherent whole—all without a single synchronous meeting.
 
 That's team leadership.
 
 You've proven you can coordinate parallel work. Now comes the harder question: **How far does that ability scale?**
 
-In this lesson, you'll move from the comfortable world of 3 features (where you've proven success) to the threshold of 5-7 features (where patterns start breaking), with your eyes on 7-9 agents (where a different approach becomes necessary). This is the FIRST CLIMAX—not just managing more work, but understanding the fundamental principles that determine whether decomposition thinking scales or collapses under its own weight.
-
-By the end of this lesson, you'll understand exactly what works, what breaks, and why the path to 7-9 agent coordination requires contract-based coordination and SpecKit orchestration (which you'll learn in Lessons 6-7).
+This is the FIRST CLIMAX—not just managing more work, but understanding the fundamental principles that determine whether decomposition thinking scales or collapses under its own weight.
 
 ---
 
@@ -347,9 +345,9 @@ You have:
 At 3 features, you can coordinate with specs and the occasional Slack message. At 5 features, you must be disciplined about specs. At 10 features, you need automation to ensure specs are enforced.
 
 **The path forward:**
-- **3-5 features**: Manual SpecKit Plus (you've done this)
-- **5-7 features**: Add sandboxing (Lesson 4) + integration contracts (Lesson 6)
-- **10-15 features**: SpecKit-orchestrated autonomous coordination (Lesson 7)
+- **3 features**: Manual SpecKit Plus (you've done this in Lessons 1-3)
+- **5-7 features**: Integration contracts (Lesson 5) + SpecKit orchestration (Lesson 6)
+- **Beyond 7**: Automation and tooling (explored in Lesson 7 capstone reflection)
 
 ---
 
@@ -421,125 +419,6 @@ Look at your 3-feature system. Honestly identify:
 4. **Did you modify cross-feature code?** Which features and why?
 
 **This exercise is the most important validation you can do.** Your answers tell you exactly what to fix before scaling to 5 features.
-
----
-
-## Path to Scaling: What Comes Next
-
-You've mastered manual SpecKit Plus at 3-feature scale. You understand what works and what breaks. Now let's connect that understanding to the path ahead.
-
-### Manual 3-Feature Workflow: Proven
-
-What you've done in Lessons 1-3 works. Tight specs, clear contracts, parallel execution, clean integration. **You can repeat this exactly for 5-7 features.**
-
-The catch: **It takes discipline.** At 5 features, loose specs that worked at 3 features will bite you. Implicit dependencies that you managed manually will explode.
-
-### Scaling to 5-7 Features: Automation Enters
-
-As you grow from 5 to 7 features, manual effort increases dramatically. You'll need to:
-
-- **Define clear contracts**: You can no longer implicitly coordinate; integration contracts must be explicit
-- **Enable autonomous work**: Agents must work independently without blocking on each other
-- **Trust through sandboxing**: You need safety boundaries so agents can execute without manual supervision
-
-**Lessons 6-7** teach you contract-based autonomous coordination. You'll keep the same decomposition thinking, but add explicit integration contracts and SpecKit orchestration so agents can work autonomously.
-
-### Scaling to 10-15 Features: SpecKit-Orchestrated Coordination
-
-At 7-9 agents, you can't manage them like you manage 3 agents. You can't manually coordinate every session, check every integration point, or monitor every merge.
-
-You need **SpecKit orchestration**: where SpecKit Plus itself coordinates parallel agent work:
-- You define the contract (integration requirements) via `/sp.specify`
-- SpecKit generates plans and tasks for all features
-- Multiple Claude sessions execute in parallel (each sandboxed)
-- Agents notify on completion via hooks; you review results
-
-**Lesson 7** demonstrates this vision. You'll experience:
-- Contract generation via SpecKit Plus
-- Multi-session spawning with explicit permissions
-- Autonomous execution with safety boundaries
-- Completion notification without polling
-
-The foundation is what you're building now: **decomposition thinking.** The difference at 7-9 agents is that SpecKit Plus coordinates execution while you focus on strategy.
-
-### The Scaling Path Visualized
-
-```
-Lesson 1-3: Manual 3-agent coordination (you've proven this)
-    ↓
-Lesson 4: Sandboxing for safe multi-session work
-    ↓
-Lesson 5: FIRST CLIMAX - Understand scaling threshold (you are here)
-    ↓
-Lesson 6: Contract-based autonomous coordination
-    ↓
-Lesson 7: SECOND CLIMAX - SpecKit-orchestrated execution (5-10 agents)
-    ↓
-Lesson 8: Capstone - Prove mastery with real project
-```
-
-At each step, you're building on decomposition thinking. **Decomposition is the foundation.** Contracts and orchestration are the enablers at scale.
-
-### The Investment vs. The Gain
-
-Let's be honest: decomposing a project into 5-7 tight specs takes **2-3x longer** than writing one monolithic spec.
-
-But the gains are real:
-- **10x parallelization**: 5 agents working simultaneously beats 1 agent
-- **Cleaner integration**: Clear specs mean fewer bugs
-- **Easier testing**: Independent features mean independent tests
-- **Team scaling**: Any new agent can read a tight spec and contribute immediately
-
-The upfront spec investment (2-3x longer) pays off immediately (10x faster execution) and scales as you add agents.
-
-**This is why Lessons 1-4 focus so heavily on specs.** They're not busy work. They're the foundation of everything that comes next.
-
----
-
-## Reflection and Strategic Thinking
-
-This is your moment to step back and really internalize what you've learned.
-
-### Journal Prompt: Scaling Your System
-
-You've successfully decomposed and executed a 3-feature system. Now imagine you have to scale to 10 features.
-
-**Question 1: How would you redesign these 3 features to be part of a 10-feature system?**
-
-Write honestly:
-- Which boundaries would you strengthen?
-- Which dependencies would you eliminate?
-- What shared services would you create?
-- How would you avoid circular dependencies?
-- What specification patterns would you enforce across all 10 features?
-
-**Question 2: If you had 10 junior developers instead of AI agents, what would you do differently?**
-
-Hint: The answer might be "nothing." If your decomposition thinking is sound, it works for humans and AI equally. That's the test of good architecture.
-
-**Question 3: What's the business impact of better decomposition?**
-
-Think about time-to-market:
-- Feature A takes 10 hours to build in parallel with Feature B and C
-- Or 30 hours to build sequentially
-
-Which matters more: the time saved? The ability to parallelize?
-
-Now multiply that by 10 features. Decomposition thinking isn't academic—it's how you ship products faster.
-
-### The Big Picture
-
-You've learned something profound: **decomposition thinking scales beyond AI agents.** It applies to:
-- Human teams (Conway's Law: system architecture mirrors team structure)
-- Microservices (how you organize your backend)
-- Distributed systems (how you shard data, split computation)
-- Project management (how you parallelize work)
-
-The tools change (specs → APIs → microservices contracts → data schemas), but the thinking is identical.
-
-**You're not learning "how to manage AI agents." You're learning how to think about scale.**
-
-That's why Lessons 6-7 work. They're adding contracts and orchestration on top of the decomposition thinking you've now mastered.
 
 ---
 

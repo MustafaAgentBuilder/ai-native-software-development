@@ -137,11 +137,11 @@ When you ask AI to "fix the authentication bug," it might:
 
 ```bash
 # Instead of vague request
-claude-code prompt "Fix the authentication bug"
+claude prompt "Fix the authentication bug"
 # AI might read 20+ files
 
 # Explicit file targeting
-claude-code prompt "Fix the JWT token expiration bug.
+claude prompt "Fix the JWT token expiration bug.
 
 Only read these files:
 - src/auth/jwt_handler.py
@@ -205,19 +205,19 @@ Load context in layers, from abstract to specific.
 
 ```bash
 # Layer 1: Interfaces only
-claude-code prompt "Read only these interface files to understand architecture:
+claude prompt "Read only these interface files to understand architecture:
 - src/services/base_service.py (abstract base)
 - src/repositories/base_repository.py (abstract base)
 
 Don't read implementations yet."
 
 # Layer 2: Specific implementation
-claude-code prompt "Now read the User implementation specifically:
+claude prompt "Now read the User implementation specifically:
 - src/services/user_service.py
 - src/repositories/user_repository.py"
 
 # Layer 3: Related utilities (if needed)
-claude-code prompt "If needed, read src/utils/validation.py to understand validation patterns"
+claude prompt "If needed, read src/utils/validation.py to understand validation patterns"
 ```
 
 **Benefits:**
@@ -264,7 +264,7 @@ You work on a feature for 3 days. Important decisions made:
 
 ```bash
 # During implementation
-claude-code prompt "We just decided to use Redis for session storage instead of database sessions.
+claude prompt "We just decided to use Redis for session storage instead of database sessions.
 
 Create/update DECISIONS.md with this entry:
 
@@ -286,7 +286,7 @@ Create/update DECISIONS.md with this entry:
 **Next session (tomorrow):**
 ```bash
 # Load decisions
-claude-code prompt "Read DECISIONS.md to understand our architecture decisions.
+claude prompt "Read DECISIONS.md to understand our architecture decisions.
 
 Now implement the logout endpoint following those decisions."
 ```
@@ -361,7 +361,7 @@ Now implement ProductService following the EXACT same pattern."
 
 ```bash
 # Update as you work
-claude-code prompt "Update TODO.md:
+claude prompt "Update TODO.md:
 
 ## In Progress
 - [x] User authentication (JWT)
@@ -381,7 +381,7 @@ claude-code prompt "Update TODO.md:
 
 **Next session:**
 ```bash
-claude-code prompt "Read TODO.md. What's next?"
+claude prompt "Read TODO.md. What's next?"
 # AI: "Password reset is 50% done with email integration pending"
 ```
 
@@ -452,7 +452,7 @@ AI generates generic error handling that doesn't match your pattern.
 **Example with Claude Code:**
 
 ```bash
-claude-code prompt "Here are three examples of our service classes:
+claude prompt "Here are three examples of our service classes:
 
 **Example 1: src/services/user_service.py**
 \`\`\`python
@@ -538,7 +538,7 @@ Apply this EXACT pattern to the new payment endpoint:
 **Example with Claude Code:**
 
 ```bash
-claude-code prompt "Here's our test structure:
+claude prompt "Here's our test structure:
 
 \`\`\`python
 class TestUserService:
@@ -610,7 +610,7 @@ Doing all in ONE AI session = mixed context, lower quality for each concern.
 
 ```bash
 # Session 1: Architecture
-claude-code prompt "You are a software architect.
+claude prompt "You are a software architect.
 
 Based on these requirements:
 - Users can create posts
@@ -659,7 +659,7 @@ Don't implement comments yet - just posts."
 
 ```bash
 # Session 3: Testing (separate session)
-claude-code prompt "You are a QA engineer.
+claude prompt "You are a QA engineer.
 
 Read:
 - src/services/post_service.py (implementation)
@@ -738,7 +738,7 @@ Create:
 
 ```bash
 # Start minimal
-claude-code prompt "I need to add social login (Google and GitHub) to our authentication system.
+claude prompt "I need to add social login (Google and GitHub) to our authentication system.
 
 Don't start implementing yet. First, tell me:
 1. What files do you need to read to understand current authentication?
@@ -809,7 +809,7 @@ Questions:
 **Example with Claude Code:**
 
 ```bash
-claude-code prompt "Implement a shopping cart feature.
+claude prompt "Implement a shopping cart feature.
 
 Read files conditionally:
 1. Start by reading src/models/product.py
@@ -855,7 +855,7 @@ Let's use ALL five advanced strategies for one complex task.
 
 ```bash
 # Explicit file list
-claude-code prompt "We're adding multi-tenant support (each customer is isolated).
+claude prompt "We're adding multi-tenant support (each customer is isolated).
 
 Only read these critical files:
 - src/models/user.py (to understand current user model)
@@ -870,7 +870,7 @@ Total: 3 files. Don't read more without asking."
 ### Step 2: Load Memory Files (Strategy 5)
 
 ```bash
-claude-code prompt "Before designing, read:
+claude prompt "Before designing, read:
 - DECISIONS.md (past architecture decisions)
 - PATTERNS.md (code patterns we follow)
 
@@ -882,7 +882,7 @@ Then propose multi-tenancy approach."
 ### Step 3: Example-Driven Context (Strategy 6)
 
 ```bash
-claude-code prompt "Here's our current User model:
+claude prompt "Here's our current User model:
 
 \`\`\`python
 class User:
@@ -900,13 +900,13 @@ Design Tenant model following the SAME style."
 
 ```bash
 # Agent 1: Architecture (Claude)
-claude-code prompt "Design multi-tenancy architecture"
+claude prompt "Design multi-tenancy architecture"
 
 # Agent 2: Implementation (Gemini with large context)
 gemini chat --session tenant "Implement tenant isolation across all models"
 
 # Agent 3: Testing (Claude)
-claude-code prompt "Create tenant isolation tests"
+claude prompt "Create tenant isolation tests"
 ```
 
 ---
@@ -915,7 +915,7 @@ claude-code prompt "Create tenant isolation tests"
 
 ```bash
 # Let AI discover needed files
-claude-code prompt "Implement tenant middleware.
+claude prompt "Implement tenant middleware.
 
 Ask me for files as you need them. Don't assume."
 ```
@@ -956,7 +956,7 @@ Practice using advanced strategies.
 
 ```bash
 # With Claude Code
-claude-code prompt "I have a bug: users can see other users' private posts.
+claude prompt "I have a bug: users can see other users' private posts.
 
 Don't read all files. Tell me which 3-5 files are most critical to read for debugging this permission issue.
 
@@ -989,7 +989,7 @@ Use the template from this lesson with Context, Decision, Alternatives, Conseque
 
 ```bash
 # With Claude Code
-claude-code prompt "I'm building a comment system. Describe how I would use four specialized agents:
+claude prompt "I'm building a comment system. Describe how I would use four specialized agents:
 
 1. Architecture Agent - what does it do?
 2. Implementation Agent - what does it do?

@@ -1,7 +1,7 @@
 ---
 title: "Contract-Based Autonomous Coordination"
 chapter: 32
-lesson: 6
+lesson: 5
 duration_minutes: 90
 
 # HIDDEN SKILLS METADATA (Institutional Integration Layer)
@@ -76,13 +76,7 @@ version: "1.0.0"
 
 # Contract-Based Autonomous Coordination
 
-In Lesson 5, you experienced the FIRST CLIMAX—the moment when you stepped into the "team lead" role, coordinating 5 agents in parallel, watching them work independently toward a common goal. You felt the power of decomposition thinking: **good specifications enable autonomous work.**
-
-But that experience came with a cost. You had to monitor all 5 agents closely. Were they making progress? Did they hit blockers? Did their implementations match what they promised in their specs? You were the coordinator, the quality gate, the information hub.
-
-What if you didn't have to be?
-
-**This is the insight of Lesson 6**: When contracts are *explicit* and acceptance criteria are *measurable*, agents can work with minimal oversight. Your job shifts from constant monitoring to clear communication upfront. You define the boundary once, with precision. Then agents work autonomously. When they're done, hooks notify you. You review. You integrate.
+When contracts are *explicit* and acceptance criteria are *measurable*, agents can work with minimal oversight. Your job shifts from constant monitoring to clear communication upfront. You define the boundary once, with precision. Then agents work autonomously. When they're done, hooks notify you. You review. You integrate.
 
 **That's the path to creative independence.**
 
@@ -96,15 +90,14 @@ Let's start with the honest truth: at Lesson 5 scale (5 agents), constant monito
 
 ### The Monitoring Trap
 
-Picture yourself in Lesson 5. You have 5 agents building features in parallel. Here's what your workflow looked like:
+Picture yourself in Lesson 3. You have agents building features in parallel. Here's what your workflow looked like:
 
 - Agent 1 is 30 minutes into implementation. Are they on track? Better check.
 - Agent 2 hit an unexpected design question. Are they blocked? Better check.
-- Agent 3 needs to integrate with Agent 1's API. Did they agree on the contract? Better check.
-- Agent 4 is finished. Ready to integrate? Better review their code.
-- Agent 5... what's Agent 5 doing? Better check that too.
+- Agent 3 is finished. Ready to integrate? Better review their code.
+- Agent 4... what's Agent 4 doing? Better check that too.
 
-At 5 agents, you're constantly jumping between contexts. At 10 agents, you're overwhelmed. At 15 agents, it's impossible.
+At 4 agents, you're constantly jumping between contexts. At 10 agents, you're overwhelmed. At 15 agents, it's impossible.
 
 ### The Contract Solution
 
@@ -199,80 +192,6 @@ Here's the structure you'll use. Think of it as a legally binding agreement betw
 ```
 
 This template is concrete. It's measurable. An agent can't wiggle out of it with interpretation—the contract is the specification.
-
-### Code Example 1: Contract.md for E-Commerce Platform
-
-Let's build a real example. Imagine you're decomposing an e-commerce platform into 5 features:
-
-**Feature 1: Authentication**
-**Feature 2: Product Catalog**
-**Feature 3: Shopping Cart**
-**Feature 4: Payment Processing**
-**Feature 5: Orders & Fulfillment**
-
-Here's the contract for Feature 2 (Product Catalog):
-
-```markdown
-# Feature 2: Product Catalog Integration Contract
-
-## Provides
-
-### APIs
-- `GET /api/products`: List all products with pagination
-  - Input: `page: int, limit: int (1-100), category: string (optional)`
-  - Output: `{ products: [{id, name, price, category, stock}], total: int, page: int }`
-  - Error cases: Invalid pagination (400), no products (200 empty list)
-
-- `GET /api/products/{id}`: Get single product details
-  - Input: `id: UUID`
-  - Output: `{ id, name, description, price, category, stock, reviews_count }`
-  - Error cases: Product not found (404), invalid ID (400)
-
-- `PATCH /api/products/{id}/stock`: Update stock (internal only)
-  - Input: `id: UUID, delta: int (positive or negative)`
-  - Output: `{ id, new_stock: int }`
-  - Error cases: Insufficient stock (400), product not found (404)
-
-### Data Models
-- Product table: `(id: UUID, name: string, description: text, price: decimal, category: string, stock: int, created_at: timestamp, updated_at: timestamp)`
-
-## Depends On
-
-### Required Features
-- Feature 1 (Authentication): We call `/auth/verify-token` to validate admin operations
-
-### External Services
-- None for MVP
-
-## Integration Points
-
-### How We Connect
-- Feature 3 (Cart) calls `GET /products/{id}` to validate items being added
-- Feature 4 (Payments) calls `GET /products/{id}` to confirm pricing during checkout
-- Feature 3 calls `PATCH /products/{id}/stock` to decrement stock when order completes
-- Feature 5 (Orders) calls `GET /products/{id}` for invoice generation
-
-### Performance Targets
-- All GET endpoints must respond in &lt;100ms (p95)
-- PATCH endpoint must respond in &lt;200ms
-- Support 100 concurrent requests without degradation
-- Data consistency: Strong (stock must never be oversold)
-
-## Acceptance Criteria
-
-- [ ] All 3 endpoints implemented and working
-- [ ] All endpoints respond in &lt;100ms (p95), &lt;200ms (p99)
-- [ ] Pagination tested: valid ranges (1-100), edge cases (0, 999)
-- [ ] Error handling covers: invalid ID, out of stock, malformed request
-- [ ] Stock decrement is atomic (no race conditions with concurrent PATCH)
-- [ ] Schema matches exactly (no extra fields, type mismatches)
-- [ ] Integration test with Feature 3 succeeds: Add item to cart, verify stock updates
-- [ ] Integration test with Feature 4 succeeds: Checkout flow reads product pricing
-- [ ] README includes: API examples, schema, error codes, performance targets
-- [ ] Code review: Input validation on all endpoints, no SQL injection, proper error messages
-```
-
-This contract is NOT abstract. Agent building Feature 2 reads this and knows exactly what to build. No guessing. No questions. Just implementation.
 
 ---
 
@@ -460,57 +379,6 @@ Run this script every minute. It tells you:
 - When you're ready for integration
 
 **No manual checking. No status meetings. Just one command.**
-
----
-
-## Reflection: From Monitoring to Trusting
-
-Let's pause and reflect on what just happened.
-
-In Lesson 5, you were the supervisor. You monitored agents, checked progress, resolved blockers. It worked for 5 agents, but it wouldn't scale to 15.
-
-Now you've written contracts and configured hooks. You've shifted from supervision to *trust through clarity.*
-
-### What Changed?
-
-**Before (Lesson 5)**:
-- You write specs (10 minutes)
-- You monitor 5 agents (60 minutes)
-- You detect issues mid-implementation (15 minutes)
-- You iterate on contracts (30 minutes)
-- **Total: 115 minutes, constant stress**
-
-**After (Lesson 6)**:
-- You write contracts upfront (15 minutes)
-- Agents work autonomously (60 minutes, you don't check)
-- Hooks notify you of completion (0 minutes, automatic)
-- You integrate and verify (20 minutes)
-- **Total: 95 minutes, peace of mind**
-
-Where's the difference? **You moved the communication (the contract) to the beginning. Now agents don't need to ask; the contract has the answers.**
-
-### The Trust Model
-
-Here's the insight: **Trust is not about hoping agents will do good work. Trust is about boundaries so clear that good work is the only possible outcome.**
-
-Think about it this way:
-
-- **Without contracts**: "Build a good API." → Vague. Agent guesses. You're surprised. Rework needed.
-- **With contracts**: "Build an API with these 3 endpoints, this schema, these error codes." → Clear. Agent implements. You're not surprised.
-
-The second approach isn't "trusting the agent." It's **trusting the system because the contract removes ambiguity.**
-
-At 15 agents, you can't afford ambiguity. You need contracts so clear that all 15 can work in parallel without asking. Hooks so precise that you know immediately who's done and who needs help.
-
-### The Strategic Shift
-
-And here's the beautiful part: **Once contracts and hooks are working, you can finally focus on strategy.**
-
-Instead of asking "Are my agents on track?" you ask "Are we building the right thing?"
-
-Instead of monitoring progress, you're thinking about decomposition: "Could we parallelize this differently?" "What would improve our integration quality?"
-
-**That's creative independence.** Orchestration is automated (contracts + hooks). You're free to think strategically.
 
 ---
 
@@ -704,26 +572,6 @@ Hooks notify you when done.
 You integrate.
 
 The difference: With clear contracts, you can coordinate 10 AI agents as efficiently as Vercel coordinates 50 humans. **Decomposition + Contracts = Unlimited Scale.**
-
----
-
-## Forward Reference: Lesson 7
-
-You've mastered contracts. You understand how clear boundaries enable autonomy. You've configured hooks that track progress without constant oversight.
-
-**In Lesson 7, you'll experience the SECOND CLIMAX**: SpecKit Plus itself acting as your orchestrator.
-
-What do I mean?
-
-In Lesson 6, you configured hooks manually. In Lesson 7, SpecKit Plus will:
-
-1. **Generate contract.md automatically** when you run `/sp.specify`
-2. **Plan multiple features** and understand their integration points
-3. **Spawn autonomous feature implementations** (you open terminals, agents work)
-4. **Monitor completion through hooks** (contracts + hooks automated)
-5. **Enable creative independence** (your job is decomposition, not supervision)
-
-This is where decomposition thinking meets automation. This is where you become a true orchestrator—not managing terminals, but orchestrating strategy.
 
 ---
 

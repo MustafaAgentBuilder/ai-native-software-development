@@ -24,6 +24,47 @@ Enable educators to design **co‑reasoning learning experiences** where AI is a
 - Create ethical guidelines for responsible AI use
 - Assess appropriate balance of AI integration in curriculum
 
+## Relationship to Graduated Teaching Pattern (Constitution Principle 13)
+
+**This skill complements the graduated teaching pattern:**
+
+**Graduated Teaching Pattern** (Constitution Principle 13) defines **WHAT book teaches vs WHAT AI handles:**
+- **Tier 1:** Book teaches foundational concepts (stable, won't change)
+- **Tier 2:** AI companion handles complex execution (student specifies, AI executes)
+- **Tier 3:** AI orchestration at scale (10+ items, multi-step workflows)
+
+**This skill (AI Collaborate Learning)** defines **HOW students use AI during learning:**
+- When AI is involved (from Pattern Tier 2+), students use AI collaboration patterns (explainer, debugger, pair programmer)
+- Balance AI-assisted work with independent verification (40/40/20 model)
+- Apply ethical guidelines and verification strategies
+
+**In Practice:**
+```
+1. Book teaches Markdown # headings (Tier 1 - foundational)
+   → Students practice manually
+   → No AI collaboration patterns needed yet
+
+2. Students learn Markdown tables (Tier 2 - complex syntax)
+   → AI companion handles table generation
+   → Now apply AI collaboration patterns from this skill:
+     - Student specifies table requirements
+     - AI generates table
+     - Student validates output
+     - Student can ask AI to explain syntax (AI as Explainer)
+
+3. Students convert 10 documents (Tier 3 - orchestration)
+   → AI orchestrates batch conversion
+   → Apply AI pair programming pattern (AI as Pair Programmer)
+   → Maintain 40/40/20 balance with verification checkpoints
+```
+
+**Key Integration Points:**
+- Tier 1 (Book teaches foundational): Minimal AI collaboration (students build independent capability)
+- Tier 2 (AI companion handles complex): Apply AI collaboration patterns from this skill
+- Tier 3 (AI orchestration): Full AI pair programming with strategic oversight
+
+Refer to Constitution Principle 13 for decisions about WHAT book teaches vs WHAT AI handles. Use this skill for HOW students collaborate with AI once AI is involved.
+
 ## When to Activate
 
 Use this skill when:

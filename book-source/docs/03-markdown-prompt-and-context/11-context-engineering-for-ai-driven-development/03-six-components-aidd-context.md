@@ -129,7 +129,7 @@ Imagine you need to move furniture:
 
 ```bash
 # Perfect for Claude Code: Complex feature with reasoning
-claude-code prompt "Design and implement a payment processing system with:
+claude prompt "Design and implement a payment processing system with:
 - Retry logic for failed payments
 - Idempotency (no duplicate charges)
 - Comprehensive error handling
@@ -221,7 +221,7 @@ Think of AI as a detective investigating your codebase:
 
 ```bash
 # AI reads specific files
-claude-code prompt "Read src/models/user.py and tell me:
+claude prompt "Read src/models/user.py and tell me:
 1. What fields does the User model have?
 2. What relationships exist?
 3. What validation is applied?"
@@ -244,7 +244,7 @@ claude-code prompt "Read src/models/user.py and tell me:
 
 ```bash
 # AI runs command to see existing tests
-claude-code prompt "Run 'pytest --collect-only' to see all existing tests.
+claude prompt "Run 'pytest --collect-only' to see all existing tests.
 
 Then create tests for the new UserService following the same patterns you see."
 ```
@@ -290,7 +290,7 @@ Analyze:
 
 ```bash
 # AI searches for authentication patterns
-claude-code prompt "Search the codebase for all functions that contain 'authenticate' or 'auth'.
+claude prompt "Search the codebase for all functions that contain 'authenticate' or 'auth'.
 
 Show me the patterns used so I can implement new authentication consistently."
 ```
@@ -306,14 +306,14 @@ Show me the patterns used so I can implement new authentication consistently."
 **Bad:**
 ```bash
 # You manually paste code
-claude-code prompt "Here's my user.py file: [paste 200 lines]
+claude prompt "Here's my user.py file: [paste 200 lines]
 Now help me fix..."
 ```
 
 **Good:**
 ```bash
 # AI uses its tools
-claude-code prompt "Read src/models/user.py and src/services/user_service.py.
+claude prompt "Read src/models/user.py and src/services/user_service.py.
 Then help me fix the validation bug."
 ```
 
@@ -347,7 +347,7 @@ AI doesn't automatically remember what you did yesterday. You need to manage mem
 
 ```bash
 # Load project documentation at session start
-claude-code prompt "Read these files to understand the project:
+claude prompt "Read these files to understand the project:
 1. README.md - project overview
 2. CONTRIBUTING.md - code standards
 3. docs/architecture.md - system design
@@ -377,7 +377,7 @@ Confirm you understand the project structure before we start coding."
 
 ```bash
 # After 90 minutes of work
-claude-code prompt "Create a checkpoint summary in SESSION_CHECKPOINT.md:
+claude prompt "Create a checkpoint summary in SESSION_CHECKPOINT.md:
 
 ## What We Built
 [Features completed]
@@ -397,7 +397,7 @@ Keep it under 500 words."
 **Next session:**
 ```bash
 # Load the checkpoint
-claude-code prompt "Read SESSION_CHECKPOINT.md to understand what we built yesterday.
+claude prompt "Read SESSION_CHECKPOINT.md to understand what we built yesterday.
 
 Now let's continue with the next feature."
 ```
@@ -489,7 +489,7 @@ Building a treehouse:
 
 ```bash
 # Explicit style guardrails
-claude-code prompt "Implement user authentication with these code standards:
+claude prompt "Implement user authentication with these code standards:
 
 MUST follow:
 - PEP 8 style (Python standards)
@@ -541,7 +541,7 @@ Show me the implementation plan first."
 
 ```bash
 # Architectural guardrails
-claude-code prompt "Add payment processing feature with these constraints:
+claude prompt "Add payment processing feature with these constraints:
 
 MUST NOT:
 - Introduce new dependencies (use existing packages only)
@@ -567,13 +567,13 @@ MUST:
 **Never:**
 ```bash
 # Vague, no guardrails
-claude-code prompt "Add authentication"
+claude prompt "Add authentication"
 ```
 
 **Always:**
 ```bash
 # Specific with guardrails
-claude-code prompt "Add JWT authentication following our security standards in CONTRIBUTING.md, using existing auth patterns in src/auth/, with 85%+ test coverage"
+claude prompt "Add JWT authentication following our security standards in CONTRIBUTING.md, using existing auth patterns in src/auth/, with 85%+ test coverage"
 ```
 
 ---
@@ -613,7 +613,7 @@ Building real features requires **multiple steps**. How do you coordinate them?
 
 ```bash
 # Session 1: Design
-claude-code prompt "Design a comment system for our blog:
+claude prompt "Design a comment system for our blog:
 - Comments on posts
 - Nested replies
 - User permissions
@@ -623,14 +623,14 @@ Create architecture document, don't implement yet."
 
 ```bash
 # Session 2: Implementation (new session, load design)
-claude-code prompt "Read the comment_system_design.md we created.
+claude prompt "Read the comment_system_design.md we created.
 
 Implement the Comment model and CommentService following the design."
 ```
 
 ```bash
 # Session 3: Testing (new session)
-claude-code prompt "Read src/services/comment_service.py.
+claude prompt "Read src/services/comment_service.py.
 
 Generate comprehensive tests covering:
 - Creating comments
@@ -641,7 +641,7 @@ Generate comprehensive tests covering:
 
 ```bash
 # Session 4: Documentation
-claude-code prompt "Read the comment implementation.
+claude prompt "Read the comment implementation.
 
 Generate API documentation with examples."
 ```
@@ -686,7 +686,7 @@ gemini chat --session inventory "Add barcode scanning and low-stock alerts to th
 
 ```bash
 # Master plan
-claude-code prompt "Design an e-commerce checkout system.
+claude prompt "Design an e-commerce checkout system.
 
 Break it into 5 implementable components:
 1. Shopping cart service
@@ -702,13 +702,13 @@ Then implement each component separately:
 
 ```bash
 # Component 1
-claude-code prompt "Implement shopping cart service only (add, remove, update, get cart).
+claude prompt "Implement shopping cart service only (add, remove, update, get cart).
 Don't implement payment or orders yet."
 ```
 
 ```bash
 # Component 2
-claude-code prompt "Implement payment processing with Stripe API.
+claude prompt "Implement payment processing with Stripe API.
 Assume cart service exists, don't reimplement it."
 ```
 
@@ -743,7 +743,7 @@ Let's see how all six components work together for a real task.
 **Step 2: Use Development Tools (Component 2)**
 
 ```bash
-claude-code prompt "Before implementing OAuth, use your tools to understand current system:
+claude prompt "Before implementing OAuth, use your tools to understand current system:
 
 1. Read src/auth/authentication.py to see current auth approach
 2. Run 'pip list' to check if we have OAuth libraries
@@ -755,7 +755,7 @@ Summarize what you learn."
 **Step 3: Load Knowledge & Memory (Component 3)**
 
 ```bash
-claude-code prompt "Read these to understand our standards:
+claude prompt "Read these to understand our standards:
 - CONTRIBUTING.md (code standards)
 - docs/architecture.md (system design)
 - DECISIONS.md (past architecture decisions)
@@ -772,7 +772,7 @@ Then confirm you understand before we proceed."
 **Step 5: Apply Guardrails (Component 5)**
 
 ```bash
-claude-code prompt "Implement OAuth social login (Google + GitHub) with these guardrails:
+claude prompt "Implement OAuth social login (Google + GitHub) with these guardrails:
 
 Security Requirements:
 - Validate OAuth tokens server-side
@@ -798,13 +798,13 @@ Show me the implementation plan first."
 
 ```bash
 # After review of plan
-claude-code prompt "Approved. Implement OAuth service following the plan."
+claude prompt "Approved. Implement OAuth service following the plan."
 
 # Next session: Testing
-claude-code prompt "Generate tests for OAuth implementation"
+claude prompt "Generate tests for OAuth implementation"
 
 # Final session: Documentation
-claude-code prompt "Document OAuth setup and usage"
+claude prompt "Document OAuth setup and usage"
 ```
 
 ---
@@ -842,7 +842,7 @@ Practice using the six components.
 
 ```bash
 # With Claude Code
-claude-code prompt "I have these three tasks:
+claude prompt "I have these three tasks:
 
 Task A: Fix a bug in the login function (1 file affected)
 Task B: Analyze 80 Python files to find all database queries
@@ -883,7 +883,7 @@ Report what you learned and how it affects my new feature."
 
 ```bash
 # With Claude Code
-claude-code prompt "I want you to implement a file upload feature.
+claude prompt "I want you to implement a file upload feature.
 
 Add these guardrails:
 - File size limit: 10MB

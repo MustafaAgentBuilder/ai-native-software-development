@@ -94,7 +94,7 @@ You've been using Claude Code and Gemini CLI throughout this chapter. But WHY tw
 
 **Example:**
 ```bash
-claude-code prompt "Read these files:
+claude prompt "Read these files:
 - src/services/user_service.py
 - src/models/user.py
 - tests/test_user_service.py
@@ -152,7 +152,7 @@ Claude excels at **complex logical reasoning**.
 **Example Task:** Design authentication system with multiple edge cases
 
 ```bash
-claude-code prompt "Design a JWT authentication system with these requirements:
+claude prompt "Design a JWT authentication system with these requirements:
 
 1. Access tokens (15 minutes)
 2. Refresh tokens (7 days)
@@ -175,7 +175,7 @@ Claude is excellent at **improving existing code**.
 **Example Task:** Refactor messy authentication code
 
 ```bash
-claude-code prompt "Read src/auth/legacy_auth.py
+claude prompt "Read src/auth/legacy_auth.py
 
 This code has several issues:
 - 400 lines in one function
@@ -203,7 +203,7 @@ Claude excels at **system design and architecture**.
 **Example Task:** Design microservices architecture
 
 ```bash
-claude-code prompt "We're splitting a monolith into microservices.
+claude prompt "We're splitting a monolith into microservices.
 
 Current structure: src/ has users, products, orders, payments all mixed.
 
@@ -228,7 +228,7 @@ Claude writes **high-quality tests**.
 **Example Task:** Create comprehensive test suite
 
 ```bash
-claude-code prompt "Read src/services/payment_service.py
+claude prompt "Read src/services/payment_service.py
 
 Create a complete test suite with:
 
@@ -386,7 +386,7 @@ Create migration plan for Python 2 to Python 3:
 
 **Example Command:**
 ```bash
-claude-code prompt "Build a payment processing feature with retry logic, idempotency, and webhook handling"
+claude prompt "Build a payment processing feature with retry logic, idempotency, and webhook handling"
 ```
 
 ---
@@ -425,7 +425,7 @@ gemini chat --session audit "Read entire src/ directory (200 files). Find all se
 - Architecture design for email workflow
 
 ```bash
-claude-code prompt "Build user registration feature:
+claude prompt "Build user registration feature:
 - Email/password registration
 - Email verification (send token, verify link)
 - Password strength requirements
@@ -478,7 +478,7 @@ Create onboarding guide:
 - Need to apply design patterns
 
 ```bash
-claude-code prompt "Read src/auth/authentication.py (500 lines).
+claude prompt "Read src/auth/authentication.py (500 lines).
 
 Refactor using:
 1. Service layer pattern
@@ -531,7 +531,7 @@ Find every database query:
 - Might need to understand edge case logic
 
 ```bash
-claude-code prompt "Read:
+claude prompt "Read:
 - src/auth/login.py
 - src/auth/password_reset.py
 - tests/test_auth.py (if exists)
@@ -570,7 +570,7 @@ Analyze for GraphQL migration:
 5. Suggest GraphQL schema structure"
 
 # Phase 2: Implementation (Claude)
-claude-code prompt "Based on the analysis, implement GraphQL schema and resolvers for User resource:
+claude prompt "Based on the analysis, implement GraphQL schema and resolvers for User resource:
 - User type definition
 - Queries (user, users)
 - Mutations (createUser, updateUser, deleteUser)
@@ -597,10 +597,10 @@ For complex projects, **use both tools** in sequence.
 gemini chat --session analysis "Read all API routes (40 files) and analyze patterns"
 
 # Step 2: Design (Claude)
-claude-code prompt "Based on this analysis, design GraphQL schema for top 10 most-used endpoints"
+claude prompt "Based on this analysis, design GraphQL schema for top 10 most-used endpoints"
 
 # Step 3: Implement (Claude)
-claude-code prompt "Implement the User and Post GraphQL resolvers with tests"
+claude prompt "Implement the User and Post GraphQL resolvers with tests"
 ```
 
 ---
@@ -616,7 +616,7 @@ claude-code prompt "Implement the User and Post GraphQL resolvers with tests"
 
 ```bash
 # Step 1: Design template (Claude)
-claude-code prompt "Design OpenAPI documentation pattern for our API routes.
+claude prompt "Design OpenAPI documentation pattern for our API routes.
 
 Create template with:
 - Summary and description
@@ -632,7 +632,7 @@ gemini chat --session docs "Read all 40 route files.
 Apply the OpenAPI template to each endpoint. Generate complete openapi.yaml."
 
 # Step 3: Refine complex endpoints (Claude)
-claude-code prompt "The Payment endpoint has complex logic. Improve its OpenAPI doc with detailed examples and all edge cases."
+claude prompt "The Payment endpoint has complex logic. Improve its OpenAPI doc with detailed examples and all edge cases."
 ```
 
 ---
@@ -655,7 +655,7 @@ Find all raw SQL queries with user input:
 - Prioritize fixes"
 
 # Step 2: Fix high-risk issues (Claude)
-claude-code prompt "Read src/api/routes/user_search.py line 45.
+claude prompt "Read src/api/routes/user_search.py line 45.
 
 This raw SQL query is vulnerable:
 query = f\"SELECT * FROM users WHERE name = '{user_input}'\"
@@ -687,7 +687,7 @@ Fix it:
 
 **Good Prompt Example:**
 ```bash
-claude-code prompt "Read:
+claude prompt "Read:
 - src/services/user_service.py
 - src/models/user.py
 - tests/test_user_service.py
@@ -797,7 +797,7 @@ Practice choosing and using both tools.
 
 ```bash
 # With Claude Code
-claude-code prompt "I'll give you 5 development scenarios.
+claude prompt "I'll give you 5 development scenarios.
 
 For each, tell me: Should I use Claude Code or Gemini CLI? Why?
 
@@ -836,7 +836,7 @@ Run the same task with both tools and compare results.
 
 ```bash
 # With Claude Code
-claude-code prompt "Read src/models/user.py
+claude prompt "Read src/models/user.py
 
 Explain the User model: fields, relationships, validation rules."
 

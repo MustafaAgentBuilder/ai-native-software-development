@@ -1,53 +1,50 @@
-# Feature Specification: Chapter 32 Redesign - Real Multi-Session Development Workflow
+# Feature Specification: Chapter 32 - AI Orchestra: Agent Teams Manager
 
 **Feature Branch**: `002-chapter-32-redesign`
+**Chapter Directory**: `32-ai-orchestra-agent-teams-manager`
 **Created**: 2025-11-06
-**Status**: Draft
-**Input**: Design chapter 32 to teach real multi-session development using SpecKit Plus and Claude Code CLI as a Super AI orchestrator workforce for AIDD and AI-Native Software Shipping
+**Updated**: 2025-11-06
+**Status**: In Progress
+**Input**: Design chapter 32 to teach task and team management fundamentals applied to AI agents, using SpecKit Plus workflows to coordinate 5-7 autonomous agents through decomposition thinking
 
 ---
 
 ## Executive Summary
 
-Replace Chapter 32's current conceptual simulation with **two practical learning goals** that transform students into creative orchestrators who can coordinate 10-15 autonomous agents (AI or human) through decomposition thinking.
+**"AI Orchestra: Agent Teams Manager"** teaches **task and team management fundamentals** applied to AI agents—a transferable skill set that works for coordinating AI agents today and human teams tomorrow.
 
-### Goal 1: Master Decomposition Thinking & Manual Agent Team Management (60% Emphasis)
+Replace Chapter 32's conceptual simulation with **practical team coordination skills** that transform students into agent team managers who can coordinate 5-7 autonomous agents (AI or human) through decomposition thinking.
 
-**Focus**: Build the mental model for breaking complex problems into parallelizable units, then practically manage 5+ SpecKit Plus workflows as "agent teams."
+### Goal 1: Master Decomposition Thinking & Task Management (60% Emphasis)
 
-**Practical How**: Use 5 terminals/worktrees to orchestrate Claude Code sessions running `/sp.specify` → `/sp.plan` → `/sp.tasks` → `/sp.implement` in parallel.
+**Focus**: Build the mental model for breaking complex problems into parallelizable units, then practically coordinate 3-7 SpecKit Plus workflows as "agent teams."
 
-**Human Role**: Act as the "team lead"—decompose upfront (research/planning/problem-solving), assign via specs/contracts, monitor/isolate sessions, and integrate outputs.
+**Practical How**: Use 3-7 terminals/worktrees to coordinate Claude Code sessions running `/sp.specify` → `/sp.plan` → `/sp.tasks` → `/sp.implement` in parallel.
 
-**Outcome**: Experience 2.5-3x speedup; build belief: *"I can manage agent teams like human ones, with specs eliminating coordination chaos."*
+**Human Role**: Act as the "team lead"—decompose upfront (research/planning/problem-solving), assign via specs/contracts, use completion hooks for async notification, and integrate outputs through strategic review.
 
-**Proof of Practicality**: Hands-on from Day 1—no simulation, real workflows, measurable speedups. Students feel the friction of manual scaling, motivating Goal 2.
+**Outcome**: Experience 2-3x speedup; build belief: *"I can manage agent teams like human teams—clear specifications eliminate coordination chaos."*
 
-### Goal 2: Achieve Creative Independence with Super AI Orchestrator (40% Emphasis, OPTIONAL)
+**Proof of Practicality**: Hands-on from Day 1—no simulation, real workflows, measurable speedups. Students experience task management at scale, building transferable team coordination skills.
 
-**Focus**: Automate Goal 1's manual orchestration into a programmatic "Super AI Orchestrator" script that establishes contracts with humans, then spawns/manages 10-15 independent Claude sessions.
+---
 
-**Practical How**: Build a bash/Python script using:
-- **Headless mode** (`claude -p`) for programmatic execution
-- **Sandboxing** (Lesson 7) for safe isolation of 10-15 sessions
-- **Session independence**: Each has own worktree + MCP + agents
-- **Zero coordination complexity**: Specifications define integration contracts
+### Graduate Identity: Agent Teams Manager
 
-**Human Role**: Shift to **creative independence**—invest initial time in high-level planning/research (defining contracts), then let orchestrator handle execution, freeing you for innovation.
+**What students become**: **"Agent Teams Managers"**—practical for team leads, PMs, technical founders who need to coordinate autonomous work.
 
-**Outcome**: Achieve 10x+ productivity; build belief: *"I can offload management to automation, scaling effortlessly to 15+ agents."*
+**Core skills acquired**:
+- Decompose complex systems into parallelizable units
+- Define clear integration contracts that eliminate coordination meetings
+- Coordinate execution through specifications (not constant supervision)
+- Validate strategically (review against contracts, not micromanage processes)
+- Shift from tactical execution to strategic leadership
 
-**Note**: Goal 2 is **optional for advanced students**. Core value is achieved in Goal 1 (manual parallel workflows). Goal 2 demonstrates the ultimate scaling pathway for students who want to see 7-9 agent coordination. **Fast-track**: Complete Goal 1 + Capstone = 6-8 hours, full mastery demonstrated.
+**Practical outcome**: In capstone, students coordinate 3-5 features manually, measure speedup, and reflect: *"Upfront decomposition took longer, but total delivery time halved—I've shifted from execution to strategy."*
 
-### Merged Practical Reality: Creative Human + Autonomous Orchestration
+**Proof**: Measurable via time worksheets showing upfront investment vs. speedup; transferable (same patterns for human teams: specifications eliminate coordination meetings).
 
-**Integration**: Goal 1 teaches the "why" (thinking) and "manual how" (tooling basics); Goal 2 automates it. **Merged outcome**: Humans front-load creativity—planning/research/problem-solving takes 2-3x longer initially but yields 10x overall gains.
-
-**Practical How**: In capstone, students choose manual (Goal 1) or programmatic (Goal 2) for a 5-feature build, then reflect on the merge: *"Upfront thinking time doubled, but total delivery halved—now I focus on strategy."*
-
-**Graduate Identity**: Students become **"creative orchestrators"**—practical for PMs/founders: Decompose once, automate execution, iterate creatively.
-
-**Proof**: Measurable via time worksheets showing upfront investment vs. speedup; transferable (same patterns for human teams: specs/contracts automate coordination).
+**Chapter duration**: 8-10 hours (Lessons 1-8 + Capstone)
 
 ### Reality Check: Decomposition Takes Upfront Time ⚠️
 
@@ -62,16 +59,16 @@ Replace Chapter 32's current conceptual simulation with **two practical learning
 - Good decomposition → manageable at 5 agents (clean integration)
 - Excellent decomposition → scalable to 15 agents (autonomous work, zero coordination overhead)
 
-Tools (headless mode, orchestrator scripts) **amplify** decomposition quality—they don't fix poor decomposition, they amplify it into automated chaos.
+Tools (background execution, CI/CD automation) **amplify** decomposition quality—they don't fix poor decomposition, they amplify it into automated chaos.
 
 ### Key Understanding: Prerequisites & Focus
 
 **Students already learned** (Chapters 5 & 31):
 - Claude Code fundamentals
 - SpecKit Plus workflow basics
-- MCP configuration
+- Git branching and merging
 
-**This chapter teaches**: **Running SpecKit Plus workflows IN PARALLEL** to master decomposition thinking—the skill that enables coordinating 10-15 autonomous workflows (AI or human), separating tactical execution from strategic creativity.
+**This chapter teaches**: **Running SpecKit Plus workflows IN PARALLEL** to master decomposition thinking—the skill that enables coordinating 5-7 autonomous workflows (AI or human), separating tactical execution from strategic creativity.
 
 **Transferability**: Decomposition thinking transfers from parallel SpecKit Plus workflows → coordinating AI agents → managing junior developers → distributed teams → organizational scaling. The thinking is evergreen.
 
@@ -117,63 +114,37 @@ Tools (headless mode, orchestrator scripts) **amplify** decomposition quality—
 
 ---
 
-### User Story 2 - Understanding Automation Amplifies Decomposition (Priority: P2)
+### User Story 2 - Manual Coordination at Scale: 1 Human + 5-7 Agents (Priority: P1)
 
-**As a** developer who understands decomposition thinking
-**I want to** understand how automation (CI/CD, MCP, hooks) amplifies decomposition quality
-**So that** I can see the path from 3x (manual parallel) to 10x (automated validation and batch processing)
+**As a** developer who understands decomposition thinking and has practiced parallel workflows
+**I want to** understand how SpecKit Plus orchestration + completion hooks enable 1 human to coordinate 5-7 agents through clear specifications
+**So that** I can experience creative independence: specifications define work, agents execute autonomously, I focus on strategy
 
-**Why this priority**: Demonstrates how good decomposition enables automation. Students learn that automation is only valuable when decomposition is clear - automated chaos is still chaos. This reinforces decomposition as the foundational skill.
+**Why this priority**: Demonstrates the "Manual Orchestration" approach that scales decomposition thinking from 3 agents to 5-7 agents. Students understand that decomposition thinking is the bottleneck: without it, even 3 agents = chaos. With good decomposition, 5-7 agents = manageable through manual coordination. This is the thinking that enables Technical AI Product Managers to coordinate autonomous work.
 
-**Independent Test**: Can be fully tested by configuring GitHub Actions workflow, commenting `@claude /sp.specify` on a GitHub issue, and verifying that spec is auto-generated and PR is created without manual intervention.
-
-**Acceptance Scenarios**:
-
-1. **Given** student has working multi-session setup from User Story 1
-   **When** they configure CI/CD automation (GitHub Actions + headless Claude Code)
-   **Then** they can trigger spec generation by commenting `@claude /sp.specify` on GitHub issues, and specs are auto-generated and posted as PRs
-
-2. **Given** student has MCP servers installed (database, monitoring, code review)
-   **When** they query production data from any worktree session
-   **Then** all sessions access same shared intelligence, specs become data-informed (e.g., "What are top user pain points?" informs feature priorities), and spec quality improves
-
-3. **Given** student has configured validation hooks
-   **When** they attempt to write a spec that violates constitution standards
-   **Then** pre-tool-use hook prevents bad spec from being saved, provides specific validation errors, and student corrects spec before proceeding (80% reduction in validation rework)
-
----
-
-### User Story 3 - Meta-Orchestration: 1 Human + 7-9 AI Agents (Priority: P2)
-
-**As a** developer who understands decomposition thinking and has experienced manual parallel workflows
-**I want to** understand how meta-orchestration (headless mode, orchestration scripts) enables 1 human to coordinate 7-9 AI Agents simultaneously
-**So that** I can see the path to unlimited scale: excellent decomposition + programmatic orchestration = 10-50x productivity gains
-
-**Why this priority**: Demonstrates the "Super AI Orchestra" vision - 1 human orchestrating 10-15 autonomous AI agents. Students understand that decomposition thinking is the bottleneck: without it, even 3 agents = chaos. With excellent decomposition, 7-9 agents = manageable. This is the thinking that enables Technical AI Product Managers to coordinate at CTO-level scale.
-
-**Independent Test**: Can be fully tested by writing bash script that uses headless mode to generate 3 specs in parallel, verifying JSON output is captured correctly, and confirming session IDs enable context preservation across workflow phases.
+**Independent Test**: Can be fully tested by setting up 5 worktrees, running SpecKit Plus workflows in parallel, using completion hooks for async notification, and verifying clean integration.
 
 **Acceptance Scenarios**:
 
-1. **Given** student has mastered manual multi-session workflow (2-3 agents) from User Story 1
-   **When** they write orchestration script using headless mode (`claude -p "/sp.specify [desc]" --output-format json`)
-   **Then** script generates 5 specifications in parallel, captures JSON output with session IDs, and completes in same time as manual single-session workflow (demonstrating true parallelization at increased scale)
+1. **Given** student has mastered 3-agent manual workflow from User Story 1
+   **When** they scale to 5 worktrees with clear integration contracts (contract.md)
+   **Then** all 5 specifications generated in parallel, contracts define integration points, and no circular dependencies exist
 
-2. **Given** orchestration script has generated 5 specs with preserved session IDs
-   **When** script continues workflow by invoking `/sp.plan` with `--resume [session-id]` for each feature
-   **Then** each headless session maintains context from specification phase, 5 plans are generated correctly in parallel, and session continuity is verified
+2. **Given** 5 features have complete specifications and contracts
+   **When** student configures completion hooks that notify when implementations finish
+   **Then** hooks write to shared status log, student can monitor all 5 sessions from single terminal, and notifications fire when each feature completes
 
-3. **Given** complete orchestration script (Specify → Plan → Tasks → Implement)
-   **When** student runs single command to orchestrate 5-feature end-to-end workflow with programmatic monitoring
-   **Then** all 5 features complete autonomously, student monitors progress via JSON parsing, and final integration produces working multi-feature system (demonstrating 1 human + 5 AI agents capability)
+3. **Given** 5 implementations running with completion hooks configured
+   **When** student performs strategic review (not micromanagement) based on contract validation
+   **Then** student validates implementations against contracts, merges in dependency order, and reflects on shift from "managing execution" to "strategic oversight"
 
-4. **Given** student understands 5-agent orchestration
-   **When** they analyze the orchestration script and discuss scaling to 7-9 agents
-   **Then** student can articulate: (1) what changes are needed to scale (more parallelism, better monitoring, error handling), (2) why decomposition quality becomes critical at 7-9 agent scale, (3) how this thinking transfers to coordinating human teams
+4. **Given** student has coordinated 5 agents successfully
+   **When** they reflect on scaling to 7-10 agents
+   **Then** student can articulate: (1) what stays the same (decomposition thinking, contracts), (2) what becomes harder (monitoring, conflict resolution), (3) when background execution or automation becomes necessary, (4) how this thinking transfers to coordinating human teams
 
 ---
 
-### User Story 4 - Measuring the Value of Decomposition Thinking (Priority: P2)
+### User Story 3 - Measuring the Value of Decomposition Thinking (Priority: P1)
 
 **As a** student completing Chapter 32 capstone
 **I want to** measure and articulate the value of decomposition thinking through concrete productivity metrics
@@ -232,21 +203,12 @@ Tools (headless mode, orchestrator scripts) **amplify** decomposition quality—
 - **FR-006**: Chapter MUST include hands-on exercises where students create actual worktrees and run parallel workflows
 - **FR-007**: Chapter MUST provide time tracking exercises comparing sequential vs parallel workflows (measuring actual productivity gains)
 
-#### Automation Layer (P2)
+#### Manual Coordination at Scale (P1 - Core)
 
-- **FR-008**: Chapter MUST teach Claude Code background bash execution for non-blocking implementation monitoring
-- **FR-009**: Chapter MUST demonstrate MCP server integration for shared context across all sessions
-- **FR-010**: Chapter MUST show hooks system for automatic spec validation gates
-- **FR-011**: Chapter MUST teach CI/CD automation with GitHub Actions + headless Claude Code
-- **FR-012**: Chapter MUST provide working examples of `@claude` command automation via issue comments
-
-#### Meta-Orchestration (P2 - Advanced)
-
-- **FR-023**: Chapter MUST teach headless mode basics (`claude -p`, `--output-format json`, `--resume`)
-- **FR-024**: Chapter MUST demonstrate writing orchestration scripts that spawn multiple headless Claude sessions in parallel
-- **FR-025**: Chapter MUST show session management with `--resume` to maintain context across workflow phases (Specify → Plan → Tasks)
-- **FR-026**: Chapter MUST provide working example of complete automated workflow: single script orchestrates 3 features end-to-end
-- **FR-027**: Chapter MUST teach parsing JSON output programmatically for progress monitoring and error handling
+- **FR-020**: Chapter MUST demonstrate coordinating 5-7 parallel sessions through SpecKit Plus workflows and completion hooks
+- **FR-021**: Chapter MUST show contract.md generation for defining integration points between parallelizable features
+- **FR-022**: Chapter MUST teach completion hooks for async notification (not constant monitoring)
+- **FR-023**: Chapter MUST demonstrate strategic review workflow (validation against contracts, not micromanagement)
 
 #### Capstone Project (P1)
 
@@ -258,23 +220,23 @@ Tools (headless mode, orchestrator scripts) **amplify** decomposition quality—
 
 #### Content Alignment (P1)
 
-- **FR-018**: Chapter MUST align with book's preface vision of AI-Driven Development (Level 2) and AI-Native Software Development (Level 3)
-- **FR-019**: Chapter MUST reference and build upon Part 1 concepts (9 Pillars of AIDD, AI Development Revolution)
-- **FR-020**: Chapter MUST demonstrate "Super AI orchestrator workforce" concept from preface
-- **FR-021**: Chapter MUST show how specifications enable coordination without synchronous communication
-- **FR-022**: Chapter MUST eliminate all toy simulation language (no "pretend," "imagine," "simulate" framing)
+- **FR-024**: Chapter MUST align with book's preface vision of AI-Driven Development (Level 2) and AI-Native Software Development (Level 3)
+- **FR-025**: Chapter SHOULD reference and build upon Part 1 concepts (9 Pillars of AIDD, AI Development Revolution) where relevant
+- **FR-026**: Chapter MUST demonstrate manual parallel coordination approach (not programmatic orchestration)
+- **FR-027**: Chapter MUST show how specifications enable coordination without synchronous communication
+- **FR-028**: Chapter MUST eliminate all toy simulation language (no "pretend," "imagine," "simulate" framing)
 
 ### Key Entities
 
 - **Worktree**: Separate working directory in git repository, on its own branch, with isolated file system but shared git history
 - **Feature**: Numbered SpecKit Plus feature (001-feature-name) with spec.md, plan.md, tasks.md, and implementation artifacts
-- **Multi-Session Workflow**: Pattern of running 3-5+ Claude Code sessions in parallel, each in separate worktree, coordinating via specifications
-- **Integration Contract**: Specification defining how parallel feature implementations connect (data formats, APIs, dependencies)
-- **Automation Stack**: CI/CD workflows, MCP servers, hooks, and headless mode for batch processing
-- **Headless Mode**: Non-interactive Claude Code execution via `claude -p` with JSON output and session management
-- **Meta-Orchestration Script**: Bash or Python script that spawns and manages multiple headless Claude sessions programmatically
-- **Session Management**: Using `--resume [session-id]` to maintain context across multiple headless invocations
+- **Multi-Session Workflow**: Pattern of running 3-7 Claude Code sessions in parallel, each in separate worktree, coordinating via specifications
+- **Integration Contract**: Specification (contract.md) defining how parallel feature implementations connect (data formats, APIs, dependencies)
+- **Completion Hook**: Bash script that fires when implementation completes, writing to shared status log for async notification
+- **Background Execution**: Running implementations with `nohup` to free up terminals while monitoring via logs
+- **Strategic Review**: Validation workflow where human checks implementations against contracts (not micromanagement during execution)
 - **Productivity Measurement**: Time tracking worksheet comparing sequential vs parallel workflows with concrete metrics (hours saved, speedup multiplier)
+- **Decomposition Thinking**: The transferable skill of breaking complex systems into parallelizable units with clear integration contracts
 
 ---
 
@@ -292,17 +254,13 @@ Tools (headless mode, orchestrator scripts) **amplify** decomposition quality—
 
 - **SC-005**: 70%+ of students understand **transferability** - can describe how decomposition thinking applies to coordinating junior developers, distributed teams, or organizational scaling (not just AI agents)
 
-- **SC-013**: 60%+ of students understand **path to scale** - can articulate how to progress from 2-3 agents (manual) to 5-7 agents (automated) to 7-9 agents (meta-orchestration) through decomposition thinking
+- **SC-013**: 60%+ of students understand **path to scale** - can articulate how to progress from 3 agents (manual) to 5-7 agents (manual with hooks) to 7-10 agents (background execution) to 10+ agents (CI/CD automation) through decomposition thinking
 
 ### Secondary Success: Tool Proficiency (40% of chapter emphasis)
 
 - **SC-006**: Students complete 3-worktree parallel workflow demonstrating 2.5x+ speedup (proving decomposition enables measurable gains)
 
 - **SC-007**: 80%+ of students successfully use git worktrees, parallel SpecKit Plus workflows, and clean git merges (demonstrating technical execution)
-
-- **SC-008**: 70%+ of students who complete automation lessons understand path to 10x+ via automation amplifying good decomposition
-
-- **SC-009**: 50%+ of students who complete meta-orchestration lesson successfully run orchestration script (demonstrating programmatic orchestration)
 
 ### Outcome Validation
 
@@ -549,14 +507,17 @@ The following are explicitly **not** included in this chapter redesign:
 - Integration MUST happen via pre-defined contracts (tests specification quality)
 - Reflection MUST identify what enabled clean integration (tests understanding of decomposition thinking)
 
-### The "Super AI Orchestra" Vision: 1 Human + 7-9 AI Agents
+### The "Manual Orchestration" Approach: 1 Human + 5-7 Agents
 
-- **The Target**: 1 human orchestrating 10-15 autonomous AI agents simultaneously, each building features independently
-- **What enables this scale**: Decomposition thinking - breaking complex systems into 10-15 parallelizable units with clear integration contracts
-- **Why it works**: Good decomposition eliminates coordination overhead. Without decomposition, even 3 agents = chaos. With excellent decomposition, 7-9 agents = manageable.
+- **The Target**: 1 human coordinating 5-7 autonomous agents simultaneously through clear specifications and async hooks
+- **What enables this scale**: Decomposition thinking - breaking complex systems into 5-7 parallelizable units with clear integration contracts
+- **Why it works**: Good decomposition eliminates coordination overhead. Without decomposition, even 3 agents = chaos. With good decomposition, 5-7 agents = manageable through manual coordination.
 - **Progression**:
-  - **Lessons 1-4**: Manual coordination of 2-3 agents (learn decomposition thinking)
-  - **Lessons 5-7**: Automated coordination of 5-7 agents (automation amplifies good decomposition)
-  - **Lesson 8**: Meta-orchestration of 7-9 agents (programmatic orchestration at scale)
-- **Path to productivity**: 3x (manual 2-3 agents) → 5-7x (automated 5-7 agents) → 10-50x+ (meta-orchestration 10-15+ agents)
-- **Key insight**: The bottleneck isn't tools or terminals - it's decomposition thinking. Master decomposition, unlock unlimited scale.
+  - **Lessons 1-3**: Manual coordination of 3 agents (learn decomposition thinking fundamentals)
+  - **Lesson 4**: Scaling analysis (what works at 3, what breaks at 5-7)
+  - **Lessons 5-6**: Contract-based coordination of 5-7 agents (SpecKit orchestration + completion hooks)
+  - **Lesson 7**: Capstone project (prove 2-3x speedup with measured metrics)
+- **Path to productivity**:
+  - Manual 3 agents: **2-3x speedup** (proven in Lessons 1-8)
+  - Manual 5-7 agents with hooks: **3-5x speedup** (achievable, demonstrated in Lesson 7)
+- **Key insight**: The bottleneck isn't tools or terminals - it's decomposition thinking. Master decomposition at 3-agent scale, apply it to 5-7 agents, understand path to 10+ with automation.

@@ -1,9 +1,17 @@
 <!--
 Sync Impact Report:
-Version: 3.0.0
+Version: 3.0.2
 Created: 2025-10-28
-Last Refactored: 2025-10-31
+Last Refactored: 2025-11-06
 Rationale: PARADIGM SHIFT from "teaching Python programming" to "AI-native software development methodology". This is a BREAKING CHANGE that reframes the entire book from learning syntax to learning specification-first development.
+
+Changes in v3.0.2 (2025-11-06):
+- PRINCIPLE 13: Redesigned from "Concept-Before-Command" to "Graduated Teaching Pattern"
+- THREE-TIER TEACHING: Book teaches foundational → AI companion handles complex → AI orchestration at scale
+- FUTURE-PROOF CONTENT: Teach stable concepts (book), delegate evolving execution (AI), orchestrate scaling (automation)
+- APPLICATION MATRIX: Clear guidance for what book teaches vs what AI handles across Markdown, Git, Python, Docker
+- LESSON PROGRESSION: Manual practice (Lesson 1) → AI orchestration (Lesson 2+)
+- Impact: Fundamentally changes how ALL content should be structured for true AI-native teaching
 
 Changes in v3.0.1 (2025-11-04):
 - CORE PHILOSOPHY: Added "Evals-First Development" as #1 philosophy (professional AI-native pattern: Evals → Spec → Implement → Validate)
@@ -49,7 +57,7 @@ Templates Aligned:
 
 # AI Native Software Development: Colearning Agentic AI with Python and TypeScript – The AI & Spec Driven Way — Project Constitution
 
-**Version:** 3.0.1 | **Ratified:** 2025-10-31 | **Last Amended:** 2025-11-04
+**Version:** 3.0.2 | **Ratified:** 2025-10-31 | **Last Amended:** 2025-11-06
 
 ---
 
@@ -475,23 +483,87 @@ Content MUST be deliberately structured to match audience cognitive capacity. Be
 
 ---
 
-### Principle 13: Concept-Before-Command Pattern
+### Principle 13: Graduated Teaching Pattern (Book → AI Companion → AI Orchestration)
 
-Every new tool, command, or technical concept MUST be introduced by explaining WHAT it is conceptually BEFORE showing HOW to use it. Use non-programmer examples and analogies.
+Teaching MUST follow graduated AI-native pattern: **Book teaches foundational concepts** → **AI companion handles complex execution** → **AI orchestration at scale**.
 
-**Why This Matters:** Teaching syntax without context creates cargo-cult programming (following commands without understanding). Students need mental models before execution details. Non-programmers especially need conceptual anchors before technical steps.
+**Why This Matters:** This three-tier pattern makes content future-proof. Foundational concepts are stable (book teaches them directly). Complex execution evolves (AI companion handles it, stays current). Scaling requires automation (AI orchestration, professional workflow). Teaching what doesn't change, delegating what evolves, orchestrating what scales.
 
-**What This Means:**
+**The Three Tiers:**
 
-- Structure: WHAT (concept) → WHY (real-world value) → HOW (command) → PRACTICE (Try With AI)
-- For each new term: Explain in non-programmer language on first use
-- Use analogies and real-world examples before technical jargon
-- Include visual diagrams when explaining complex concepts
-- Avoid assumptions about prior knowledge; define terms contextually
+**Tier 1: Foundational Concepts (Book Teaches Directly)**
+- Stable concepts that won't change over time
+- Core syntax, basic commands, fundamental principles
+- Direct explanation with analogies and diagrams
+- Example: Markdown `#` headings, Python variables, git basic commands
 
-**Example:**
+**Tier 2: Complex Execution (AI Companion)**
+- Complex syntax students shouldn't memorize
+- Multi-step operations with evolving best practices
+- Student directs (specification), AI executes (implementation), student observes approach
+- Example: Markdown tables, Docker multi-stage builds, complex git workflows
 
-> "A specification is like a blueprint for a house. Before builders start construction, architects create detailed plans showing exactly what should be built. In AI-native development, you write specifications (blueprints), and AI agents build the software (construction). The clearer your blueprint, the better the house."
+**Tier 3: Scaling & Automation (AI Orchestration)**
+- Operations involving 10+ items or multi-file workflows
+- Professional automation patterns
+- Student orchestrates (strategic direction), AI manages execution (tactical work)
+- Example: 10 parallel worktrees, batch file conversions, project-wide refactoring
+
+**Application Matrix:**
+
+| Content Type | Book Teaches | AI Companion | AI Orchestration |
+|--------------|--------------|--------------|------------------|
+| **Markdown** | `#` headings, `**bold**`, `*italic*` | Tables, complex lists | Multi-file document conversion |
+| **Git** | `commit`, `push`, `branch` concepts | Worktree setup, rebase workflows | 10+ parallel worktrees |
+| **Python** | Variables, functions, basic syntax | Function generation from specs | Project-wide refactoring |
+| **Docker** | Container concepts, basic Dockerfile | Multi-stage builds | Multi-service orchestration |
+
+**Teaching Structure by Tier:**
+
+**Tier 1 Example (Markdown Basics):**
+```markdown
+## Markdown Headings
+
+Use `#` for headings. More `#` = smaller heading:
+# Heading 1 (largest)
+## Heading 2
+### Heading 3
+```
+
+**Tier 2 Example (Markdown Tables):**
+```markdown
+## Creating Tables (With AI Companion)
+
+Tables use complex syntax. Let your AI handle it.
+
+**Tell your AI:** "Create a markdown table with columns X, Y, Z and 5 rows of data."
+
+**What you learn:** Specification skills, not pipe syntax memorization.
+```
+
+**Tier 3 Example (Document Conversion):**
+```markdown
+## Converting Documents (AI Orchestration)
+
+**Tell your AI:** "Convert all 10 Word docs in /documents to markdown with consistent formatting."
+
+**What you learn:** Orchestration mindset and workflow automation.
+```
+
+**Lesson Progression Pattern:**
+
+- **Lesson 1 (Foundation):** Manual practice with core concepts (e.g., open 3 terminals, run commands manually)
+- **Lesson 2+ (Scaling):** AI orchestration of complex workflows (e.g., "set up 10 worktrees")
+
+**NEVER DO:**
+- ❌ Ask students "Ask your AI: What are markdown headings?" (Book should teach stable concepts)
+- ❌ Make students manually type complex table syntax (AI companion should handle)
+- ❌ Make students set up 10 worktrees manually one-by-one (AI orchestration should automate)
+
+**ALWAYS DO:**
+- ✅ Book explains foundational concepts clearly and directly
+- ✅ "Tell your AI: Create a table with columns X, Y, Z" (specification-driven)
+- ✅ "Tell your AI: Set up 10 worktrees for features 1-10" (orchestration-driven)
 
 ---
 

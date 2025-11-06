@@ -14,6 +14,40 @@ allowed-tools: [Read, Bash, Write]
 
 The concept-scaffolding skill helps educators break down complex Python concepts into manageable, progressive learning steps that respect cognitive load limitations. This skill applies evidence-based strategies from Cognitive Load Theory and scaffolding research to create effective learning progressions.
 
+## Relationship to Graduated Teaching Pattern (Constitution Principle 13)
+
+**This skill determines HOW to break down concepts; the graduated teaching pattern determines WHO delivers each piece:**
+
+**Graduated Teaching Pattern** (Constitution Principle 13) answers: "Should the book teach this, or should AI handle it?"
+- **Tier 1 (Foundational):** Book teaches stable, basic concepts
+- **Tier 2 (Complex):** AI companion handles complex syntax/execution
+- **Tier 3 (Orchestration):** AI orchestrates scaling operations
+
+**Concept Scaffolding** (this skill) answers: "How do I break this complex concept into progressive steps?"
+- Applies cognitive load theory (max 2-4 concepts per step)
+- Creates 3-7 step learning progressions
+- Builds from simple to complex
+
+**Integration in Practice:**
+
+```
+Teaching "Python Decorators" (complex concept):
+
+Step 1: Apply concept-scaffolding to identify progression
+   → Step 1: Functions as first-class objects (foundational)
+   → Step 2: Functions returning functions (foundational)
+   → Step 3: Simple decorator syntax (complex)
+   → Step 4: Decorators with arguments (complex)
+   → Step 5: Class-based decorators (complex)
+
+Step 2: Apply graduated teaching pattern to each step
+   → Steps 1-2: Book teaches directly (Tier 1 - foundational)
+   → Steps 3-5: AI companion helps with complex syntax (Tier 2)
+   → Practice: AI orchestrates applying decorators across project (Tier 3)
+```
+
+**Key Principle:** Use concept-scaffolding to break down the learning progression, then apply graduated teaching pattern to determine delivery method for each step.
+
 ## When to Activate
 
 Use this skill when:

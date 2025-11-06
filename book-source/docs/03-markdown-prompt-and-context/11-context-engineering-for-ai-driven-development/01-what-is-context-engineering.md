@@ -295,7 +295,7 @@ Here's what context engineering looks like in practice with Claude Code:
 
 ```bash
 # Session Start: Load Context
-claude-code prompt "Let me give you context about my project:
+claude prompt "Let me give you context about my project:
 
 1. I'm building a Python web API using FastAPI
 2. Here's my project structure: src/api/, src/services/, src/models/
@@ -312,7 +312,7 @@ claude-code prompt "Let me give you context about my project:
 
 ```bash
 # Your prompt (now context-aware)
-claude-code prompt "Create a new product service following our patterns"
+claude prompt "Create a new product service following our patterns"
 
 # AI Response (matches YOUR style automatically)
 # - Uses your base model
@@ -347,7 +347,7 @@ Now let's practice understanding context engineering with an AI conversation.
 ### Prompt 1: Understanding the Concept
 
 ```bash
-claude-code prompt "Explain the difference between prompt engineering and context engineering for software development. Give me a simple analogy that a non-programmer would understand."
+claude prompt "Explain the difference between prompt engineering and context engineering for software development. Give me a simple analogy that a non-programmer would understand."
 ```
 
 **Expected Outcome:**
@@ -362,7 +362,7 @@ claude-code prompt "Explain the difference between prompt engineering and contex
 ### Prompt 2: Identifying Context Problems
 
 ```bash
-claude-code prompt "Here's a scenario:
+claude prompt "Here's a scenario:
 
 I asked an AI: 'Create a login function'
 
@@ -386,7 +386,7 @@ Why?"
 ### Prompt 3: Real-World Application
 
 ```bash
-claude-code prompt "I'm starting a new software project and I want to work with an AI coding assistant. What context should I provide to the AI at the very start of my first session? Give me a checklist of information the AI would need."
+claude prompt "I'm starting a new software project and I want to work with an AI coding assistant. What context should I provide to the AI at the very start of my first session? Give me a checklist of information the AI would need."
 ```
 
 **Expected Outcome:**

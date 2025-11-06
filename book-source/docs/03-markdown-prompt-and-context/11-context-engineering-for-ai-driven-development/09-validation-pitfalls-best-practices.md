@@ -97,11 +97,11 @@ Let's learn from others' mistakes instead of making them yourself!
 
 ```bash
 # Wrong approach - loading everything at once
-claude-code prompt "Read all files in the project and tell me how everything works"
+claude prompt "Read all files in the project and tell me how everything works"
 
 # or
 
-claude-code prompt "Read:
+claude prompt "Read:
 - src/auth/authentication.py
 - src/auth/authorization.py
 - src/auth/permissions.py
@@ -155,10 +155,10 @@ Loading everything upfront is like reading the whole cookbook when you just want
 
 ```bash
 # Phase 1: Overview only
-claude-code prompt "Analyze the directory structure and tell me where authentication code is located. Don't read files yet."
+claude prompt "Analyze the directory structure and tell me where authentication code is located. Don't read files yet."
 
 # Phase 2: Specific files
-claude-code prompt "Now read just these 3 files:
+claude prompt "Now read just these 3 files:
 - src/auth/authentication.py
 - src/services/token_service.py
 - src/models/user.py
@@ -166,7 +166,7 @@ claude-code prompt "Now read just these 3 files:
 Summarize the authentication approach."
 
 # Phase 3: Deep dive on relevant parts
-claude-code prompt "I need to understand token validation. Read the validate_token method and explain it."
+claude prompt "I need to understand token validation. Read the validate_token method and explain it."
 ```
 
 **Benefits:**
@@ -187,19 +187,19 @@ claude-code prompt "I need to understand token validation. Read the validate_tok
 
 ```bash
 # Monday morning - start session
-claude-code prompt "Let's build feature A"
+claude prompt "Let's build feature A"
 # ... work for 2 hours ...
 
 # Monday afternoon - same session
-claude-code prompt "Now let's build feature B"  
+claude prompt "Now let's build feature B"  
 # ... work for 2 hours ...
 
 # Tuesday - same session continuing
-claude-code prompt "Let's add feature C"
+claude prompt "Let's add feature C"
 # ... work for 2 hours ...
 
 # Wednesday - session still going
-claude-code prompt "Why isn't this working?"
+claude prompt "Why isn't this working?"
 # AI confused, giving inconsistent answers
 ```
 
@@ -245,7 +245,7 @@ claude-code prompt "Why isn't this working?"
 
 ```bash
 # After 90 minutes working on feature A
-claude-code prompt "Create a checkpoint summary of what we've built. Include:
+claude prompt "Create a checkpoint summary of what we've built. Include:
 - Features completed
 - Decisions made
 - Code patterns established
@@ -257,7 +257,7 @@ Save as SESSION_CHECKPOINT.md"
 # [New terminal or explicit break]
 
 # Resume with checkpoint
-claude-code prompt "Read SESSION_CHECKPOINT.md. Let's continue with feature B based on what we've built."
+claude prompt "Read SESSION_CHECKPOINT.md. Let's continue with feature B based on what we've built."
 ```
 
 **Signs you should restart:**
@@ -279,11 +279,11 @@ claude-code prompt "Read SESSION_CHECKPOINT.md. Let's continue with feature B ba
 
 ```bash
 # Early in session
-claude-code prompt "We're using JWT tokens with 15-minute expiry"
+claude prompt "We're using JWT tokens with 15-minute expiry"
 # ... AI acknowledges ...
 
 # 20 messages later
-claude-code prompt "Add refresh token endpoint"
+claude prompt "Add refresh token endpoint"
 
 # AI responds with:
 "Sure! I'll use session-based authentication..."
@@ -295,7 +295,7 @@ claude-code prompt "Add refresh token endpoint"
 
 ```bash
 # You reference earlier decision
-claude-code prompt "Use the authentication pattern we discussed"
+claude prompt "Use the authentication pattern we discussed"
 
 # AI: "I don't recall discussing an authentication pattern. Could you remind me?"
 
@@ -347,21 +347,21 @@ claude-code prompt "Use the authentication pattern we discussed"
 
 ```bash
 # After making key decisions
-claude-code prompt "Create DECISIONS.md documenting:
+claude prompt "Create DECISIONS.md documenting:
 1. Authentication: JWT with 15-min access, 7-day refresh
 2. Token storage: Redis blacklist
 3. Error handling: Custom exceptions with codes
 4. [other decisions...]"
 
 # Later, when needed
-claude-code prompt "Read DECISIONS.md. Now implement refresh token endpoint following these decisions."
+claude prompt "Read DECISIONS.md. Now implement refresh token endpoint following these decisions."
 ```
 
 **Option B: Re-state critical context when needed**
 
 ```bash
 # When resuming or after long discussion
-claude-code prompt "Reminder of key decisions:
+claude prompt "Reminder of key decisions:
 - JWT authentication (not sessions)
 - 15-minute access tokens
 - Redis for token blacklist
@@ -385,7 +385,7 @@ SESSION_CHECKPOINT.md captures decisions automatically.
 
 **Day 1:**
 ```bash
-claude-code prompt "Should we use JWT or sessions?"
+claude prompt "Should we use JWT or sessions?"
 AI: "JWT is better for your use case because..."
 You: "Great, let's use JWT"
 # ... build feature ...
@@ -393,7 +393,7 @@ You: "Great, let's use JWT"
 
 **Day 7 (new session):**
 ```bash
-claude-code prompt "Add login endpoint"
+claude prompt "Add login endpoint"
 AI: "I'll use session-based authentication"
 You: "Wait... why not JWT?"
 AI: "I don't have context on previous decisions. Both are valid."
@@ -505,15 +505,15 @@ You: "Ugh, we decided this last week!"
 
 ```bash
 # Working on authentication feature
-claude-code prompt "Build JWT authentication"
+claude prompt "Build JWT authentication"
 # ... discussion about auth ...
 
 # Suddenly switch topics
-claude-code prompt "Also, help me fix this CSS bug where the button is misaligned"
+claude prompt "Also, help me fix this CSS bug where the button is misaligned"
 # ... CSS discussion ...
 
 # Then back to auth
-claude-code prompt "Now add password reset to the auth system"
+claude prompt "Now add password reset to the auth system"
 
 # AI responds mixing auth and CSS concepts
 AI: "For password reset styling, we should use JWT tokens in the CSS class names..."
@@ -566,15 +566,15 @@ AI: "For password reset styling, we should use JWT tokens in the CSS class names
 
 ```bash
 # Terminal 1: Authentication feature
-claude-code prompt "Working on authentication module. Building JWT token system."
+claude prompt "Working on authentication module. Building JWT token system."
 # ... stay focused on auth ...
 
 # Terminal 2: CSS bug
-claude-code prompt "Working on CSS styling bug. Button alignment issue on profile page."
+claude prompt "Working on CSS styling bug. Button alignment issue on profile page."
 # ... stay focused on styling ...
 
 # Terminal 3: Database optimization
-claude-code prompt "Working on database query optimization. Slow queries in analytics dashboard."
+claude prompt "Working on database query optimization. Slow queries in analytics dashboard."
 # ... stay focused on database ...
 ```
 
@@ -606,7 +606,7 @@ Run this check **before starting work** and **every 30 minutes** during work:
 
 **Check:**
 ```bash
-claude-code prompt "Estimate how much of the context window is currently in use as a percentage."
+claude prompt "Estimate how much of the context window is currently in use as a percentage."
 ```
 
 **Healthy:** 20-40%  
@@ -651,7 +651,7 @@ claude-code prompt "Estimate how much of the context window is currently in use 
 
 **Check:**
 ```bash
-claude-code prompt "What are the 3 most important decisions or patterns we've established so far in this session?"
+claude prompt "What are the 3 most important decisions or patterns we've established so far in this session?"
 ```
 
 **Healthy:** AI accurately recalls key points  
@@ -717,13 +717,13 @@ claude-code prompt "What are the 3 most important decisions or patterns we've es
 
 ```bash
 # 1. Set clear focus
-claude-code prompt "Today's task: [specific goal]. This session will focus only on this task."
+claude prompt "Today's task: [specific goal]. This session will focus only on this task."
 
 # 2. Load context progressively
-claude-code prompt "Before we start, give me high-level overview of [relevant area] without reading all files."
+claude prompt "Before we start, give me high-level overview of [relevant area] without reading all files."
 
 # 3. Validate understanding
-claude-code prompt "Based on that overview, what files should we read to understand [specific aspect]?"
+claude prompt "Based on that overview, what files should we read to understand [specific aspect]?"
 
 # 4. Set checkpoint reminder
 # (Note to self: Compress after 90 minutes or 15 interactions)
@@ -739,7 +739,7 @@ claude-code prompt "Based on that overview, what files should we read to underst
 
 ```bash
 # Create checkpoint
-claude-code prompt "Checkpoint time. Summarize:
+claude prompt "Checkpoint time. Summarize:
 - What we've built
 - Decisions made
 - Current status
@@ -751,7 +751,7 @@ Save as SESSION_CHECKPOINT_[DATE].md"
 [New terminal or break]
 
 # Resume with checkpoint
-claude-code prompt "Read SESSION_CHECKPOINT_[DATE].md. Let's continue."
+claude prompt "Read SESSION_CHECKPOINT_[DATE].md. Let's continue."
 ```
 
 **This template prevents Mistake #2.**
@@ -763,7 +763,7 @@ claude-code prompt "Read SESSION_CHECKPOINT_[DATE].md. Let's continue."
 **After making any architectural decision:**
 
 ```bash
-claude-code prompt "We just decided to use [X] instead of [Y]. Add this to DECISIONS.md:
+claude prompt "We just decided to use [X] instead of [Y]. Add this to DECISIONS.md:
 
 Decision: [X]
 Rationale: [Why?]
@@ -785,7 +785,7 @@ Practice recognizing and correcting mistakes.
 ### Prompt 1: Recognize Mistakes
 
 ```bash
-claude-code prompt "Here's how a developer started their session:
+claude prompt "Here's how a developer started their session:
 
 'Read all 47 files in my project and then help me add a small bug fix to one function.'
 
@@ -812,7 +812,7 @@ Which mistakes apply here? How should they have approached this instead?"
 ### Prompt 2: Practice Context Health Check
 
 ```bash
-claude-code prompt "I've been working in a coding session for 3 hours. I've built 4 different features. I haven't restarted the session. The AI is starting to give inconsistent answers and mixing up which feature I'm working on.
+claude prompt "I've been working in a coding session for 3 hours. I've built 4 different features. I haven't restarted the session. The AI is starting to give inconsistent answers and mixing up which feature I'm working on.
 
 Run the 5-point context health check on this scenario:
 1. Context fill level
@@ -838,7 +838,7 @@ Then tell me what actions I should take immediately."
 ### Prompt 3: Create Your Personal Context Checklist
 
 ```bash
-claude-code prompt "Based on the 5 common mistakes and the context health check, create a personalized checklist I can use every time I start a development session.
+claude prompt "Based on the 5 common mistakes and the context health check, create a personalized checklist I can use every time I start a development session.
 
 Include:
 - Pre-session setup (before I start)
@@ -1023,7 +1023,7 @@ Now you know the strategies and mistakes. But **how do you know if you're doing 
 
 ```bash
 # After task completion
-claude-code prompt "You just implemented the password reset feature.
+claude prompt "You just implemented the password reset feature.
 
 Of the files you read, which were:
 1. Essential (couldn't complete without)
@@ -1205,7 +1205,7 @@ Beyond the 5 common mistakes, here are **pitfalls specific to AI-Driven Developm
 **What it looks like:**
 ```bash
 # Session 1: Feature planning
-claude-code prompt "Read:
+claude prompt "Read:
 - ARCHITECTURE.md
 - All 30 API route files
 - All 15 service files
@@ -1220,7 +1220,7 @@ Plan the new notifications feature."
 **The fix:**
 ```bash
 # Better approach
-claude-code prompt "Read only:
+claude prompt "Read only:
 - ARCHITECTURE.md (system overview)
 - DECISIONS.md (past decisions)
 - PATTERNS.md (code patterns)
@@ -1240,13 +1240,13 @@ Based on these, plan the notifications feature architecture at a high level."
 
 **Day 1:**
 ```bash
-claude-code prompt "Implement user authentication with JWT tokens, 15-minute expiry, refresh tokens with 7-day expiry."
+claude prompt "Implement user authentication with JWT tokens, 15-minute expiry, refresh tokens with 7-day expiry."
 # AI implements it
 ```
 
 **Day 2 (new session):**
 ```bash
-claude-code prompt "Implement logout endpoint."
+claude prompt "Implement logout endpoint."
 # AI asks: "What authentication system are you using? How are tokens structured?"
 ```
 
@@ -1255,7 +1255,7 @@ claude-code prompt "Implement logout endpoint."
 **The fix:** Use memory files
 ```bash
 # Day 1: Document decision
-claude-code prompt "Create/update DECISIONS.md:
+claude prompt "Create/update DECISIONS.md:
 
 ## Decision: JWT Authentication
 - Access tokens: 15-minute expiry
@@ -1263,7 +1263,7 @@ claude-code prompt "Create/update DECISIONS.md:
 - Storage: Redis for revocation support"
 
 # Day 2: Load decisions
-claude-code prompt "Read DECISIONS.md, then implement logout endpoint following those token decisions."
+claude prompt "Read DECISIONS.md, then implement logout endpoint following those token decisions."
 ```
 
 ---
@@ -1274,7 +1274,7 @@ claude-code prompt "Read DECISIONS.md, then implement logout endpoint following 
 
 ```bash
 # Single session trying to do everything
-claude-code prompt "Read the entire codebase.
+claude prompt "Read the entire codebase.
 
 Now:
 1. Design new payment system architecture
@@ -1293,13 +1293,13 @@ Now:
 **The fix:** Context isolation
 ```bash
 # Session 1: Backend architecture (isolated context)
-claude-code prompt "Read only backend docs. Design payment system architecture."
+claude prompt "Read only backend docs. Design payment system architecture."
 
 # Session 2: Backend implementation (isolated context)
-claude-code prompt "Read backend architecture + backend patterns. Implement PaymentService."
+claude prompt "Read backend architecture + backend patterns. Implement PaymentService."
 
 # Session 3: Testing (isolated context)
-claude-code prompt "Read PaymentService implementation + test patterns. Create tests."
+claude prompt "Read PaymentService implementation + test patterns. Create tests."
 
 # Session 4: Frontend (completely separate context)
 gemini chat --session frontend "Read frontend docs + API contracts. Design payment UI components."
@@ -1320,7 +1320,7 @@ Feature implementation drifts from original architecture over time because decis
 **The fix:** PATTERNS.md + regular consistency checks
 ```bash
 # At start of project
-claude-code prompt "Create PATTERNS.md documenting:
+claude prompt "Create PATTERNS.md documenting:
 - Service Layer pattern (with example)
 - Repository pattern (with example)
 - Dependency injection approach"
@@ -1340,13 +1340,13 @@ List any that don't and suggest fixes."
 
 ```bash
 # Continually adding files without removing
-claude-code prompt "Also read src/payments/gateway.py"
+claude prompt "Also read src/payments/gateway.py"
 # Later
-claude-code prompt "Also read src/payments/processor.py"
+claude prompt "Also read src/payments/processor.py"
 # Later
-claude-code prompt "Also read src/payments/webhook.py"
+claude prompt "Also read src/payments/webhook.py"
 # Later (context window 95% full)
-claude-code prompt "Implement refund handling"
+claude prompt "Implement refund handling"
 # AI response is generic and low-quality
 ```
 
@@ -1355,7 +1355,7 @@ claude-code prompt "Implement refund handling"
 **The fix:** Context budget management
 ```bash
 # Before adding files, check budget
-claude-code prompt "Before we continue, context health check:
+claude prompt "Before we continue, context health check:
 1. Current context usage estimate?
 2. Which files in context are still relevant for upcoming tasks?
 3. Which files can we drop to make room?
@@ -1389,7 +1389,7 @@ Use this checklist for every AI development session.
 
 **Example Start:**
 ```bash
-claude-code prompt "Read in this order:
+claude prompt "Read in this order:
 1. DECISIONS.md (past decisions)
 2. PATTERNS.md (code patterns to follow)
 3. src/services/user_service.py (example service)
@@ -1409,7 +1409,7 @@ Don't read other files yet. After reading, confirm you understand the patterns, 
 
 **Example Health Check:**
 ```bash
-claude-code prompt "Context health check:
+claude prompt "Context health check:
 1. Response speed: Fast or slow?
 2. Relevant files: Which loaded files are you actually using?
 3. Missing context: Any files you wish you had but don't?
@@ -1429,7 +1429,7 @@ claude-code prompt "Context health check:
 
 **Example Checkpoint:**
 ```bash
-claude-code prompt "We just completed user authentication feature.
+claude prompt "We just completed user authentication feature.
 
 Update memory files:
 1. DECISIONS.md: Add JWT token decision (15-min expiry, refresh tokens)
@@ -1449,7 +1449,7 @@ Update memory files:
 
 **Example Cleanup:**
 ```bash
-claude-code prompt "Session ending. Prepare for next session:
+claude prompt "Session ending. Prepare for next session:
 
 1. Update DECISIONS.md with all architecture choices made today
 2. Update TODO.md with:
@@ -1476,7 +1476,7 @@ Let's walk through building a complete Blog API over 6 sessions using ALL contex
 
 ```bash
 # Minimal context - just architecture
-claude-code prompt "New project: Blog API with these features:
+claude prompt "New project: Blog API with these features:
 - User authentication (JWT)
 - Create/read/update/delete blog posts
 - Comments on posts
@@ -1505,7 +1505,7 @@ Output as ARCHITECTURE.md and create initial project files."
 
 **Checkpoint:**
 ```bash
-claude-code prompt "Create NEXT_SESSION.md:
+claude prompt "Create NEXT_SESSION.md:
 
 ## Session 1 Summary
 **Completed:** Architecture design, project setup
@@ -1528,7 +1528,7 @@ claude-code prompt "Create NEXT_SESSION.md:
 
 ```bash
 # Progressive loading
-claude-code prompt "Read:
+claude prompt "Read:
 - ARCHITECTURE.md (architecture decisions)
 
 Create PATTERNS.md documenting:
@@ -1539,7 +1539,7 @@ Create PATTERNS.md documenting:
 Show examples for each pattern."
 
 # After PATTERNS.md created
-claude-code prompt "Now implement User Authentication following PATTERNS.md:
+claude prompt "Now implement User Authentication following PATTERNS.md:
 
 Create:
 - src/models/user.py (User model)
@@ -1564,7 +1564,7 @@ Follow patterns exactly as documented in PATTERNS.md."
 
 **Checkpoint:**
 ```bash
-claude-code prompt "Session 2 complete. Update:
+claude prompt "Session 2 complete. Update:
 
 ## DECISIONS.md (create):
 **JWT Authentication**
@@ -1593,7 +1593,7 @@ claude-code prompt "Session 2 complete. Update:
 
 ```bash
 # Load architecture + one example
-claude-code prompt "Read:
+claude prompt "Read:
 - ARCHITECTURE.md
 - PATTERNS.md
 - DECISIONS.md
@@ -1617,7 +1617,7 @@ Follow auth_service pattern exactly - same dependency injection, same error hand
 
 **Checkpoint:**
 ```bash
-claude-code prompt "Update TODO.md:
+claude prompt "Update TODO.md:
 - [x] Session 3: Blog posts CRUD
 
 Create consistency check before continuing:
@@ -1638,7 +1638,7 @@ List any differences that shouldn't exist."
 
 ```bash
 # More context needed for complex feature
-claude-code prompt "Read:
+claude prompt "Read:
 - ARCHITECTURE.md (for comments design)
 - PATTERNS.md (service patterns)
 - src/models/post.py (to understand post relationship)
@@ -1665,7 +1665,7 @@ Challenges to handle:
 
 **Checkpoint:**
 ```bash
-claude-code prompt "Comments were complex. Document learnings:
+claude prompt "Comments were complex. Document learnings:
 
 ## GOTCHAS.md (create):
 **Issue:** Nested Comments Query Performance
@@ -1683,7 +1683,7 @@ Update TODO.md:
 
 ```bash
 # Simpler feature after complex one
-claude-code prompt "Read:
+claude prompt "Read:
 - PATTERNS.md (service pattern)
 - src/models/post.py (to add tags relationship)
 - src/services/post_service.py (to add tag operations)
@@ -1703,7 +1703,7 @@ Implement Tags feature:
 
 **Checkpoint:**
 ```bash
-claude-code prompt "Update TODO.md:
+claude prompt "Update TODO.md:
 - [x] Session 5: Tags feature
 - [ ] Session 6: Integration testing + documentation
 
@@ -1729,7 +1729,7 @@ Create comprehensive integration test suite:
 Output: tests/integration/test_full_workflow.py"
 
 # Then documentation with Claude
-claude-code prompt "Read:
+claude prompt "Read:
 - ARCHITECTURE.md
 - All API routes (src/api/routes/*.py)
 - All schemas (src/schemas/*.py)
@@ -1747,7 +1747,7 @@ Generate:
 
 **Final session summary:**
 ```bash
-claude-code prompt "Project complete! Create PROJECT_SUMMARY.md:
+claude prompt "Project complete! Create PROJECT_SUMMARY.md:
 
 ## Blog API - Project Complete
 
@@ -1789,7 +1789,7 @@ Apply context engineering to these exercises.
 
 ```bash
 # With Claude Code
-claude-code prompt "I have a debugging task: Users report login fails after 3 attempts.
+claude prompt "I have a debugging task: Users report login fails after 3 attempts.
 
 I want to load these files:
 - src/api/routes/auth.py (login endpoint)
@@ -1848,7 +1848,7 @@ Output all four files with realistic content."
 
 ```bash
 # With Claude Code
-claude-code prompt "Simulation: I worked on a notification system yesterday (Session 1).
+claude prompt "Simulation: I worked on a notification system yesterday (Session 1).
 
 Session 1 summary:
 - Implemented email notifications (src/services/notification_service.py)
@@ -1873,7 +1873,7 @@ Design the handoff:
 
 ```bash
 # With Claude Code
-claude-code prompt "I have a context-heavy session with 25 files loaded:
+claude prompt "I have a context-heavy session with 25 files loaded:
 
 Essential files (still need):
 - src/services/payment_service.py

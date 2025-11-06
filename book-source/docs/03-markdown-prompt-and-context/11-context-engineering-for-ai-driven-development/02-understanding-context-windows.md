@@ -394,7 +394,7 @@ Let's practice recognizing context concepts.
 ### Prompt 1: Understanding the Concept
 
 ```bash
-claude-code prompt "If I'm working with an AI coding agent and after an hour it starts giving me inconsistent answers and seems to forget things I told it earlier, what's probably happening? Explain using a simple analogy a non-programmer would understand."
+claude prompt "If I'm working with an AI coding agent and after an hour it starts giving me inconsistent answers and seems to forget things I told it earlier, what's probably happening? Explain using a simple analogy a non-programmer would understand."
 ```
 
 **Expected Outcome:**
@@ -409,7 +409,7 @@ claude-code prompt "If I'm working with an AI coding agent and after an hour it 
 ### Prompt 2: Recognizing the Signs
 
 ```bash
-claude-code prompt "I'm working with Claude Code on a project. Here are some things I'm noticing:
+claude prompt "I'm working with Claude Code on a project. Here are some things I'm noticing:
 
 1. I asked it to use FastAPI, and it keeps suggesting Flask
 2. It's taking longer and longer to respond
@@ -431,7 +431,7 @@ What's happening? Is this context rot?"
 ### Prompt 3: Planning Ahead
 
 ```bash
-claude-code prompt "I'm about to start a coding session with an AI assistant. I want to load context about my project. 
+claude prompt "I'm about to start a coding session with an AI assistant. I want to load context about my project. 
 
 I have:
 - README.md (2 pages)

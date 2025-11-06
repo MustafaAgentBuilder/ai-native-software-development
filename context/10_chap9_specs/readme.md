@@ -126,10 +126,10 @@ Time constraint: Need working prototype by Friday
 **1. Use the File System Effectively**
 ```bash
 # Claude Code can read your entire project structure
-claude-code prompt "Analyze the project structure and suggest improvements to the auth module"
+claude prompt "Analyze the project structure and suggest improvements to the auth module"
 
 # Explicitly reference files
-claude-code prompt "Look at src/auth/services.py and src/auth/models.py, then refactor the password hashing logic"
+claude prompt "Look at src/auth/services.py and src/auth/models.py, then refactor the password hashing logic"
 ```
 
 **2. Provide Code Snippets in Context**
@@ -801,17 +801,17 @@ Claude Code has unique capabilities that require specific prompting strategies.
 
 ```bash
 # Let Claude Code explore your project first
-claude-code prompt "Analyze this project structure and give me a high-level overview of the architecture, main modules, and key patterns used."
+claude prompt "Analyze this project structure and give me a high-level overview of the architecture, main modules, and key patterns used."
 
 # Then ask for specific work
-claude-code prompt "Now that you understand the project, implement a new auth middleware following the existing patterns you identified."
+claude prompt "Now that you understand the project, implement a new auth middleware following the existing patterns you identified."
 ```
 
 ### 2. Multi-File Operations
 
 ```bash
 # Claude Code can work across multiple files
-claude-code prompt "Refactor the user authentication across these files:
+claude prompt "Refactor the user authentication across these files:
 - src/auth/service.py
 - src/auth/models.py  
 - src/api/routes/auth.py
@@ -824,27 +824,27 @@ Ensure consistency across all files and update tests accordingly."
 
 ```bash
 # Start broad
-claude-code prompt "I need to add a REST API for managing products. Ask me questions about requirements."
+claude prompt "I need to add a REST API for managing products. Ask me questions about requirements."
 
 # After answering questions
-claude-code prompt "Good questions. Here are my answers: [detailed answers]
+claude prompt "Good questions. Here are my answers: [detailed answers]
 Now create the implementation."
 
 # Review and iterate
-claude-code prompt "The implementation looks good, but the error handling needs improvement. Make it more robust."
+claude prompt "The implementation looks good, but the error handling needs improvement. Make it more robust."
 
 # Add tests
-claude-code prompt "Now generate comprehensive pytest tests for the product API you just created."
+claude prompt "Now generate comprehensive pytest tests for the product API you just created."
 ```
 
 ### 4. Using MCP Tools
 
 ```bash
 # Claude Code can use Model Context Protocol tools
-claude-code prompt "Search my project for all database queries that might have N+1 problems. Use the codebase search tool to find patterns like 'for item in items: db.query(...)'"
+claude prompt "Search my project for all database queries that might have N+1 problems. Use the codebase search tool to find patterns like 'for item in items: db.query(...)'"
 
 # File operations
-claude-code prompt "Read all files in src/models/ and create a comprehensive data model diagram in Mermaid format."
+claude prompt "Read all files in src/models/ and create a comprehensive data model diagram in Mermaid format."
 ```
 
 ## Gemini CLI Specific Prompting Techniques
@@ -921,22 +921,22 @@ Break complex development tasks into a chain of prompts:
 
 ```bash
 # Step 1: Architecture
-claude-code prompt "Design a caching strategy for our API. Ask me questions about usage patterns and requirements."
+claude prompt "Design a caching strategy for our API. Ask me questions about usage patterns and requirements."
 
 # Step 2: Implementation Plan
-claude-code prompt "Based on the caching strategy, create a detailed implementation plan with file structure and key classes."
+claude prompt "Based on the caching strategy, create a detailed implementation plan with file structure and key classes."
 
 # Step 3: Core Implementation
-claude-code prompt "Implement the cache manager class according to the plan."
+claude prompt "Implement the cache manager class according to the plan."
 
 # Step 4: Integration
-claude-code prompt "Integrate the cache manager into the existing API routes."
+claude prompt "Integrate the cache manager into the existing API routes."
 
 # Step 5: Testing
-claude-code prompt "Generate comprehensive tests for the caching system."
+claude prompt "Generate comprehensive tests for the caching system."
 
 # Step 6: Documentation
-claude-code prompt "Create documentation for the caching system including architecture diagrams and usage examples."
+claude prompt "Create documentation for the caching system including architecture diagrams and usage examples."
 ```
 
 ### 2. Test-Driven Prompting
@@ -945,7 +945,7 @@ Let AI help you follow TDD:
 
 ```bash
 # Step 1: Write test cases first
-claude-code prompt "I need to implement a user authentication service. First, generate comprehensive pytest test cases that define the expected behavior, including:
+claude prompt "I need to implement a user authentication service. First, generate comprehensive pytest test cases that define the expected behavior, including:
 - Registration tests
 - Login tests  
 - Token validation tests
@@ -953,10 +953,10 @@ claude-code prompt "I need to implement a user authentication service. First, ge
 Don't implement the service yet, just the tests."
 
 # Step 2: Implement to pass tests
-claude-code prompt "Now implement the UserAuthService class that will make all these tests pass."
+claude prompt "Now implement the UserAuthService class that will make all these tests pass."
 
 # Step 3: Refine
-claude-code prompt "All tests pass. Now refactor the implementation for better maintainability while keeping tests green."
+claude prompt "All tests pass. Now refactor the implementation for better maintainability while keeping tests green."
 ```
 
 ### 3. Progressive Enhancement Prompting
@@ -986,15 +986,15 @@ When AI generates incorrect code:
 
 ```bash
 # Initial attempt
-claude-code prompt "Implement JWT token validation middleware for FastAPI."
+claude prompt "Implement JWT token validation middleware for FastAPI."
 
 # If the generated code has issues
-claude-code prompt "The middleware you generated has a bug: it's not properly handling expired tokens. Here's the error I'm getting: [paste error]
+claude prompt "The middleware you generated has a bug: it's not properly handling expired tokens. Here's the error I'm getting: [paste error]
 
 Fix the token validation logic to properly catch and handle JWT expired exceptions."
 
 # Provide more context if still problematic
-claude-code prompt "Still having issues. Here's my complete error traceback: [paste traceback]
+claude prompt "Still having issues. Here's my complete error traceback: [paste traceback]
 
 And here's how I'm calling the middleware: [paste usage code]
 
@@ -1006,7 +1006,7 @@ Debug and fix the middleware implementation."
 Use AI as a code reviewer:
 
 ```bash
-claude-code prompt "Review this code I wrote and provide a detailed critique:
+claude prompt "Review this code I wrote and provide a detailed critique:
 
 [paste code]
 
@@ -1114,10 +1114,10 @@ Provide optimized code with explanation of improvements and estimated performanc
 **Good Practice:**
 ```
 # First generation
-claude-code prompt "Implement user authentication service"
+claude prompt "Implement user authentication service"
 
 # Review and refine
-claude-code prompt "The implementation looks good but needs improvements:
+claude prompt "The implementation looks good but needs improvements:
 1. Add rate limiting to prevent brute force attacks
 2. Implement account lockout after 5 failed attempts  
 3. Add logging for security events
@@ -1125,7 +1125,7 @@ claude-code prompt "The implementation looks good but needs improvements:
 Update the implementation."
 
 # Validate and test
-claude-code prompt "Generate integration tests that verify:
+claude prompt "Generate integration tests that verify:
 1. Rate limiting works correctly
 2. Account lockout triggers appropriately
 3. Security events are logged
