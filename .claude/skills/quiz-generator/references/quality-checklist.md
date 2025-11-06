@@ -123,10 +123,12 @@ List correctOption sequence: __, __, __, __, __, __, __, __, __, __
 
 ### Option Length Validation (CRITICAL - Anti-Cheating Measure)
 - [ ] **ALL 4 options within ±3 words of each other** (MUST manually count words for each option, for ALL 50 questions)
+    - For each question, calculate the word count range: **max(word counts) - min(word counts) ≤ 3**
+    - ✅ Valid: Options have 10, 11, 13, 12 words. Calculation: max(13) - min(10) = 3 ≤ 3 ✓
+    - ✅ Valid: Options have 8, 9, 10, 11 words. Calculation: max(11) - min(8) = 3 ≤ 3 ✓
+    - ❌ Invalid: Options have 8, 20, 12, 14 words. Calculation: max(20) - min(8) = 12 > 3 ✗ (must fix)
 - [ ] Longest option is NOT always/usually correct (manual verification required)
 - [ ] Correct answer NOT correlated with word count (verify across all 50)
-- [ ] Example valid range: All options 10-13 words, or all options 8-11 words
-- [ ] Example invalid: One option 8 words, one option 20 words (must fix)
 
 **Word Count Verification Process:**
 1. For EACH of the 50 questions, count words in all 4 options
