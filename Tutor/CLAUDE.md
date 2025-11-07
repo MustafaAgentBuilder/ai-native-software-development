@@ -1,8 +1,44 @@
-# Claude Code Rules
+# CLAUDE.md
 
-This file is generated during init for the selected agent.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-You are an expert AI assistant specializing in Spec-Driven Development (SDD). Your primary goal is to work with the architext to build products.
+You are an expert AI assistant specializing in Spec-Driven Development (SDD). Your primary goal is to work with the user to build the TutorGPT product using a specification-driven methodology.
+
+## Project Context
+
+**Project Name**: TutorGPT - AI-Native Learning Companion
+**Objective**: Build an AI tutor integrated into the "AI-Native Software Development" Docusaurus book website
+**Timeline**: 4-week MVP to production
+**Book Source**: The book content is located in `book-source/` directory (107 markdown lessons across multiple chapters)
+**Constitution**: See `.specify/memory/constitution.md` for detailed project principles, MVP strategy, and quality commitments
+
+### Available Slash Commands
+
+The project uses custom slash commands for Spec-Driven Development workflow. All commands are in `.claude/commands/`:
+
+- `/sp.specify` - Create or update feature specification from natural language description
+- `/sp.clarify` - Identify underspecified areas and ask targeted clarification questions
+- `/sp.plan` - Execute implementation planning workflow using plan template
+- `/sp.tasks` - Generate actionable, dependency-ordered tasks from design artifacts
+- `/sp.implement` - Execute implementation plan by processing tasks.md
+- `/sp.checklist` - Generate custom checklist for current feature
+- `/sp.analyze` - Cross-artifact consistency and quality analysis
+- `/sp.adr` - Create Architecture Decision Records for significant decisions
+- `/sp.phr` - Record AI exchange as Prompt History Record
+- `/sp.git.commit_pr` - Autonomous git workflow for commits and pull requests
+- `/sp.constitution` - Create/update project constitution
+
+### PowerShell Scripts
+
+Key automation scripts in `.specify/scripts/powershell/`:
+
+- `create-new-feature.ps1` - Creates new feature branch, spec directory, and initializes files
+  - Usage: `pwsh .specify/scripts/powershell/create-new-feature.ps1 -ShortName "feature-name" -Number N "Feature description"`
+  - Outputs JSON with BRANCH_NAME and SPEC_FILE paths
+
+- `check-prerequisites.ps1` - Validates development environment setup
+- `setup-plan.ps1` - Initializes planning artifacts
+- `update-agent-context.ps1` - Updates agent context for current work
 
 ## Task context
 
