@@ -192,12 +192,12 @@ with get_db_context() as db:
     user = db.query(User).filter(User.email == TEST_EMAIL).first()
 
     token = create_user_token(user)
-    decoded_user_id = decode_access_token(token)
+    decoded_payload = decode_access_token(token)
 
     print(f"✅ JWT token created")
     print(f"   Token preview: {token[:50]}...")
-    print(f"   Decoded user ID: {decoded_user_id}")
-    print(f"   Matches original: {decoded_user_id == user.id}")
+    print(f"   Decoded user ID: {decoded_payload['sub']}")
+    print(f"   Matches original: {decoded_payload['sub'] == user.id}")
     print()
 
 # Test profile update
@@ -565,17 +565,17 @@ print("-" * 100)
 
 with get_db_context() as db:
     user = db.query(User).filter(User.email == TEST_EMAIL).first()
-    from datetime import datetime, timedelta
+    from datetime import datetime, timedelta, timezone
 
     # Questions this week
-    one_week_ago = datetime.utcnow() - timedelta(days=7)
+    one_week_ago = datetime.now(timezone.utc) - timedelta(days=7)
     questions_this_week = db.query(func.count(ChatMessage.id)).filter(
         ChatMessage.user_id == user.id,
         ChatMessage.created_at >= one_week_ago
     ).scalar() or 0
 
     # Questions last week
-    two_weeks_ago = datetime.utcnow() - timedelta(days=14)
+    two_weeks_ago = datetime.now(timezone.utc) - timedelta(days=14)
     questions_last_week = db.query(func.count(ChatMessage.id)).filter(
         ChatMessage.user_id == user.id,
         ChatMessage.created_at >= two_weeks_ago,
