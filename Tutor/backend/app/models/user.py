@@ -36,8 +36,10 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    # Relationship to student profile
+    # Relationships
     profile = relationship("StudentProfile", back_populates="user", uselist=False)
+    chat_sessions = relationship("ChatSession", back_populates="user", cascade="all, delete-orphan")
+    chat_messages = relationship("ChatMessage", back_populates="user", cascade="all, delete-orphan")
 
     def __repr__(self):
         return f"<User(id={self.id}, email={self.email}, name={self.name})>"
@@ -108,8 +110,49 @@ class ChatSession(Base):
     last_message_at = Column(DateTime, default=datetime.utcnow)
     ended_at = Column(DateTime, nullable=True)
 
-    # Relationship to user
-    user = relationship("User")
+    # Relationships
+    user = relationship("User", back_populates="chat_sessions")
+    messages = relationship("ChatMessage", back_populates="session", cascade="all, delete-orphan", order_by="ChatMessage.created_at")
 
     def __repr__(self):
-        return f"<ChatSession(id={self.id}, user_id={self.user_id})>"
+        return f"<ChatSession(id={self.id}, user_id={self.user_id}, messages={self.message_count})>"
+
+
+class ChatMessage(Base):
+    """
+    Chat message model for conversation history.
+
+    Stores individual messages and responses in conversations.
+    """
+    __tablename__ = "chat_messages"
+
+    id = Column(String, primary_key=True, default=generate_uuid)
+    session_id = Column(String, ForeignKey("chat_sessions.id"), nullable=False, index=True)
+    user_id = Column(String, ForeignKey("users.id"), nullable=False, index=True)
+
+    # Message content
+    user_message = Column(Text, nullable=False)  # Student's question
+    agent_response = Column(Text, nullable=False)  # Agent's answer
+
+    # Context at time of message
+    chapter_context = Column(String, nullable=True)
+    lesson_context = Column(String, nullable=True)
+
+    # Metadata
+    response_time_ms = Column(Integer, nullable=True)  # How long agent took to respond
+    tools_used = Column(JSON, default=list)  # Which tools the agent used (e.g., ["search_book_content"])
+    rag_results_count = Column(Integer, default=0)  # How many RAG results were found
+
+    # Feedback (optional - for future)
+    helpful = Column(Boolean, nullable=True)  # Was this response helpful?
+    feedback_text = Column(Text, nullable=True)
+
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow, index=True)
+
+    # Relationships
+    user = relationship("User", back_populates="chat_messages")
+    session = relationship("ChatSession", back_populates="messages")
+
+    def __repr__(self):
+        return f"<ChatMessage(id={self.id}, session_id={self.session_id}, user_message='{self.user_message[:50]}...')>"

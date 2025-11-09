@@ -11,14 +11,16 @@ from app.api.rag import router as rag_router
 from app.api.auth import router as auth_router
 from app.api.profile import router as profile_router
 from app.api.chat import router as chat_router
+from app.api.websocket import router as ws_router
+from app.api.analytics import router as analytics_router
 from app.database import init_db
 
 
 # Create FastAPI app
 app = FastAPI(
     title="TutorGPT API",
-    description="AI-Native Software Development Tutor with RAG and User Authentication",
-    version="0.2.0"
+    description="AI-Native Software Development Tutor with RAG, Auth, Real-time Chat, and Analytics",
+    version="0.3.0"
 )
 
 
@@ -41,6 +43,8 @@ app.add_middleware(
 app.include_router(auth_router)
 app.include_router(profile_router)
 app.include_router(chat_router)
+app.include_router(ws_router)  # WebSocket real-time chat
+app.include_router(analytics_router)  # Analytics & recommendations
 app.include_router(rag_router)  # Optional - for advanced use
 
 
@@ -49,19 +53,42 @@ async def root():
     """Root endpoint."""
     return {
         "name": "TutorGPT API",
-        "version": "0.2.0",
-        "description": "AI-Native Software Development Tutor with RAG and User Authentication",
+        "version": "0.3.0",
+        "description": "AI-Native Software Development Tutor - Fully Featured Backend",
+        "features": {
+            "authentication": "JWT-based auth with bcrypt",
+            "personalization": "Adaptive learning based on student profile",
+            "chat": "Real-time WebSocket + HTTP chat with agent",
+            "history": "Complete conversation history storage",
+            "analytics": "Progress tracking and recommendations",
+            "rag": "2,026 chunks from AI-Native book"
+        },
         "endpoints": {
-            "auth_signup": "/api/auth/signup",
-            "auth_login": "/api/auth/login",
-            "auth_me": "/api/auth/me",
-            "profile_get": "/api/profile",
-            "profile_update": "/api/profile",
-            "chat_message": "/api/chat/message",
-            "chat_greeting": "/api/chat/greeting",
-            "chat_status": "/api/chat/status",
-            "rag_search": "/api/rag/search (optional - advanced)",
-            "docs": "/docs"
+            "Authentication": {
+                "signup": "POST /api/auth/signup",
+                "login": "POST /api/auth/login",
+                "me": "GET /api/auth/me"
+            },
+            "Profile": {
+                "get": "GET /api/profile",
+                "update": "PUT /api/profile",
+                "complete": "POST /api/profile/complete"
+            },
+            "Chat": {
+                "message": "POST /api/chat/message",
+                "greeting": "GET /api/chat/greeting",
+                "status": "GET /api/chat/status",
+                "sessions": "GET /api/chat/sessions",
+                "history": "GET /api/chat/history",
+                "websocket": "WS /api/ws/chat?token=<jwt>"
+            },
+            "Analytics": {
+                "progress": "GET /api/analytics/progress",
+                "topics": "GET /api/analytics/topics",
+                "performance": "GET /api/analytics/performance",
+                "recommendations": "GET /api/analytics/recommendations"
+            },
+            "Documentation": "/docs"
         }
     }
 

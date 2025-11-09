@@ -12,12 +12,13 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from datetime import datetime
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, List
 
 from app.database import get_db_session
-from app.models.user import User, StudentProfile
+from app.models.user import User, StudentProfile, ChatSession, ChatMessage
 from app.api.dependencies import get_current_user
 from app.agent.tutor_agent import create_tutor_agent
+import time
 
 router = APIRouter(prefix="/api/chat", tags=["chat"])
 
@@ -102,20 +103,67 @@ async def send_message(
         difficulty_topics=profile.difficulty_topics or []
     )
 
-    # Generate session ID if not provided
-    session_id = request.session_id or f"{user.id}_session_{datetime.utcnow().timestamp()}"
+    # Get or create session
+    session_id = request.session_id
+    if not session_id:
+        # Create new session
+        session_id = f"session_{user.id}_{int(datetime.utcnow().timestamp())}"
+        chat_session = ChatSession(
+            id=session_id,
+            user_id=user.id,
+            chapter_context=chapter,
+            lesson_context=lesson,
+            message_count=0
+        )
+        db.add(chat_session)
+    else:
+        # Get existing session
+        chat_session = db.query(ChatSession).filter(
+            ChatSession.id == session_id
+        ).first()
 
-    # Get response from agent
+        if not chat_session:
+            # Session not found, create it
+            chat_session = ChatSession(
+                id=session_id,
+                user_id=user.id,
+                chapter_context=chapter,
+                lesson_context=lesson,
+                message_count=0
+            )
+            db.add(chat_session)
+
+    # Get response from agent (measure time)
+    start_time = time.time()
     try:
         agent_response = await agent.teach(
             student_message=request.message,
             session_id=session_id
         )
+        response_time_ms = int((time.time() - start_time) * 1000)
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Agent error: {str(e)}"
         )
+
+    # Save message to database
+    chat_message = ChatMessage(
+        session_id=session_id,
+        user_id=user.id,
+        user_message=request.message,
+        agent_response=agent_response,
+        chapter_context=chapter,
+        lesson_context=lesson,
+        response_time_ms=response_time_ms,
+        tools_used=[],  # TODO: Track which tools agent used
+        rag_results_count=0  # TODO: Track RAG results
+    )
+    db.add(chat_message)
+
+    # Update session metadata
+    chat_session.message_count = (chat_session.message_count or 0) + 1
+    chat_session.last_message_at = datetime.utcnow()
 
     # Update student stats
     profile.total_questions_asked = (profile.total_questions_asked or 0) + 1
@@ -131,8 +179,10 @@ async def send_message(
         db.commit()
     except Exception as e:
         db.rollback()
-        # Don't fail the request if stats update fails
-        print(f"Warning: Failed to update profile stats: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to save conversation: {str(e)}"
+        )
 
     return ChatResponse(
         response=agent_response,
@@ -239,3 +289,238 @@ async def get_chat_status(
         "difficulty_topics": profile.difficulty_topics or [],
         "last_active_at": profile.last_active_at
     }
+
+# ============================================================================
+# Chat History Endpoints
+# ============================================================================
+
+from typing import List
+
+class MessageResponse(BaseModel):
+    """Single message in conversation history."""
+    id: str
+    user_message: str
+    agent_response: str
+    chapter_context: Optional[str]
+    lesson_context: Optional[str]
+    response_time_ms: Optional[int]
+    helpful: Optional[bool]
+    created_at: datetime
+
+    model_config = {
+        "from_attributes": True
+    }
+
+
+class SessionResponse(BaseModel):
+    """Chat session summary."""
+    id: str
+    chapter_context: Optional[str]
+    lesson_context: Optional[str]
+    message_count: int
+    started_at: datetime
+    last_message_at: datetime
+
+    model_config = {
+        "from_attributes": True
+    }
+
+
+@router.get("/sessions", response_model=List[SessionResponse])
+async def get_chat_sessions(
+    db: Session = Depends(get_db_session),
+    user: User = Depends(get_current_user),
+    limit: int = 20,
+    offset: int = 0
+):
+    """
+    Get all chat sessions for the current user.
+
+    Args:
+        db: Database session
+        user: Current authenticated user
+        limit: Maximum number of sessions to return
+        offset: Number of sessions to skip
+
+    Returns:
+        List of chat sessions
+    """
+    sessions = db.query(ChatSession).filter(
+        ChatSession.user_id == user.id
+    ).order_by(
+        ChatSession.last_message_at.desc()
+    ).limit(limit).offset(offset).all()
+
+    return sessions
+
+
+@router.get("/sessions/{session_id}/messages", response_model=List[MessageResponse])
+async def get_session_messages(
+    session_id: str,
+    db: Session = Depends(get_db_session),
+    user: User = Depends(get_current_user)
+):
+    """
+    Get all messages in a specific chat session.
+
+    Args:
+        session_id: Chat session ID
+        db: Database session
+        user: Current authenticated user
+
+    Returns:
+        List of messages in the session
+
+    Raises:
+        HTTPException 403: If session doesn't belong to user
+        HTTPException 404: If session not found
+    """
+    # Verify session belongs to user
+    session = db.query(ChatSession).filter(
+        ChatSession.id == session_id,
+        ChatSession.user_id == user.id
+    ).first()
+
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Chat session not found"
+        )
+
+    # Get all messages
+    messages = db.query(ChatMessage).filter(
+        ChatMessage.session_id == session_id
+    ).order_by(
+        ChatMessage.created_at.asc()
+    ).all()
+
+    return messages
+
+
+@router.get("/history", response_model=List[MessageResponse])
+async def get_all_chat_history(
+    db: Session = Depends(get_db_session),
+    user: User = Depends(get_current_user),
+    limit: int = 50,
+    offset: int = 0
+):
+    """
+    Get recent chat history across all sessions.
+
+    Args:
+        db: Database session
+        user: Current authenticated user
+        limit: Maximum number of messages to return
+        offset: Number of messages to skip
+
+    Returns:
+        List of recent messages
+    """
+    messages = db.query(ChatMessage).filter(
+        ChatMessage.user_id == user.id
+    ).order_by(
+        ChatMessage.created_at.desc()
+    ).limit(limit).offset(offset).all()
+
+    return messages
+
+
+@router.delete("/sessions/{session_id}")
+async def delete_chat_session(
+    session_id: str,
+    db: Session = Depends(get_db_session),
+    user: User = Depends(get_current_user)
+):
+    """
+    Delete a chat session and all its messages.
+
+    Args:
+        session_id: Chat session ID
+        db: Database session
+        user: Current authenticated user
+
+    Returns:
+        Success message
+
+    Raises:
+        HTTPException 403: If session doesn't belong to user
+        HTTPException 404: If session not found
+    """
+    # Verify session belongs to user
+    session = db.query(ChatSession).filter(
+        ChatSession.id == session_id,
+        ChatSession.user_id == user.id
+    ).first()
+
+    if not session:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Chat session not found"
+        )
+
+    # Delete session (cascade will delete messages)
+    db.delete(session)
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete session: {str(e)}"
+        )
+
+    return {"message": "Chat session deleted successfully"}
+
+
+@router.post("/messages/{message_id}/feedback")
+async def submit_message_feedback(
+    message_id: str,
+    helpful: bool,
+    feedback_text: Optional[str] = None,
+    db: Session = Depends(get_db_session),
+    user: User = Depends(get_current_user)
+):
+    """
+    Submit feedback for a specific message.
+
+    Args:
+        message_id: Message ID
+        helpful: Was this response helpful?
+        feedback_text: Optional feedback text
+        db: Database session
+        user: Current authenticated user
+
+    Returns:
+        Success message
+
+    Raises:
+        HTTPException 403: If message doesn't belong to user
+        HTTPException 404: If message not found
+    """
+    # Verify message belongs to user
+    message = db.query(ChatMessage).filter(
+        ChatMessage.id == message_id,
+        ChatMessage.user_id == user.id
+    ).first()
+
+    if not message:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Message not found"
+        )
+
+    # Update feedback
+    message.helpful = helpful
+    if feedback_text:
+        message.feedback_text = feedback_text
+
+    try:
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to submit feedback: {str(e)}"
+        )
+
+    return {"message": "Feedback submitted successfully"}
