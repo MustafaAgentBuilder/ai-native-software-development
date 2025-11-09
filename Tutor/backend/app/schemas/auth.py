@@ -7,8 +7,8 @@ These schemas define the API contracts for:
 - Authentication responses
 """
 
-from pydantic import BaseModel, EmailStr, Field, validator
-from typing import Optional, List, Dict, Any
+from pydantic import BaseModel, EmailStr, Field, field_validator
+from typing import Optional, List
 from datetime import datetime
 
 
@@ -23,15 +23,16 @@ class SignupRequest(BaseModel):
     password: str = Field(..., min_length=6, max_length=100, description="Password (min 6 characters)")
     level: str = Field(default="beginner", description="Learning level: beginner, intermediate, or advanced")
 
-    @validator("level")
+    @field_validator("level")
+    @classmethod
     def validate_level(cls, v):
         allowed_levels = ["beginner", "intermediate", "advanced"]
         if v not in allowed_levels:
             raise ValueError(f"Level must be one of: {', '.join(allowed_levels)}")
         return v
 
-    class Config:
-        schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "name": "Ahmed Khan",
                 "email": "ahmed@example.com",
@@ -39,6 +40,7 @@ class SignupRequest(BaseModel):
                 "level": "beginner"
             }
         }
+    }
 
 
 class LoginRequest(BaseModel):
@@ -46,13 +48,14 @@ class LoginRequest(BaseModel):
     email: EmailStr = Field(..., description="User's email address")
     password: str = Field(..., description="User's password")
 
-    class Config:
-        schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "email": "ahmed@example.com",
                 "password": "securepassword123"
             }
         }
+    }
 
 
 class AuthResponse(BaseModel):
@@ -61,8 +64,8 @@ class AuthResponse(BaseModel):
     token_type: str = Field(default="bearer", description="Token type")
     user: "UserResponse" = Field(..., description="User information")
 
-    class Config:
-        schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
                 "token_type": "bearer",
@@ -74,6 +77,7 @@ class AuthResponse(BaseModel):
                 }
             }
         }
+    }
 
 
 # ============================================================================
@@ -88,9 +92,9 @@ class UserResponse(BaseModel):
     level: str
     created_at: datetime
 
-    class Config:
-        orm_mode = True
-        schema_extra = {
+    model_config = {
+        "from_attributes": True,
+        "json_schema_extra": {
             "example": {
                 "id": "user123",
                 "name": "Ahmed Khan",
@@ -99,6 +103,7 @@ class UserResponse(BaseModel):
                 "created_at": "2024-01-15T10:30:00"
             }
         }
+    }
 
 
 # ============================================================================
@@ -121,9 +126,9 @@ class StudentProfileResponse(BaseModel):
     last_active_at: datetime
     created_at: datetime
 
-    class Config:
-        orm_mode = True
-        schema_extra = {
+    model_config = {
+        "from_attributes": True,
+        "json_schema_extra": {
             "example": {
                 "id": "profile123",
                 "user_id": "user123",
@@ -140,6 +145,7 @@ class StudentProfileResponse(BaseModel):
                 "created_at": "2024-01-10T10:00:00"
             }
         }
+    }
 
 
 class UpdateProfileRequest(BaseModel):
@@ -149,7 +155,8 @@ class UpdateProfileRequest(BaseModel):
     current_lesson: Optional[str] = None
     learning_style: Optional[str] = None
 
-    @validator("level")
+    @field_validator("level")
+    @classmethod
     def validate_level(cls, v):
         if v is not None:
             allowed_levels = ["beginner", "intermediate", "advanced"]
@@ -157,7 +164,8 @@ class UpdateProfileRequest(BaseModel):
                 raise ValueError(f"Level must be one of: {', '.join(allowed_levels)}")
         return v
 
-    @validator("learning_style")
+    @field_validator("learning_style")
+    @classmethod
     def validate_learning_style(cls, v):
         if v is not None:
             allowed_styles = ["visual", "code_focused", "explanation_focused"]
@@ -165,8 +173,8 @@ class UpdateProfileRequest(BaseModel):
                 raise ValueError(f"Learning style must be one of: {', '.join(allowed_styles)}")
         return v
 
-    class Config:
-        schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "level": "intermediate",
                 "current_chapter": "04-python",
@@ -174,6 +182,7 @@ class UpdateProfileRequest(BaseModel):
                 "learning_style": "code_focused"
             }
         }
+    }
 
 
 class CompleteEntityRequest(BaseModel):
@@ -181,21 +190,23 @@ class CompleteEntityRequest(BaseModel):
     entity_type: str = Field(..., description="Type: 'lesson' or 'chapter'")
     entity_id: str = Field(..., description="ID of lesson or chapter")
 
-    @validator("entity_type")
+    @field_validator("entity_type")
+    @classmethod
     def validate_entity_type(cls, v):
         allowed_types = ["lesson", "chapter"]
         if v not in allowed_types:
             raise ValueError(f"Entity type must be one of: {', '.join(allowed_types)}")
         return v
 
-    class Config:
-        schema_extra = {
+    model_config = {
+        "json_schema_extra": {
             "example": {
                 "entity_type": "lesson",
                 "entity_id": "03-variables"
             }
         }
+    }
 
 
 # Update forward references
-AuthResponse.update_forward_refs()
+AuthResponse.model_rebuild()
