@@ -91,7 +91,7 @@ try:
         # Extract data
         batch_docs = [chunk.content for chunk in batch]
         batch_metadatas = [chunk.metadata for chunk in batch]
-        batch_ids = [chunk.id for chunk in batch]
+        batch_ids = [chunk.chunk_id for chunk in batch]
 
         # Generate embeddings
         batch_embeddings = embedding_service.embed_documents(batch_docs)
