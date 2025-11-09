@@ -32,7 +32,7 @@ Provider = AsyncOpenAI(
 
 # Set up the chat completion model with Gemini
 model = OpenAIChatCompletionsModel(
-    model=os.getenv("AGENT_MODEL", "gemini-2.0-flash-exp"),
+    model=os.getenv("AGENT_MODEL", "gemini-2.0-flash"),
     openai_client=Provider,
 )
 
