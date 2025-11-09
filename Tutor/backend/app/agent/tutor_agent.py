@@ -11,7 +11,7 @@ The agent is the BRAIN - it thinks, decides, and acts autonomously.
 
 import os
 from typing import Optional
-from agents import Agent, Runner, SQLiteSession
+from agents import Agent, Runner, SQLiteSession, AsyncOpenAI, OpenAIChatCompletionsModel, set_tracing_disabled
 from dotenv import load_dotenv
 
 from app.agent.personality import AgentPersonality
@@ -20,6 +20,21 @@ from app.tools.teaching_tools import TUTORGPT_TOOLS
 
 # Load environment variables
 load_dotenv()
+
+# Disable tracing for faster responses (optional)
+set_tracing_disabled(True)
+
+# Set up Gemini API provider via OpenAI-compatible endpoint
+Provider = AsyncOpenAI(
+    api_key=os.getenv("GEMINI_API_KEY"),
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+)
+
+# Set up the chat completion model with Gemini
+model = OpenAIChatCompletionsModel(
+    model=os.getenv("AGENT_MODEL", "gemini-2.0-flash-exp"),
+    openai_client=Provider,
+)
 
 
 class TutorGPTAgent:
@@ -66,13 +81,13 @@ class TutorGPTAgent:
             student_level=student_level
         )
 
-        # Create the AUTONOMOUS AGENT using OpenAI Agents SDK
+        # Create the AUTONOMOUS AGENT using OpenAI Agents SDK with Gemini LLM
         # The agent gets instructions and tools, then DECIDES autonomously!
         self.agent = Agent(
             name="TutorGPT",
             instructions=instructions,
             tools=TUTORGPT_TOOLS,  # Agent can use these tools - IT DECIDES WHEN!
-            # model=os.getenv("AGENT_MODEL", "gpt-4"),  # Commented: will use default
+            model=model,  # Gemini 2.0 Flash via OpenAI-compatible API
         )
 
     async def teach(
@@ -183,6 +198,7 @@ class TutorGPTAgent:
             name="TutorGPT",
             instructions=instructions,
             tools=TUTORGPT_TOOLS,
+            model=model,  # Gemini 2.0 Flash
         )
 
 
