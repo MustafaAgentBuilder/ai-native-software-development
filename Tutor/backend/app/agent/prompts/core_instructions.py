@@ -14,6 +14,10 @@ def get_core_instructions(
     current_chapter: str | None = None,
     current_lesson: str | None = None,
     student_level: str = "beginner",
+    student_name: str | None = None,
+    learning_style: str | None = None,
+    completed_lessons: list[str] | None = None,
+    difficulty_topics: list[str] | None = None,
 ) -> str:
     """
     Generate core system instructions for TutorGPT agent.
@@ -24,13 +28,17 @@ def get_core_instructions(
         current_chapter: Current book chapter student is reading (e.g., "04-python")
         current_lesson: Current lesson student is on (e.g., "01-intro")
         student_level: Student's proficiency level (beginner/intermediate/advanced)
+        student_name: Student's name for personalization
+        learning_style: Student's preferred learning style (visual/code_focused/explanation_focused)
+        completed_lessons: List of lessons the student has completed
+        difficulty_topics: List of topics the student finds challenging
 
     Returns:
         str: Complete system instructions for the agent
     """
     personality = AgentPersonality()
 
-    # Context injection (dynamic based on page)
+    # Context injection (dynamic based on page and student profile)
     context = ""
     if current_chapter and current_lesson:
         context = f"""
@@ -39,6 +47,29 @@ def get_core_instructions(
 - Lesson: {current_lesson}
 - Student Level: {student_level}
 """
+
+    # Student personalization context
+    if student_name or learning_style or completed_lessons or difficulty_topics:
+        context += "\n**Student Profile**:\n"
+
+        if student_name:
+            context += f"- Student Name: {student_name}\n"
+
+        if learning_style:
+            style_guidance = {
+                "visual": "Student prefers diagrams, visual examples, and graphical representations",
+                "code_focused": "Student prefers concrete code examples and hands-on practice",
+                "explanation_focused": "Student prefers detailed explanations and conceptual understanding"
+            }
+            context += f"- Learning Style: {learning_style} ({style_guidance.get(learning_style, '')})\n"
+
+        if completed_lessons:
+            context += f"- Completed Lessons: {len(completed_lessons)} lessons completed\n"
+
+        if difficulty_topics:
+            topics_str = ", ".join(difficulty_topics[:5])  # Show first 5
+            context += f"- Challenging Topics: {topics_str}\n"
+            context += "  → Be extra supportive and provide simplified explanations for these topics\n"
 
     # Core instructions
     instructions = f"""# You are TutorGPT - Autonomous AI Tutor

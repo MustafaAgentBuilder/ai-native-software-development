@@ -59,26 +59,42 @@ class TutorGPTAgent:
         self,
         current_chapter: Optional[str] = None,
         current_lesson: Optional[str] = None,
-        student_level: str = "beginner"
+        student_level: str = "beginner",
+        student_name: Optional[str] = None,
+        learning_style: Optional[str] = None,
+        completed_lessons: Optional[list] = None,
+        difficulty_topics: Optional[list] = None
     ):
         """
-        Initialize TutorGPT autonomous agent.
+        Initialize TutorGPT autonomous agent with student personalization.
 
         Args:
             current_chapter: Current chapter student is reading (e.g., "04-python")
             current_lesson: Current lesson student is on (e.g., "01-intro")
             student_level: Student's proficiency level (beginner/intermediate/advanced)
+            student_name: Student's name for personalized greetings
+            learning_style: Student's learning preference (visual/code_focused/explanation_focused)
+            completed_lessons: List of completed lesson IDs
+            difficulty_topics: List of topics the student finds challenging
         """
         self.personality = AgentPersonality()
         self.current_chapter = current_chapter
         self.current_lesson = current_lesson
         self.student_level = student_level
+        self.student_name = student_name
+        self.learning_style = learning_style
+        self.completed_lessons = completed_lessons or []
+        self.difficulty_topics = difficulty_topics or []
 
-        # Get core instructions (the agent's "teaching philosophy")
+        # Get core instructions with full personalization context
         instructions = get_core_instructions(
             current_chapter=current_chapter,
             current_lesson=current_lesson,
-            student_level=student_level
+            student_level=student_level,
+            student_name=student_name,
+            learning_style=learning_style,
+            completed_lessons=completed_lessons,
+            difficulty_topics=difficulty_topics
         )
 
         # Create the AUTONOMOUS AGENT using OpenAI Agents SDK with Gemini LLM
@@ -161,34 +177,128 @@ class TutorGPTAgent:
 
         return result.final_output
 
+    async def greet_student(self) -> str:
+        """
+        Generate a personalized greeting for the student.
+
+        This creates a warm, encouraging welcome message tailored to the student's
+        profile, level, and learning progress.
+
+        Returns:
+            Personalized greeting message
+
+        Example:
+            >>> agent = TutorGPTAgent(student_name="Ahmed", student_level="beginner")
+            >>> greeting = await agent.greet_student()
+            >>> print(greeting)
+            # "Welcome back, Ahmed! Ready to continue your AI-Native learning journey? 🚀"
+        """
+        name_part = f"{self.student_name}" if self.student_name else "there"
+        level_emoji = {
+            "beginner": "🌱",
+            "intermediate": "🌿",
+            "advanced": "🌳"
+        }.get(self.student_level, "📚")
+
+        # Build personalized greeting
+        greeting_parts = [f"Welcome back, {name_part}! {level_emoji}"]
+
+        # Add progress acknowledgment
+        if self.completed_lessons and len(self.completed_lessons) > 0:
+            lesson_count = len(self.completed_lessons)
+            greeting_parts.append(
+                f"You've completed {lesson_count} lesson{'s' if lesson_count != 1 else ''} - great progress!"
+            )
+
+        # Add current learning context
+        if self.current_chapter and self.current_lesson:
+            greeting_parts.append(
+                f"Let's continue with {self.current_lesson} in {self.current_chapter}."
+            )
+        elif self.current_chapter:
+            greeting_parts.append(
+                f"Ready to dive into {self.current_chapter}?"
+            )
+
+        # Add learning style note
+        if self.learning_style:
+            style_messages = {
+                "visual": "I'll make sure to include visual examples and diagrams for you.",
+                "code_focused": "I'll focus on practical code examples and hands-on practice.",
+                "explanation_focused": "I'll provide detailed explanations to deepen your understanding."
+            }
+            if self.learning_style in style_messages:
+                greeting_parts.append(style_messages[self.learning_style])
+
+        # Add encouragement
+        greeting_parts.append("\nWhat would you like to learn about today? 🚀")
+
+        return "\n\n".join(greeting_parts)
+
+    def greet_student_sync(self) -> str:
+        """
+        Synchronous version of greet_student().
+
+        Returns:
+            Personalized greeting message
+        """
+        import asyncio
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+
+        return loop.run_until_complete(self.greet_student())
+
     def update_context(
         self,
         current_chapter: Optional[str] = None,
         current_lesson: Optional[str] = None,
-        student_level: Optional[str] = None
+        student_level: Optional[str] = None,
+        student_name: Optional[str] = None,
+        learning_style: Optional[str] = None,
+        completed_lessons: Optional[list] = None,
+        difficulty_topics: Optional[list] = None
     ):
         """
-        Update the agent's context (chapter, lesson, student level).
+        Update the agent's context (chapter, lesson, student profile).
 
-        This recreates the agent with updated instructions.
+        This recreates the agent with updated instructions and personalization.
 
         Args:
             current_chapter: New current chapter
             current_lesson: New current lesson
             student_level: New student level
+            student_name: New student name
+            learning_style: New learning style preference
+            completed_lessons: Updated list of completed lessons
+            difficulty_topics: Updated list of difficulty topics
         """
-        if current_chapter:
+        if current_chapter is not None:
             self.current_chapter = current_chapter
-        if current_lesson:
+        if current_lesson is not None:
             self.current_lesson = current_lesson
-        if student_level:
+        if student_level is not None:
             self.student_level = student_level
+        if student_name is not None:
+            self.student_name = student_name
+        if learning_style is not None:
+            self.learning_style = learning_style
+        if completed_lessons is not None:
+            self.completed_lessons = completed_lessons
+        if difficulty_topics is not None:
+            self.difficulty_topics = difficulty_topics
 
-        # Recreate agent with updated context
+        # Recreate agent with updated context and personalization
         instructions = get_core_instructions(
             current_chapter=self.current_chapter,
             current_lesson=self.current_lesson,
-            student_level=self.student_level
+            student_level=self.student_level,
+            student_name=self.student_name,
+            learning_style=self.learning_style,
+            completed_lessons=self.completed_lessons,
+            difficulty_topics=self.difficulty_topics
         )
 
         self.agent = Agent(
@@ -203,25 +313,42 @@ class TutorGPTAgent:
 def create_tutor_agent(
     current_chapter: Optional[str] = None,
     current_lesson: Optional[str] = None,
-    student_level: str = "beginner"
+    student_level: str = "beginner",
+    student_name: Optional[str] = None,
+    learning_style: Optional[str] = None,
+    completed_lessons: Optional[list] = None,
+    difficulty_topics: Optional[list] = None
 ) -> TutorGPTAgent:
     """
-    Create a TutorGPT autonomous agent.
+    Create a TutorGPT autonomous agent with full personalization.
 
     Args:
         current_chapter: Current chapter student is reading
         current_lesson: Current lesson student is on
         student_level: Student's proficiency level
+        student_name: Student's name for personalization
+        learning_style: Student's learning preference
+        completed_lessons: List of completed lesson IDs
+        difficulty_topics: List of challenging topics
 
     Returns:
         TutorGPTAgent instance ready to teach
 
     Example:
-        >>> agent = create_tutor_agent(current_chapter="04-python", student_level="beginner")
+        >>> agent = create_tutor_agent(
+        ...     current_chapter="04-python",
+        ...     student_level="beginner",
+        ...     student_name="Ahmed",
+        ...     learning_style="code_focused"
+        ... )
         >>> response = await agent.teach("What is a variable?")
     """
     return TutorGPTAgent(
         current_chapter=current_chapter,
         current_lesson=current_lesson,
-        student_level=student_level
+        student_level=student_level,
+        student_name=student_name,
+        learning_style=learning_style,
+        completed_lessons=completed_lessons,
+        difficulty_topics=difficulty_topics
     )
