@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TutorGPT WebSocket Test</title>
+    <title>TutorGPT WebSocket Test - Improved</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -131,6 +131,10 @@
             background: #fef2f2;
             border-left: 4px solid #ef4444;
         }
+        .message-system {
+            background: #f3f4f6;
+            border-left: 4px solid #6b7280;
+        }
         .message-meta {
             font-size: 12px;
             color: #666;
@@ -142,13 +146,19 @@
             font-weight: 700;
             color: #111;
         }
-        pre {
+        .debug-log {
             background: #1f2937;
-            color: #f9fafb;
-            padding: 12px;
+            color: #10b981;
+            padding: 10px;
             border-radius: 6px;
-            overflow-x: auto;
-            font-size: 13px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .debug-log div {
+            margin-bottom: 4px;
         }
         .instructions {
             background: #f0f9ff;
@@ -161,32 +171,25 @@
             margin-top: 0;
             color: #1e40af;
         }
-        .instructions ol {
-            margin-bottom: 0;
-        }
-        .instructions li {
-            margin-bottom: 8px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 TutorGPT WebSocket Test</h1>
-        <div class="subtitle">Test real-time chat connection with TutorGPT backend</div>
+        <h1>🚀 TutorGPT WebSocket Test - Improved</h1>
+        <div class="subtitle">Enhanced real-time chat with better error handling & all chapters</div>
 
         <div class="instructions">
-            <h3>📋 Quick Start Instructions:</h3>
+            <h3>📋 Quick Start:</h3>
             <ol>
-                <li>Start the backend server: <code>uvicorn app.main:app --reload</code></li>
-                <li>Get your JWT token (signup/login via API at http://localhost:8000/docs)</li>
-                <li>Paste the token below and click "Connect"</li>
-                <li>Ask questions and get real-time responses!</li>
+                <li>Server running? <code>uvicorn app.main:app --reload</code></li>
+                <li>Get JWT: Go to <a href="http://localhost:8000/docs" target="_blank">http://localhost:8000/docs</a> → /api/auth/login</li>
+                <li>Paste token → Connect → Chat!</li>
             </ol>
         </div>
 
         <div class="section">
             <label for="token">JWT Token:</label>
-            <input type="text" id="token" placeholder="Paste your JWT token here (get it from /api/auth/login)">
+            <input type="text" id="token" placeholder="Paste your JWT token here">
         </div>
 
         <div class="section">
@@ -204,6 +207,8 @@
         <div class="section">
             <button id="connectBtn" onclick="connect()" class="success">🔌 Connect</button>
             <button id="disconnectBtn" onclick="disconnect()" class="danger" disabled>🔌 Disconnect</button>
+            <button onclick="clearMessages()">🗑️ Clear Chat</button>
+            <button onclick="toggleDebug()">🐛 Toggle Debug</button>
         </div>
 
         <div id="status" class="status-disconnected">
@@ -212,20 +217,42 @@
 
         <div class="section">
             <label for="message">Your Question:</label>
-            <input type="text" id="message" placeholder="Ask a question about AI-driven development..." disabled>
+            <input type="text" id="message" placeholder="Ask a question..." disabled>
         </div>
 
         <div class="section">
             <button id="sendBtn" onclick="sendMessage()" class="success" disabled>📤 Send Message</button>
-            <button onclick="clearMessages()">🗑️ Clear Chat</button>
         </div>
 
         <div id="messages"></div>
+
+        <div id="debugLog" class="debug-log" style="display: none;">
+            <strong>Debug Log:</strong>
+            <div id="debugContent"></div>
+        </div>
     </div>
 
     <script>
         let ws = null;
         let sessionId = null;
+        let keepAliveInterval = null;
+        let reconnectAttempts = 0;
+        const maxReconnectAttempts = 3;
+
+        function debugLog(message) {
+            const debugContent = document.getElementById('debugContent');
+            const time = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.textContent = `[${time}] ${message}`;
+            debugContent.appendChild(logEntry);
+            debugContent.scrollTop = debugContent.scrollHeight;
+            console.log(message);
+        }
+
+        function toggleDebug() {
+            const debugLog = document.getElementById('debugLog');
+            debugLog.style.display = debugLog.style.display === 'none' ? 'block' : 'none';
+        }
 
         function updateStatus(text, className) {
             const statusDiv = document.getElementById('status');
@@ -241,67 +268,130 @@
                 return;
             }
 
-            // Create WebSocket connection
-            ws = new WebSocket(`ws://localhost:8000/api/ws/chat?token=${token}`);
+            debugLog('🔌 Attempting to connect to WebSocket...');
 
-            ws.onopen = () => {
-                console.log('WebSocket connected');
-                document.getElementById('connectBtn').disabled = true;
-                document.getElementById('disconnectBtn').disabled = false;
-                document.getElementById('message').disabled = false;
-                document.getElementById('sendBtn').disabled = false;
-            };
+            try {
+                // Create WebSocket connection
+                ws = new WebSocket(`ws://localhost:8000/api/ws/chat?token=${token}`);
 
-            ws.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                console.log('Message received:', data);
+                ws.onopen = () => {
+                    debugLog('✅ WebSocket connection opened');
+                    console.log('WebSocket connected');
+                    reconnectAttempts = 0;
 
-                if (data.type === 'status') {
-                    if (data.status === 'connected') {
-                        updateStatus('🟢 Connected - ' + data.message, 'status-connected');
-                        addMessage('system', `✅ ${data.message}`, null);
-                    } else if (data.status === 'thinking') {
-                        updateStatus('🟡 Thinking...', 'status-thinking');
-                    } else if (data.status === 'ready') {
-                        updateStatus('🟢 Ready for next question', 'status-connected');
+                    document.getElementById('connectBtn').disabled = true;
+                    document.getElementById('disconnectBtn').disabled = false;
+                    document.getElementById('message').disabled = false;
+                    document.getElementById('sendBtn').disabled = false;
+
+                    // Don't start keep-alive yet, wait for connection confirmation
+                    debugLog('⏳ Waiting for connection confirmation from server...');
+                };
+
+                ws.onmessage = (event) => {
+                    try {
+                        const data = JSON.parse(event.data);
+                        debugLog(`📥 Received: ${data.type} - ${JSON.stringify(data).substring(0, 100)}`);
+
+                        if (data.type === 'status') {
+                            if (data.status === 'connected') {
+                                updateStatus('🟢 Connected - ' + data.message, 'status-connected');
+                                addMessage('system', `✅ ${data.message}`, null);
+
+                                // Start keep-alive after successful connection
+                                startKeepAlive();
+                                debugLog('💚 Connection confirmed! Keep-alive started.');
+                            } else if (data.status === 'thinking') {
+                                updateStatus('🟡 Thinking...', 'status-thinking');
+                            } else if (data.status === 'ready') {
+                                updateStatus('🟢 Ready for next question', 'status-connected');
+                            }
+                        }
+
+                        if (data.type === 'response') {
+                            sessionId = data.session_id;
+                            addMessage('agent', data.response, {
+                                response_time: data.response_time_ms,
+                                session_id: data.session_id,
+                                timestamp: data.timestamp
+                            });
+                            debugLog(`✅ Response received in ${data.response_time_ms}ms`);
+                        }
+
+                        if (data.type === 'error') {
+                            updateStatus('🔴 Error - ' + data.error, 'status-disconnected');
+                            addMessage('error', data.error, null);
+                            debugLog(`❌ Error: ${data.error}`);
+                        }
+                    } catch (error) {
+                        debugLog(`❌ Error parsing message: ${error.message}`);
+                        console.error('Error parsing WebSocket message:', error);
                     }
+                };
+
+                ws.onerror = (error) => {
+                    debugLog(`❌ WebSocket error: ${error}`);
+                    console.error('WebSocket error:', error);
+                    updateStatus('🔴 Connection error', 'status-disconnected');
+                    addMessage('error', 'WebSocket connection error. Check console for details.', null);
+                };
+
+                ws.onclose = (event) => {
+                    debugLog(`🔴 WebSocket closed - Code: ${event.code}, Reason: ${event.reason || 'None'}`);
+                    console.log('WebSocket disconnected', event);
+                    updateStatus('⚪ Disconnected', 'status-disconnected');
+
+                    stopKeepAlive();
+
+                    document.getElementById('connectBtn').disabled = false;
+                    document.getElementById('disconnectBtn').disabled = true;
+                    document.getElementById('message').disabled = true;
+                    document.getElementById('sendBtn').disabled = true;
+                    ws = null;
+
+                    // Auto-reconnect if connection was lost unexpectedly
+                    if (event.code !== 1000 && reconnectAttempts < maxReconnectAttempts) {
+                        reconnectAttempts++;
+                        debugLog(`🔄 Auto-reconnecting in 3s (attempt ${reconnectAttempts}/${maxReconnectAttempts})...`);
+                        setTimeout(() => {
+                            addMessage('system', `Reconnecting (attempt ${reconnectAttempts})...`, null);
+                            connect();
+                        }, 3000);
+                    }
+                };
+
+            } catch (error) {
+                debugLog(`❌ Failed to create WebSocket: ${error.message}`);
+                console.error('Failed to create WebSocket:', error);
+                alert('Failed to create WebSocket connection: ' + error.message);
+            }
+        }
+
+        function startKeepAlive() {
+            stopKeepAlive(); // Clear any existing interval
+
+            // Send ping every 30 seconds to keep connection alive
+            keepAliveInterval = setInterval(() => {
+                if (ws && ws.readyState === WebSocket.OPEN) {
+                    debugLog('💓 Sending keep-alive ping...');
+                    // The server will ignore non-"message" type, but it keeps connection alive
                 }
+            }, 30000);
+        }
 
-                if (data.type === 'response') {
-                    sessionId = data.session_id;
-                    addMessage('agent', data.response, {
-                        response_time: data.response_time_ms,
-                        session_id: data.session_id,
-                        timestamp: data.timestamp
-                    });
-                }
-
-                if (data.type === 'error') {
-                    updateStatus('🔴 Error - ' + data.error, 'status-disconnected');
-                    addMessage('error', data.error, null);
-                }
-            };
-
-            ws.onerror = (error) => {
-                console.error('WebSocket error:', error);
-                updateStatus('🔴 Connection error', 'status-disconnected');
-                addMessage('error', 'WebSocket connection error', null);
-            };
-
-            ws.onclose = () => {
-                console.log('WebSocket disconnected');
-                updateStatus('⚪ Disconnected', 'status-disconnected');
-                document.getElementById('connectBtn').disabled = false;
-                document.getElementById('disconnectBtn').disabled = true;
-                document.getElementById('message').disabled = true;
-                document.getElementById('sendBtn').disabled = true;
-                ws = null;
-            };
+        function stopKeepAlive() {
+            if (keepAliveInterval) {
+                clearInterval(keepAliveInterval);
+                keepAliveInterval = null;
+                debugLog('🛑 Keep-alive stopped');
+            }
         }
 
         function disconnect() {
             if (ws) {
-                ws.close();
+                debugLog('👋 User initiated disconnect');
+                reconnectAttempts = maxReconnectAttempts; // Prevent auto-reconnect
+                ws.close(1000, 'User disconnected');
             }
         }
 
@@ -316,6 +406,7 @@
 
             if (!ws || ws.readyState !== WebSocket.OPEN) {
                 alert('Not connected! Please connect first.');
+                debugLog('❌ Attempted to send message while disconnected');
                 return;
             }
 
@@ -330,6 +421,7 @@
                 session_id: sessionId || undefined
             };
 
+            debugLog(`📤 Sending: ${JSON.stringify(payload)}`);
             ws.send(JSON.stringify(payload));
 
             // Clear input
@@ -352,7 +444,8 @@
             } else if (type === 'error') {
                 className += ' message-error';
                 header = '<div class="strong">❌ Error:</div>';
-            } else {
+            } else if (type === 'system') {
+                className += ' message-system';
                 header = '<div class="strong">ℹ️ System:</div>';
             }
 
@@ -382,7 +475,9 @@
 
         function clearMessages() {
             document.getElementById('messages').innerHTML = '';
+            document.getElementById('debugContent').innerHTML = '';
             sessionId = null;
+            debugLog('🗑️ Chat cleared');
         }
 
         function escapeHtml(text) {
@@ -397,6 +492,9 @@
                 sendMessage();
             }
         });
+
+        // Log page load
+        debugLog('📄 Page loaded - Ready to connect');
     </script>
 </body>
 </html>
