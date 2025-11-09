@@ -69,11 +69,9 @@ function TutorChatComponent() {
     };
 
     document.addEventListener('mouseup', handleTextSelection);
-    document.addEventListener('selectionchange', handleTextSelection);
 
     return () => {
       document.removeEventListener('mouseup', handleTextSelection);
-      document.removeEventListener('selectionchange', handleTextSelection);
     };
   }, []);
 
@@ -183,10 +181,9 @@ function TutorChatComponent() {
       e.preventDefault();
       handleSendMessage();
     }
-    // Shift+Enter will naturally create new line
   };
 
-  const handleAskAboutSelection = () => {
+  const handleAskAboutSelection = (prompt: string) => {
     if (!isLoggedIn) {
       setShowLogin(true);
       setShowTooltip(false);
@@ -201,10 +198,9 @@ function TutorChatComponent() {
       }
     }
 
-    setMessage(`Explain this:\n\n"${selectedText}"`);
+    setMessage(`${prompt}:\n\n"${selectedText}"`);
     setShowTooltip(false);
 
-    // Focus textarea
     setTimeout(() => {
       textareaRef.current?.focus();
     }, 100);
@@ -226,22 +222,46 @@ function TutorChatComponent() {
     setIsOpen(!isOpen);
   };
 
-  // Text selection tooltip
+  // Text selection tooltip with multiple options
   if (showTooltip && !isOpen) {
     return (
       <>
         <div
-          className="tutor-selection-tooltip"
+          className="tutor-selection-menu"
           style={{
             left: `${tooltipPosition.x}px`,
             top: `${tooltipPosition.y}px`
           }}
         >
-          <button onClick={handleAskAboutSelection}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <div className="tutor-menu-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
             </svg>
             Ask TutorGPT
+          </div>
+          <button onClick={() => handleAskAboutSelection("Explain this")}>
+            <span className="menu-icon">💡</span>
+            Explain this
+          </button>
+          <button onClick={() => handleAskAboutSelection("Simplify this")}>
+            <span className="menu-icon">✨</span>
+            Simplify this
+          </button>
+          <button onClick={() => handleAskAboutSelection("Give me an example of")}>
+            <span className="menu-icon">📝</span>
+            Give example
+          </button>
+          <button onClick={() => handleAskAboutSelection("What does this mean")}>
+            <span className="menu-icon">❓</span>
+            What does this mean?
+          </button>
+          <button onClick={() => handleAskAboutSelection("How do I use")}>
+            <span className="menu-icon">🔧</span>
+            How to use?
+          </button>
+          <button onClick={() => handleAskAboutSelection("Tell me more about")}>
+            <span className="menu-icon">📚</span>
+            Tell me more
           </button>
         </div>
         <button className="tutor-chat-button" onClick={toggleChat}>
@@ -345,7 +365,7 @@ function TutorChatComponent() {
                 How do AI agents work?
               </button>
             </div>
-            <p className="tutor-tip">💡 <strong>Tip:</strong> Highlight any text on the page and click "Ask TutorGPT" to get instant explanations!</p>
+            <p className="tutor-tip">💡 <strong>Tip:</strong> Highlight any text on the page to see quick action options!</p>
           </div>
         ) : (
           <>

@@ -523,12 +523,23 @@ html[data-theme='dark'] .tutor-switch-mode button {
   }
 }
 
-/* Text Selection Tooltip */
-.tutor-selection-tooltip {
+/* Text Selection Menu */
+.tutor-selection-menu {
   position: fixed;
   z-index: 10001;
   transform: translate(-50%, -100%);
   animation: slideDown 0.2s ease;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+  min-width: 200px;
+  margin-bottom: 10px;
+}
+
+html[data-theme='dark'] .tutor-selection-menu {
+  background: #2a2a2a;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 @keyframes slideDown {
@@ -542,29 +553,58 @@ html[data-theme='dark'] .tutor-switch-mode button {
   }
 }
 
-.tutor-selection-tooltip button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+.tutor-menu-header {
   display: flex;
   align-items: center;
   gap: 6px;
-  white-space: nowrap;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #667eea;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 4px;
+}
+
+html[data-theme='dark'] .tutor-menu-header {
+  color: #a78bfa;
+  border-bottom-color: #4a4a4a;
+}
+
+.tutor-selection-menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
   transition: all 0.2s;
+  text-align: left;
 }
 
-.tutor-selection-tooltip button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+.tutor-selection-menu button:hover {
+  background: #f0f4ff;
+  color: #667eea;
 }
 
-.tutor-selection-tooltip button svg {
+html[data-theme='dark'] .tutor-selection-menu button {
+  color: #f9fafb;
+}
+
+html[data-theme='dark'] .tutor-selection-menu button:hover {
+  background: #3a3a5a;
+  color: #a78bfa;
+}
+
+.tutor-selection-menu .menu-icon {
+  font-size: 16px;
   flex-shrink: 0;
 }
 
