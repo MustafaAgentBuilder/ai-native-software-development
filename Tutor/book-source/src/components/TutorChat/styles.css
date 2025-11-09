@@ -522,3 +522,95 @@ html[data-theme='dark'] .tutor-switch-mode button {
     right: 16px;
   }
 }
+
+/* Text Selection Tooltip */
+.tutor-selection-tooltip {
+  position: fixed;
+  z-index: 10001;
+  transform: translate(-50%, -100%);
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -120%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -100%);
+  }
+}
+
+.tutor-selection-tooltip button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.tutor-selection-tooltip button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+}
+
+.tutor-selection-tooltip button svg {
+  flex-shrink: 0;
+}
+
+/* Textarea Auto-resize */
+.tutor-chat-input textarea {
+  flex: 1;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: none;
+  max-height: 200px;
+  overflow-y: auto;
+  line-height: 1.5;
+}
+
+.tutor-chat-input textarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+html[data-theme='dark'] .tutor-chat-input textarea {
+  background: #3a3a3a;
+  border-color: #4a4a4a;
+  color: #f9fafb;
+}
+
+/* Tip Message */
+.tutor-tip {
+  margin-top: 24px;
+  padding: 12px 16px;
+  background: #f0f4ff;
+  border: 2px solid #e0e7ff;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #667eea;
+  text-align: left;
+}
+
+html[data-theme='dark'] .tutor-tip {
+  background: #2a2540;
+  border-color: #3a3a5a;
+  color: #a78bfa;
+}
+
+.tutor-tip strong {
+  font-weight: 700;
+}

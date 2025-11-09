@@ -18,6 +18,12 @@ function TutorChatComponent() {
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [connectionStatus, setConnectionStatus] = useState('disconnected');
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Text selection tooltip
+  const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
+  const [selectedText, setSelectedText] = useState('');
 
   // Auth state
   const [email, setEmail] = useState('');
@@ -38,6 +44,46 @@ function TutorChatComponent() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Text selection handler
+  useEffect(() => {
+    const handleTextSelection = () => {
+      const selection = window.getSelection();
+      const text = selection?.toString().trim();
+
+      if (text && text.length > 0) {
+        const range = selection?.getRangeAt(0);
+        const rect = range?.getBoundingClientRect();
+
+        if (rect) {
+          setSelectedText(text);
+          setTooltipPosition({
+            x: rect.left + rect.width / 2,
+            y: rect.top - 10
+          });
+          setShowTooltip(true);
+        }
+      } else {
+        setShowTooltip(false);
+      }
+    };
+
+    document.addEventListener('mouseup', handleTextSelection);
+    document.addEventListener('selectionchange', handleTextSelection);
+
+    return () => {
+      document.removeEventListener('mouseup', handleTextSelection);
+      document.removeEventListener('selectionchange', handleTextSelection);
+    };
+  }, []);
+
+  // Auto-resize textarea
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+    }
+  }, [message]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,6 +178,38 @@ function TutorChatComponent() {
     setMessage('');
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+    // Shift+Enter will naturally create new line
+  };
+
+  const handleAskAboutSelection = () => {
+    if (!isLoggedIn) {
+      setShowLogin(true);
+      setShowTooltip(false);
+      return;
+    }
+
+    if (!isOpen) {
+      setIsOpen(true);
+      const token = localStorage.getItem('tutorgpt_token');
+      if (token && !ws) {
+        connectWebSocket(token);
+      }
+    }
+
+    setMessage(`Explain this:\n\n"${selectedText}"`);
+    setShowTooltip(false);
+
+    // Focus textarea
+    setTimeout(() => {
+      textareaRef.current?.focus();
+    }, 100);
+  };
+
   const toggleChat = () => {
     if (!isLoggedIn) {
       setShowLogin(true);
@@ -147,6 +225,34 @@ function TutorChatComponent() {
 
     setIsOpen(!isOpen);
   };
+
+  // Text selection tooltip
+  if (showTooltip && !isOpen) {
+    return (
+      <>
+        <div
+          className="tutor-selection-tooltip"
+          style={{
+            left: `${tooltipPosition.x}px`,
+            top: `${tooltipPosition.y}px`
+          }}
+        >
+          <button onClick={handleAskAboutSelection}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            </svg>
+            Ask TutorGPT
+          </button>
+        </div>
+        <button className="tutor-chat-button" onClick={toggleChat}>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>Ask TutorGPT</span>
+        </button>
+      </>
+    );
+  }
 
   if (!isOpen && !showLogin) {
     return (
@@ -235,14 +341,18 @@ function TutorChatComponent() {
               <button onClick={() => setMessage("Explain Python basics")}>
                 Explain Python basics
               </button>
+              <button onClick={() => setMessage("How do AI agents work?")}>
+                How do AI agents work?
+              </button>
             </div>
+            <p className="tutor-tip">💡 <strong>Tip:</strong> Highlight any text on the page and click "Ask TutorGPT" to get instant explanations!</p>
           </div>
         ) : (
           <>
             {messages.map((msg) => (
               <div key={msg.id} className={`tutor-message tutor-message-${msg.type}`}>
                 <div className="tutor-message-avatar">
-                  {msg.type === 'user' ? '👤' : '🤖'}
+                  {msg.type === 'user' ? '👤' : msg.type === 'system' ? 'ℹ️' : '🤖'}
                 </div>
                 <div className="tutor-message-content">{msg.content}</div>
               </div>
@@ -261,17 +371,19 @@ function TutorChatComponent() {
       </div>
 
       <div className="tutor-chat-input">
-        <input
-          type="text"
+        <textarea
+          ref={textareaRef}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-          placeholder="Ask me anything..."
+          onKeyDown={handleKeyPress}
+          placeholder="Ask me anything... (Shift+Enter for new line)"
           disabled={connectionStatus !== 'connected' && connectionStatus !== 'ready'}
+          rows={1}
         />
         <button
           onClick={handleSendMessage}
           disabled={!message.trim() || (connectionStatus !== 'connected' && connectionStatus !== 'ready')}
+          title="Send message (Enter)"
         >
           📤
         </button>
