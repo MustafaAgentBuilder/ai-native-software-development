@@ -42,7 +42,8 @@ from app.models.user import User, StudentProfile, ChatSession, ChatMessage
 from app.schemas.auth import SignupRequest, LoginRequest, UpdateProfileRequest
 from app.auth.utils import hash_password, verify_password, create_user_token, decode_access_token
 from app.agent.tutor_agent import create_tutor_agent
-from app.rag.rag import RAGSystem
+from app.services.rag_service import RAGService, RAGSearchRequest
+from app.services.vector_store import VectorStore
 
 # Test user data
 TEST_EMAIL = "test_user@example.com"
@@ -73,30 +74,45 @@ print("TEST 1: RAG System Initialization")
 print("-" * 100)
 
 try:
-    rag = RAGSystem()
-    chunk_count = rag.count_chunks()
+    vector_store = VectorStore()
+    stats = vector_store.get_stats()
+    chunk_count = stats['count']
     print(f"✅ RAG system initialized")
     print(f"   Total chunks: {chunk_count}")
     print()
 except Exception as e:
     print(f"❌ RAG initialization failed: {e}")
+    print(f"   Note: Make sure to run ingest_book.py first to populate the vector store")
     print()
 
 print("TEST 2: RAG Search Functionality")
 print("-" * 100)
 
 try:
+    rag_service = RAGService()
     query = "What is Python?"
-    results = rag.search(query, top_k=3)
+
+    # Create search request
+    search_request = RAGSearchRequest(
+        query=query,
+        scope="entire_book",
+        n_results=3
+    )
+
+    # Execute search
+    response = rag_service.search_sync(search_request)
+
     print(f"✅ RAG search successful")
     print(f"   Query: '{query}'")
-    print(f"   Results found: {len(results)}")
-    if results:
-        print(f"   Top result score: {results[0]['score']:.4f}")
-        print(f"   Content preview: {results[0]['content'][:100]}...")
+    print(f"   Results found: {response.total_results}")
+    print(f"   Search time: {response.search_time_ms}ms")
+    if response.results:
+        print(f"   Top result score: {response.results[0].score:.4f}")
+        print(f"   Content preview: {response.results[0].content[:100]}...")
     print()
 except Exception as e:
     print(f"❌ RAG search failed: {e}")
+    print(f"   Note: Make sure to run ingest_book.py first to populate the vector store")
     print()
 
 # ============================================================================
