@@ -15,8 +15,8 @@ interface AgentSidebarProps {
 }
 
 const AgentSidebar: React.FC<AgentSidebarProps> = ({ onChatMessage }) => {
-  const [isExpanded, setIsExpanded] = useState<boolean>(true);
-  const [isMinimized, setIsMinimized] = useState<boolean>(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false); // Start collapsed
+  const [isMinimized, setIsMinimized] = useState<boolean>(true); // Start minimized
   const [messages, setMessages] = useState<ChatMessage[]>([]);
 
   // Load sidebar state from localStorage
