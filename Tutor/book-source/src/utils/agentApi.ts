@@ -33,7 +33,14 @@ export interface ChatMessage {
 }
 
 // Configuration
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+// Note: To change API URL, edit this value directly or use browser localStorage
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('tutorgpt_api_url') || 'http://localhost:8000';
+  }
+  return 'http://localhost:8000';
+};
+const API_BASE_URL = getApiBaseUrl();
 
 class AgentApiClient {
   private baseUrl: string;
@@ -174,7 +181,10 @@ class AgentApiClient {
 export const agentApi = new AgentApiClient();
 
 // Mock responses for development (when backend is not available)
-export const useMockResponses = process.env.REACT_APP_USE_MOCK === 'true';
+// To enable mock mode, set in browser console: localStorage.setItem('tutorgpt_use_mock', 'true')
+export const useMockResponses = typeof window !== 'undefined'
+  ? localStorage.getItem('tutorgpt_use_mock') === 'true'
+  : false;
 
 export const mockAgentResponse = async (action: AgentAction): Promise<AgentResponse> => {
   // Simulate network delay
