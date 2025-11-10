@@ -13,6 +13,7 @@ from app.api.profile import router as profile_router
 from app.api.chat import router as chat_router
 from app.api.websocket import router as ws_router
 from app.api.analytics import router as analytics_router
+from app.api.colearn import router as colearn_router
 from app.database import init_db
 
 
@@ -45,6 +46,7 @@ app.include_router(profile_router)
 app.include_router(chat_router)
 app.include_router(ws_router)  # WebSocket real-time chat
 app.include_router(analytics_router)  # Analytics & recommendations
+app.include_router(colearn_router)  # Co-Learning autonomous teaching
 app.include_router(rag_router)  # Optional - for advanced use
 
 
