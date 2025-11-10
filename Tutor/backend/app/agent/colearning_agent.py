@@ -408,8 +408,12 @@ Instead: talk through the problem step by step, one question at a time, giving s
         import os
         os.makedirs("data", exist_ok=True)
 
-        # Create session for conversation memory
-        session = SQLiteSession(self.session_id)
+        # Create session for conversation memory with proper file path
+        # SQLiteSession needs a file path, not just an ID
+        session_file = f"data/{self.session_id}.db"
+        session = SQLiteSession(session_file)
+
+        print(f"📂 Using session file: {session_file}")
 
         # Run the autonomous agent
         result = await Runner.run(
