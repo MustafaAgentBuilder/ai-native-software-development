@@ -43,6 +43,35 @@ function TutorChatComponent() {
     }
   }, []);
 
+  // Listen for external events to open chat
+  useEffect(() => {
+    const handleOpenChat = (event: CustomEvent) => {
+      if (!isOpen) {
+        const selectedText = event.detail?.text || '';
+        if (selectedText) {
+          setMessage(selectedText);
+        }
+        setIsOpen(true);
+
+        // Open login if not logged in
+        if (!isLoggedIn) {
+          setShowLogin(true);
+        } else {
+          // Connect websocket if needed
+          const token = localStorage.getItem('tutorgpt_token');
+          if (token && !ws) {
+            connectWebSocket(token);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('openTutorChat' as any, handleOpenChat);
+    return () => {
+      window.removeEventListener('openTutorChat' as any, handleOpenChat);
+    };
+  }, [isOpen, isLoggedIn, ws]);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);

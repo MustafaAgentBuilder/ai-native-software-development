@@ -12,11 +12,13 @@
 import React from 'react';
 import { AnalyticsTracker } from '@/components/AnalyticsTracker';
 import TutorAgent from '@/components/tutor/TutorAgent';
+import TutorChat from '@/components/TutorChat';
 
 export default function Root({ children }: { children: React.ReactNode }) {
   return (
     <AnalyticsTracker>
       <TutorAgent />
+      <TutorChat />
       {children}
     </AnalyticsTracker>
   );
