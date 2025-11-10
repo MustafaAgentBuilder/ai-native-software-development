@@ -4,11 +4,13 @@ Co-Learning API Endpoints
 Provides RESTful and WebSocket endpoints for the autonomous co-learning system.
 """
 
-from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect, Depends
+from fastapi import APIRouter, HTTPException, WebSocket, WebSocketDisconnect, Depends, Query
 from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 import json
 import asyncio
+import time
+from datetime import datetime
 
 from app.agent.colearning_agent import create_colearning_agent, TeachingPhase
 
@@ -349,66 +351,152 @@ async def update_student_profile(profile: StudentProfile):
 # WebSocket for Real-time Teaching
 # ============================================
 
-@router.websocket("/ws/teach")
-async def websocket_teaching(websocket: WebSocket, user_id: str):
+@router.websocket("/ws/chat")
+async def websocket_chat(
+    websocket: WebSocket,
+    session_id: str = Query(..., description="Session ID for the chat"),
+    chapter: int = Query(1, description="Current chapter number"),
+    language: str = Query("en", description="Language preference")
+):
     """
-    WebSocket endpoint for real-time interactive teaching.
+    WebSocket endpoint for real-time interactive teaching with CoLearning Agent.
 
-    Provides a persistent connection for:
+    NO AUTHENTICATION REQUIRED - Uses session_id for continuity.
+
+    Usage:
+        const ws = new WebSocket('ws://localhost:8000/api/colearn/ws/chat?session_id=session_123&chapter=1&language=en');
+
+        // Send message
+        ws.send(JSON.stringify({
+            type: "message",
+            message: "Teach me about AI agents",
+            chapter: 1
+        }));
+
+        // Receive response
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            console.log(data.type, data.message);
+        };
+
+    Provides:
     - Continuous conversation
-    - Real-time feedback
+    - Real-time streaming responses from LLM
+    - RAG-enhanced teaching (agent calls RAG tool automatically)
     - Typing indicators
-    - Instant responses
+    - No static responses - everything from LLM
     """
     await websocket.accept()
 
+    print(f"✅ WebSocket connected: session={session_id}, chapter={chapter}, lang={language}")
+
     try:
-        # Get agent for this user
-        agent = get_or_create_agent(user_id)
+        # Get or create agent for this session
+        profile = {
+            'language': language,
+            'current_chapter': chapter,
+            'level': 'beginner'
+        }
+        agent = get_or_create_agent(session_id, profile)
 
         # Send welcome message
         await websocket.send_json({
             "type": "connected",
-            "message": "Co-Learning Tutor connected! 🚀"
+            "status": "connected",
+            "message": "Co-Learning Tutor connected! Ready to teach 🚀",
+            "session_id": session_id,
+            "chapter": chapter
         })
 
         # Main conversation loop
         while True:
             # Receive student message
             data = await websocket.receive_json()
+            message_type = data.get('type', 'message')
             message = data.get('message', '')
+            chapter_override = data.get('chapter', chapter)
 
-            if not message:
+            if not message and message_type == 'message':
+                await websocket.send_json({
+                    "type": "error",
+                    "message": "Message cannot be empty"
+                })
                 continue
+
+            # Update chapter if changed
+            if chapter_override != chapter:
+                chapter = chapter_override
+                agent.update_profile({'current_chapter': chapter})
 
             # Send thinking indicator
             await websocket.send_json({
                 "type": "status",
                 "status": "thinking",
-                "message": "Processing your message..."
+                "message": "Agent is thinking and searching relevant content..."
             })
 
-            # Get agent response
-            result = await agent.teach(message)
+            # Track response time
+            start_time = time.time()
 
-            # Send response
-            await websocket.send_json({
-                "type": "response",
-                "message": result['response'],
-                "phase": result['phase'],
-                "chapter": result['chapter'],
-                "metadata": result['metadata']
-            })
+            try:
+                # Get REAL response from agent (which calls LLM + RAG tool)
+                # This is fully agentic - NO static responses!
+                result = await agent.teach(message)
+
+                response_time_ms = int((time.time() - start_time) * 1000)
+
+                # Send actual response from LLM
+                await websocket.send_json({
+                    "type": "response",
+                    "message": result['response'],
+                    "phase": result['phase'],
+                    "chapter": result['chapter'],
+                    "section": result['section'],
+                    "metadata": {
+                        **result['metadata'],
+                        'response_time_ms': response_time_ms,
+                        'timestamp': datetime.now().isoformat()
+                    }
+                })
+
+                # Send ready status
+                await websocket.send_json({
+                    "type": "status",
+                    "status": "ready",
+                    "message": "Ready for your next question"
+                })
+
+                print(f"✅ Response sent: {response_time_ms}ms, phase={result['phase']}")
+
+            except Exception as e:
+                print(f"❌ Error generating response: {e}")
+                await websocket.send_json({
+                    "type": "error",
+                    "message": f"Failed to generate response: {str(e)}"
+                })
+                # Send ready status even after error
+                await websocket.send_json({
+                    "type": "status",
+                    "status": "ready"
+                })
 
     except WebSocketDisconnect:
-        print(f"WebSocket disconnected for user: {user_id}")
+        print(f"🔌 WebSocket disconnected: session={session_id}")
     except Exception as e:
-        print(f"WebSocket error: {e}")
-        await websocket.send_json({
-            "type": "error",
-            "message": str(e)
-        })
-        await websocket.close()
+        print(f"❌ WebSocket error for session {session_id}: {e}")
+        try:
+            await websocket.send_json({
+                "type": "error",
+                "message": f"Connection error: {str(e)}"
+            })
+        except:
+            pass
+    finally:
+        try:
+            await websocket.close()
+            print(f"🔌 WebSocket closed: session={session_id}")
+        except:
+            pass
 
 
 # ============================================
