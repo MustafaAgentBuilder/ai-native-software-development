@@ -22,13 +22,15 @@
     "@mdx-js/react": "^3.0.0",
     "cheerio": "^1.1.2",
     "clsx": "^2.0.0",
+    "framer-motion": "^11.11.17",
+    "highlight.js": "^11.11.1",
     "prism-react-renderer": "^2.3.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^10.1.0",
+    "react-rnd": "^10.4.13",
     "rehype-highlight": "^7.0.2",
-    "remark-gfm": "^4.0.1",
-    "highlight.js": "^11.11.1"
+    "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.9.2",
