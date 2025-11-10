@@ -27,6 +27,9 @@ function TutorChatComponent() {
   const [selectedText, setSelectedText] = useState('');
   const tooltipRef = useRef<HTMLDivElement>(null);
 
+  // Pending auto-send message
+  const [pendingAutoSend, setPendingAutoSend] = useState<string | null>(null);
+
   // Auth state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -69,28 +72,9 @@ function TutorChatComponent() {
           connectWebSocket(token);
         }
 
-        // Auto-send if requested
-        if (autoSend && selectedText && ws && ws.readyState === WebSocket.OPEN) {
-          // Wait a bit for the message to be set, then send
-          setTimeout(() => {
-            if (ws && ws.readyState === WebSocket.OPEN) {
-              const userMessage: Message = {
-                id: Date.now().toString(),
-                type: 'user',
-                content: selectedText,
-                timestamp: new Date()
-              };
-
-              setMessages(prev => [...prev, userMessage]);
-
-              ws.send(JSON.stringify({
-                type: 'message',
-                message: selectedText
-              }));
-
-              setMessage('');
-            }
-          }, 100);
+        // Queue auto-send message if requested
+        if (autoSend && selectedText) {
+          setPendingAutoSend(selectedText);
         }
       }
     };
@@ -99,11 +83,35 @@ function TutorChatComponent() {
     return () => {
       window.removeEventListener('openTutorChat' as any, handleOpenChat);
     };
-  }, [isOpen, isLoggedIn, ws, setMessages]);
+  }, [isOpen, isLoggedIn, ws]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Send pending auto-send message when WebSocket is ready
+  useEffect(() => {
+    if (pendingAutoSend && ws && ws.readyState === WebSocket.OPEN && connectionStatus === 'connected') {
+      console.log('Sending pending auto-send message:', pendingAutoSend);
+
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        type: 'user',
+        content: pendingAutoSend,
+        timestamp: new Date()
+      };
+
+      setMessages(prev => [...prev, userMessage]);
+
+      ws.send(JSON.stringify({
+        type: 'message',
+        message: pendingAutoSend
+      }));
+
+      setMessage('');
+      setPendingAutoSend(null); // Clear pending message
+    }
+  }, [pendingAutoSend, ws, connectionStatus]);
 
   // Text selection handler - DISABLED (using SelectionPopover instead)
   // useEffect(() => {
