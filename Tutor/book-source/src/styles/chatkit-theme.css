@@ -1,0 +1,347 @@
+/**
+ * ChatKit-Inspired Design System
+ * Based on OpenAI's ChatKit-JS framework
+ *
+ * This theme provides a comprehensive design system with:
+ * - Professional color palette (slate/gray with blue accents)
+ * - Consistent spacing system (8px grid)
+ * - Smooth animations and transitions
+ * - Dark/light mode support (light mode first)
+ */
+
+:root {
+  /* ============================================
+     COLOR SYSTEM - Light Mode
+     ============================================ */
+
+  /* Primary Colors */
+  --chatkit-primary: #0f172a;        /* slate-900 */
+  --chatkit-background: #ffffff;
+  --chatkit-surface: #f8fafc;        /* slate-50 */
+  --chatkit-surface-hover: #f1f5f9;  /* slate-100 */
+
+  /* Border Colors */
+  --chatkit-border: #e2e8f0;         /* slate-200 */
+  --chatkit-border-light: #f1f5f9;   /* slate-100 */
+  --chatkit-border-dark: #cbd5e1;    /* slate-300 */
+
+  /* Text Colors */
+  --chatkit-text-primary: #0f172a;   /* slate-900 */
+  --chatkit-text-secondary: #64748b; /* slate-500 */
+  --chatkit-text-disabled: #cbd5e1;  /* slate-300 */
+  --chatkit-text-muted: #94a3b8;     /* slate-400 */
+
+  /* Accent Colors */
+  --chatkit-accent-primary: #3b82f6;    /* blue-500 */
+  --chatkit-accent-primary-hover: #2563eb; /* blue-600 */
+  --chatkit-accent-success: #10b981;    /* green-500 */
+  --chatkit-accent-success-hover: #059669; /* green-600 */
+  --chatkit-accent-warning: #f59e0b;    /* amber-500 */
+  --chatkit-accent-error: #ef4444;      /* red-500 */
+
+  /* Message Bubble Colors */
+  --chatkit-msg-user-bg: hsl(220, 13%, 91%);
+  --chatkit-msg-user-text: hsl(220, 9%, 15%);
+  --chatkit-msg-ai-bg: hsl(220, 13%, 95%);
+  --chatkit-msg-ai-text: hsl(220, 9%, 15%);
+  --chatkit-msg-ai-border: hsl(220, 70%, 50%);
+
+  /* ============================================
+     SPACING SYSTEM (8px grid)
+     ============================================ */
+
+  --chatkit-space-xs: 4px;
+  --chatkit-space-sm: 8px;
+  --chatkit-space-md: 12px;
+  --chatkit-space-lg: 16px;
+  --chatkit-space-xl: 24px;
+  --chatkit-space-2xl: 32px;
+
+  /* ============================================
+     TYPOGRAPHY
+     ============================================ */
+
+  --chatkit-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --chatkit-font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Liberation Mono", Consolas, monospace;
+
+  --chatkit-font-size-xs: 12px;
+  --chatkit-font-size-sm: 14px;
+  --chatkit-font-size-md: 16px;
+  --chatkit-font-size-lg: 18px;
+  --chatkit-font-size-xl: 20px;
+
+  --chatkit-line-height-tight: 1.25;
+  --chatkit-line-height-normal: 1.5;
+  --chatkit-line-height-relaxed: 1.625;
+
+  --chatkit-font-weight-normal: 400;
+  --chatkit-font-weight-medium: 500;
+  --chatkit-font-weight-semibold: 600;
+  --chatkit-font-weight-bold: 700;
+
+  /* ============================================
+     BORDER RADIUS
+     ============================================ */
+
+  --chatkit-radius-sm: 8px;
+  --chatkit-radius-md: 12px;
+  --chatkit-radius-lg: 16px;
+  --chatkit-radius-full: 9999px;
+
+  /* ============================================
+     SHADOWS
+     ============================================ */
+
+  --chatkit-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --chatkit-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --chatkit-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --chatkit-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Focus Shadow */
+  --chatkit-shadow-focus: 0 0 0 3px rgba(59, 130, 246, 0.1);
+
+  /* ============================================
+     ANIMATION TIMING
+     ============================================ */
+
+  --chatkit-transition-fast: 100ms;
+  --chatkit-transition-medium: 200ms;
+  --chatkit-transition-slow: 300ms;
+  --chatkit-transition-slower: 400ms;
+
+  --chatkit-easing: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out */
+  --chatkit-easing-in: cubic-bezier(0.4, 0, 1, 1);
+  --chatkit-easing-out: cubic-bezier(0, 0, 0.2, 1);
+
+  /* ============================================
+     Z-INDEX LAYERS
+     ============================================ */
+
+  --chatkit-z-dropdown: 1000;
+  --chatkit-z-sticky: 1020;
+  --chatkit-z-fixed: 1030;
+  --chatkit-z-modal-backdrop: 1040;
+  --chatkit-z-modal: 1050;
+  --chatkit-z-popover: 1060;
+  --chatkit-z-tooltip: 1070;
+}
+
+/* ============================================
+   DARK MODE (Future Enhancement)
+   ============================================ */
+
+[data-theme='dark'] {
+  --chatkit-primary: #f8fafc;
+  --chatkit-background: #0f172a;
+  --chatkit-surface: #1e293b;
+  --chatkit-surface-hover: #334155;
+
+  --chatkit-border: #334155;
+  --chatkit-border-light: #1e293b;
+  --chatkit-border-dark: #475569;
+
+  --chatkit-text-primary: #f8fafc;
+  --chatkit-text-secondary: #94a3b8;
+  --chatkit-text-disabled: #475569;
+  --chatkit-text-muted: #64748b;
+
+  --chatkit-accent-primary: #60a5fa;
+  --chatkit-accent-primary-hover: #3b82f6;
+  --chatkit-accent-success: #34d399;
+  --chatkit-accent-success-hover: #10b981;
+
+  --chatkit-msg-user-bg: hsl(220, 13%, 25%);
+  --chatkit-msg-user-text: hsl(220, 9%, 95%);
+  --chatkit-msg-ai-bg: hsl(220, 13%, 20%);
+  --chatkit-msg-ai-text: hsl(220, 9%, 95%);
+  --chatkit-msg-ai-border: hsl(220, 70%, 60%);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.chatkit-scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+.chatkit-transition {
+  transition: all var(--chatkit-transition-medium) var(--chatkit-easing);
+}
+
+.chatkit-transition-fast {
+  transition: all var(--chatkit-transition-fast) var(--chatkit-easing);
+}
+
+.chatkit-transition-slow {
+  transition: all var(--chatkit-transition-slow) var(--chatkit-easing);
+}
+
+/* ============================================
+   ANIMATION KEYFRAMES
+   ============================================ */
+
+@keyframes chatkit-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes chatkit-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes chatkit-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes chatkit-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes chatkit-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes chatkit-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* ============================================
+   COMPONENT BASE STYLES
+   ============================================ */
+
+.chatkit-message {
+  padding: var(--chatkit-space-md) var(--chatkit-space-lg);
+  border-radius: var(--chatkit-radius-lg);
+  font-family: var(--chatkit-font-family);
+  font-size: var(--chatkit-font-size-sm);
+  line-height: var(--chatkit-line-height-normal);
+  animation: chatkit-slide-up var(--chatkit-transition-medium) var(--chatkit-easing);
+}
+
+.chatkit-message-user {
+  background: var(--chatkit-msg-user-bg);
+  color: var(--chatkit-msg-user-text);
+  border-radius: var(--chatkit-radius-lg) var(--chatkit-radius-lg) 4px var(--chatkit-radius-lg);
+  max-width: 80%;
+  margin-left: auto;
+}
+
+.chatkit-message-ai {
+  background: var(--chatkit-msg-ai-bg);
+  color: var(--chatkit-msg-ai-text);
+  border-radius: var(--chatkit-radius-lg) var(--chatkit-radius-lg) var(--chatkit-radius-lg) 4px;
+  border-left: 3px solid var(--chatkit-msg-ai-border);
+  max-width: 85%;
+}
+
+.chatkit-input {
+  font-family: var(--chatkit-font-family);
+  font-size: var(--chatkit-font-size-sm);
+  padding: var(--chatkit-space-md) var(--chatkit-space-lg);
+  border: 1px solid var(--chatkit-border);
+  border-radius: var(--chatkit-radius-md);
+  background: var(--chatkit-background);
+  color: var(--chatkit-text-primary);
+  transition: all var(--chatkit-transition-medium) var(--chatkit-easing);
+  outline: none;
+}
+
+.chatkit-input:focus {
+  border-color: var(--chatkit-accent-primary);
+  box-shadow: var(--chatkit-shadow-focus);
+}
+
+.chatkit-input::placeholder {
+  color: var(--chatkit-text-secondary);
+}
+
+.chatkit-button {
+  font-family: var(--chatkit-font-family);
+  font-size: var(--chatkit-font-size-sm);
+  font-weight: var(--chatkit-font-weight-medium);
+  padding: var(--chatkit-space-sm) var(--chatkit-space-lg);
+  border: none;
+  border-radius: var(--chatkit-radius-md);
+  cursor: pointer;
+  transition: all var(--chatkit-transition-fast) var(--chatkit-easing);
+  outline: none;
+}
+
+.chatkit-button-primary {
+  background: var(--chatkit-accent-primary);
+  color: white;
+}
+
+.chatkit-button-primary:hover {
+  background: var(--chatkit-accent-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--chatkit-shadow-md);
+}
+
+.chatkit-button-primary:active {
+  transform: translateY(0);
+}
+
+.chatkit-button-secondary {
+  background: var(--chatkit-surface);
+  color: var(--chatkit-text-primary);
+  border: 1px solid var(--chatkit-border);
+}
+
+.chatkit-button-secondary:hover {
+  background: var(--chatkit-surface-hover);
+  border-color: var(--chatkit-accent-primary);
+}
+
+/* Loading States */
+.chatkit-loading-skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--chatkit-surface) 0%,
+    var(--chatkit-surface-hover) 50%,
+    var(--chatkit-surface) 100%
+  );
+  background-size: 200% 100%;
+  animation: chatkit-shimmer 1.5s ease-in-out infinite;
+  border-radius: var(--chatkit-radius-md);
+}
+
+.chatkit-loading-pulse {
+  animation: chatkit-pulse 2s ease-in-out infinite;
+}
