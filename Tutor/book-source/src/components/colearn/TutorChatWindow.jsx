@@ -31,11 +31,17 @@ const TutorChatWindow = ({ onClose, onQuizRequest, isFloating = false, sessionId
   useEffect(() => {
     const handleExternalMessage = (event) => {
       const { text } = event.detail || {};
-      if (text && wsClientRef.current?.isConnected()) {
-        // Send the highlighted text to chat
-        wsClientRef.current.sendMessage(text);
-        setIsLoading(true);
-        setConnectionStatus('thinking');
+      if (text) {
+        // Put the text in the input field (don't auto-send)
+        setInputMessage(text);
+
+        // Focus the input so student can type more
+        setTimeout(() => {
+          inputRef.current?.focus();
+          // Move cursor to end of text
+          const length = text.length;
+          inputRef.current?.setSelectionRange(length, length);
+        }, 100);
       }
     };
 
