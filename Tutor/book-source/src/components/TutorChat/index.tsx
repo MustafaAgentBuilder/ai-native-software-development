@@ -500,14 +500,24 @@ function TutorChatComponent() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyPress}
-          placeholder="Ask me anything... (Shift+Enter for new line)"
-          disabled={connectionStatus !== 'connected' && connectionStatus !== 'ready'}
+          placeholder={
+            connectionStatus === 'disconnected' || connectionStatus === 'error'
+              ? 'Connecting to server...'
+              : connectionStatus === 'thinking'
+              ? 'Agent is thinking...'
+              : 'Ask me anything... (Shift+Enter for new line)'
+          }
+          disabled={false}
           rows={1}
         />
         <button
           onClick={handleSendMessage}
           disabled={!message.trim() || (connectionStatus !== 'connected' && connectionStatus !== 'ready')}
-          title="Send message (Enter)"
+          title={
+            connectionStatus !== 'connected' && connectionStatus !== 'ready'
+              ? 'Connecting...'
+              : 'Send message (Enter)'
+          }
         >
           📤
         </button>
