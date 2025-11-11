@@ -26,8 +26,17 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: var(--chatkit-space-xl);
+  padding: 0;
   overflow: hidden;
+  position: relative;
+}
+
+/* Header with User Profile Menu */
+.colearn-header {
+  position: absolute;
+  top: var(--chatkit-space-xl);
+  right: var(--chatkit-space-xl);
+  z-index: 100;
 }
 
 .colearn-loading {
@@ -317,6 +326,8 @@
 .tutor-chat-window.docked {
   height: 100%;
   width: 100%;
+  margin: var(--chatkit-space-xl);
+  margin-right: var(--chatkit-space-xl);
 }
 
 .tutor-chat-window.floating {

@@ -5,6 +5,8 @@ import ChatSessions from './ChatSessions';
 import TutorChatWindow from './TutorChatWindow';
 import QuizComponent from './QuizComponent';
 import CoLearnSelectionPopover from './CoLearnSelectionPopover';
+import UserProfileMenu from './UserProfileMenu';
+import SettingsModal from './SettingsModal';
 import lessonController from '../../utils/LessonController';
 import * as storage from '../../utils/localStorageService';
 
@@ -27,7 +29,27 @@ const AgentCoLearnUI = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [isLoading, setIsLoading] = useState(true);
   const [currentSessionId, setCurrentSessionId] = useState(() => generateSessionId());
+  const [showSettings, setShowSettings] = useState(false);
   const chatWindowRef = useRef(null);
+
+  // Mock user data - Replace with actual auth system
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('tutorgpt_user');
+    if (storedUser) {
+      try {
+        return JSON.parse(storedUser);
+      } catch (e) {
+        return null;
+      }
+    }
+    // Default mock user for demo
+    return {
+      name: 'Student User',
+      email: 'student@example.com',
+      plan: 'free',
+      avatar: null,
+    };
+  });
 
   useEffect(() => {
     checkFirstTime();
@@ -108,6 +130,22 @@ const AgentCoLearnUI = () => {
     window.dispatchEvent(event);
   };
 
+  // Handle user logout
+  const handleLogout = () => {
+    localStorage.removeItem('tutorgpt_token');
+    localStorage.removeItem('tutorgpt_user');
+    // Redirect to home or show login
+    window.location.href = '/';
+  };
+
+  // Handle profile update
+  const handleUpdateProfile = (newData) => {
+    const updatedUser = { ...user, ...newData };
+    setUser(updatedUser);
+    localStorage.setItem('tutorgpt_user', JSON.stringify(updatedUser));
+    setShowSettings(false);
+  };
+
   if (isLoading) {
     return (
       <div className="colearn-loading">
@@ -137,6 +175,15 @@ const AgentCoLearnUI = () => {
 
       {/* Main Content */}
       <div className="colearn-main">
+        {/* User Profile Menu - Top Right */}
+        <div className="colearn-header">
+          <UserProfileMenu
+            user={user}
+            onLogout={handleLogout}
+            onOpenSettings={() => setShowSettings(true)}
+          />
+        </div>
+
         {showQuiz ? (
           <QuizComponent
             chapterNumber={currentChapter}
@@ -152,6 +199,14 @@ const AgentCoLearnUI = () => {
           />
         )}
       </div>
+
+      {/* Settings Modal */}
+      <SettingsModal
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+        user={user}
+        onUpdateProfile={handleUpdateProfile}
+      />
 
       {/* Welcome Modal */}
       <AnimatePresence>

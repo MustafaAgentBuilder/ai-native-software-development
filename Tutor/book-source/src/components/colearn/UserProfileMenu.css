@@ -1,0 +1,219 @@
+/**
+ * User Profile Menu - ChatKit-inspired design
+ * Professional dropdown menu in top-right corner
+ */
+
+.user-profile-menu {
+  position: relative;
+  z-index: var(--chatkit-z-dropdown);
+}
+
+/* Profile Button */
+.profile-button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px 6px 6px;
+  background: transparent;
+  border: 1px solid var(--chatkit-border);
+  border-radius: var(--chatkit-radius-full);
+  cursor: pointer;
+  transition: all var(--chatkit-transition-fast) var(--chatkit-easing);
+  font-family: var(--chatkit-font-family);
+}
+
+.profile-button:hover {
+  background: var(--chatkit-surface);
+  border-color: var(--chatkit-border-dark);
+}
+
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--chatkit-accent-success) 0%, var(--chatkit-accent-success-hover) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-initials {
+  color: white;
+  font-size: 14px;
+  font-weight: var(--chatkit-font-weight-semibold);
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.profile-name {
+  font-size: var(--chatkit-font-size-sm);
+  font-weight: var(--chatkit-font-weight-medium);
+  color: var(--chatkit-text-primary);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dropdown-arrow {
+  color: var(--chatkit-text-secondary);
+  transition: transform var(--chatkit-transition-fast) var(--chatkit-easing);
+}
+
+.dropdown-arrow.open {
+  transform: rotate(180deg);
+}
+
+/* Dropdown Menu */
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 280px;
+  background: var(--chatkit-background);
+  border: 1px solid var(--chatkit-border);
+  border-radius: var(--chatkit-radius-md);
+  box-shadow: var(--chatkit-shadow-xl);
+  overflow: hidden;
+}
+
+.dropdown-section {
+  padding: var(--chatkit-space-md);
+}
+
+/* User Info Section */
+.user-info-section {
+  display: flex;
+  align-items: center;
+  gap: var(--chatkit-space-md);
+  padding: var(--chatkit-space-lg);
+}
+
+.user-avatar-large {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--chatkit-accent-success) 0%, var(--chatkit-accent-success-hover) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.user-avatar-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-initials-large {
+  color: white;
+  font-size: 20px;
+  font-weight: var(--chatkit-font-weight-bold);
+}
+
+.user-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: var(--chatkit-font-size-md);
+  font-weight: var(--chatkit-font-weight-semibold);
+  color: var(--chatkit-text-primary);
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-email {
+  font-size: var(--chatkit-font-size-sm);
+  color: var(--chatkit-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.user-plan {
+  margin-top: var(--chatkit-space-xs);
+}
+
+.plan-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--chatkit-surface);
+  border: 1px solid var(--chatkit-border);
+  border-radius: var(--chatkit-radius-sm);
+  font-size: var(--chatkit-font-size-xs);
+  font-weight: var(--chatkit-font-weight-semibold);
+  color: var(--chatkit-accent-success);
+  text-transform: uppercase;
+}
+
+/* Divider */
+.dropdown-divider {
+  height: 1px;
+  background: var(--chatkit-border);
+  margin: 0;
+}
+
+/* Menu Items */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--chatkit-space-md);
+  width: 100%;
+  padding: var(--chatkit-space-sm) var(--chatkit-space-md);
+  background: transparent;
+  border: none;
+  border-radius: var(--chatkit-radius-sm);
+  font-family: var(--chatkit-font-family);
+  font-size: var(--chatkit-font-size-sm);
+  font-weight: var(--chatkit-font-weight-medium);
+  color: var(--chatkit-text-primary);
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--chatkit-transition-fast) var(--chatkit-easing);
+}
+
+.dropdown-item:hover {
+  background: var(--chatkit-surface);
+}
+
+.dropdown-item svg {
+  color: var(--chatkit-text-secondary);
+  flex-shrink: 0;
+}
+
+.dropdown-item:hover svg {
+  color: var(--chatkit-accent-primary);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .profile-name {
+    display: none;
+  }
+
+  .profile-button {
+    padding: 6px;
+  }
+
+  .profile-dropdown {
+    min-width: 260px;
+  }
+}
