@@ -1,4 +1,4 @@
-"""TutorGPT Agent - OpenRouter with DeepSeek!"""
+"""TutorGPT Autonomous Agent - SEPARATE API KEY FOR RATE LIMITS"""
 import os
 from typing import Optional
 from agents import Agent, Runner, SQLiteSession, AsyncOpenAI, OpenAIChatCompletionsModel, set_tracing_disabled
@@ -10,19 +10,19 @@ from app.tools.teaching_tools import TUTORGPT_TOOLS
 load_dotenv()
 set_tracing_disabled(True)
 
-# OPENROUTER API - FREE DeepSeek model!
+# SEPARATE API KEY FOR SIDEBAR AGENT!
 Provider = AsyncOpenAI(
-    api_key=os.getenv("openrouter_api_key"),
-    base_url="https://openrouter.ai/api/v1",
+    api_key=os.getenv("SIDEBAR_AGENT_API_KEY", os.getenv("GEMINI_API_KEY")),
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
 )
 
 model = OpenAIChatCompletionsModel(
-    model=os.getenv("OPENROUTER_MODEL", "google/gemini-flash-1.5"),
+    model=os.getenv("AGENT_MODEL", "gemini-2.0-flash"),
     openai_client=Provider,
 )
 
 class TutorGPTAgent:
-    """Sidebar Agent with OpenRouter and RAG"""
+    """Sidebar Agent with dedicated API key"""
     def __init__(self, current_chapter: Optional[str] = None, current_lesson: Optional[str] = None,
                  student_level: str = "beginner", student_name: Optional[str] = None,
                  learning_style: Optional[str] = None, completed_lessons: Optional[list] = None,
