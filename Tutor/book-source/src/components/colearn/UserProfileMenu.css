@@ -79,8 +79,8 @@
 /* Dropdown Menu */
 .profile-dropdown {
   position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
+  bottom: calc(100% + 8px);
+  left: 0;
   min-width: 280px;
   background: var(--chatkit-background);
   border: 1px solid var(--chatkit-border);

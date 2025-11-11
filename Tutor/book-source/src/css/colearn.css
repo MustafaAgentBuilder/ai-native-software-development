@@ -34,8 +34,8 @@
 /* Header with User Profile Menu */
 .colearn-header {
   position: absolute;
-  top: var(--chatkit-space-xl);
-  right: var(--chatkit-space-xl);
+  bottom: var(--chatkit-space-xl);
+  left: var(--chatkit-space-xl);
   z-index: 100;
 }
 
