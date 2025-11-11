@@ -74,12 +74,7 @@ const SidebarChapters = ({ onChapterSelect, currentChapter }) => {
   };
 
   return (
-    <motion.div
-      className={`colearn-sidebar ${isCollapsed ? 'collapsed' : ''}`}
-      initial={{ x: -280 }}
-      animate={{ x: isCollapsed ? -240 : 0 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-    >
+    <div className={`colearn-sidebar ${isCollapsed ? 'collapsed' : ''}`}>
       {/* Collapse Toggle */}
       <button
         className="sidebar-collapse-btn"
@@ -176,7 +171,7 @@ const SidebarChapters = ({ onChapterSelect, currentChapter }) => {
           </div>
         </>
       )}
-    </motion.div>
+    </div>
   );
 };
 
