@@ -6,91 +6,131 @@
 import { agentApi, mockCoLearningResponse, mockGenerateQuiz, useMockResponses } from './agentApi.ts';
 import * as storage from './localStorageService';
 
+// Course structure with Parts and Chapters (matching the actual book)
+const COURSE_STRUCTURE = {
+  parts: {
+    1: {
+      title: 'Part 1: Introducing AI-Driven Development',
+      chapters: [1, 2, 3, 4]
+    },
+    2: {
+      title: 'Part 2: AI Tool Landscape',
+      chapters: [5, 6, 7]
+    },
+    3: {
+      title: 'Part 3: Markdown, Prompt & Context Engineering',
+      chapters: [10, 11]
+    },
+    4: {
+      title: 'Part 4: Python - The Language of AI Agents',
+      chapters: [12]
+    },
+    5: {
+      title: 'Part 5: Spec-Driven Development',
+      chapters: [30, 31, 32, 33]
+    }
+  }
+};
+
 // Chapter metadata structure
 const CHAPTER_METADATA = {
   1: {
-    title: 'Introducing AI-Driven Development',
-    sections: ['AI Development Revolution', 'The Turning Point', 'Billion Dollar AI', 'Nine Pillars'],
-    estimatedTime: 45, // minutes
+    title: 'The AI Development Revolution',
+    part: 1,
+    sections: ['Moment That Changed Everything', 'Three Trillion Developer Economy', 'Software Disrupting Itself'],
+    estimatedTime: 45,
     totalLessons: 8
   },
   2: {
-    title: 'AI Tool Landscape',
-    sections: ['Claude Code Features', 'Workflow Patterns', 'Best Practices'],
+    title: 'The AI Turning Point',
+    part: 1,
+    sections: ['The Inflection Point', 'Development Patterns', 'DORA Perspective'],
     estimatedTime: 40,
     totalLessons: 6
   },
   3: {
-    title: 'Prompt Engineering',
-    sections: ['Basics', 'Advanced Techniques', 'Best Practices'],
+    title: 'How to Make a Billion Dollars in the AI Era',
+    part: 1,
+    sections: ['Billion Dollar Question', 'Snakes and Ladders', 'Super Orchestrators'],
     estimatedTime: 50,
     totalLessons: 7
   },
   4: {
-    title: 'Code Generation & Refactoring',
-    sections: ['AI-Assisted Coding', 'Code Review', 'Refactoring Strategies'],
+    title: 'The Nine Pillars of AI-Driven Development',
+    part: 1,
+    sections: ['Nine Pillars Framework', 'Implementation Strategy', 'Best Practices'],
     estimatedTime: 55,
     totalLessons: 8
   },
   5: {
-    title: 'Testing with AI',
-    sections: ['Test Generation', 'Test-Driven Development', 'Quality Assurance'],
+    title: 'How It All Started — The Claude Code Phenomenon',
+    part: 2,
+    sections: ['Claude Code Features', 'Workflow Patterns', 'Best Practices'],
     estimatedTime: 45,
     totalLessons: 7
   },
   6: {
-    title: 'Documentation & Comments',
-    sections: ['Writing Docs', 'Code Comments', 'API Documentation'],
-    estimatedTime: 35,
-    totalLessons: 5
-  },
-  7: {
-    title: 'Debugging & Troubleshooting',
-    sections: ['Error Analysis', 'AI-Powered Debugging', 'Problem Solving'],
-    estimatedTime: 50,
-    totalLessons: 7
-  },
-  8: {
-    title: 'Architecture & Design Patterns',
-    sections: ['System Design', 'Design Patterns', 'Best Practices'],
-    estimatedTime: 60,
-    totalLessons: 9
-  },
-  9: {
-    title: 'Security & Best Practices',
-    sections: ['Secure Coding', 'Vulnerability Detection', 'Security Review'],
-    estimatedTime: 55,
-    totalLessons: 8
-  },
-  10: {
-    title: 'Performance Optimization',
-    sections: ['Performance Analysis', 'Optimization Techniques', 'Profiling'],
-    estimatedTime: 50,
-    totalLessons: 7
-  },
-  11: {
-    title: 'Collaboration & Version Control',
-    sections: ['Git Workflow', 'Code Review', 'Team Collaboration'],
+    title: 'Google Gemini CLI: Open Source and Everywhere',
+    part: 2,
+    sections: ['Installation and Setup', 'CLI Basics', 'Advanced Features'],
     estimatedTime: 40,
     totalLessons: 6
   },
+  7: {
+    title: 'Bash Essentials for AI-Driven Development',
+    part: 2,
+    sections: ['Bash Fundamentals', 'Scripting', 'Configuration & Secrets'],
+    estimatedTime: 50,
+    totalLessons: 7
+  },
+  10: {
+    title: 'Prompt Engineering for AI-Driven Development',
+    part: 3,
+    sections: ['Prompt Basics', 'Advanced Techniques', 'Best Practices'],
+    estimatedTime: 60,
+    totalLessons: 9
+  },
+  11: {
+    title: 'Context Engineering for AI-Driven Development',
+    part: 3,
+    sections: ['Context Management', 'Engineering Strategies', 'Optimization'],
+    estimatedTime: 55,
+    totalLessons: 8
+  },
   12: {
-    title: 'AI Agent Development',
-    sections: ['Building Agents', 'Agent Patterns', 'Deployment'],
+    title: 'Python UV - The Fastest Python Package Manager',
+    part: 4,
+    sections: ['UV Package Manager', 'Installation', 'Usage'],
+    estimatedTime: 45,
+    totalLessons: 7
+  },
+  30: {
+    title: 'Understanding Spec-Driven Development',
+    part: 5,
+    sections: ['Fundamentals', 'Methodology', 'Implementation'],
+    estimatedTime: 50,
+    totalLessons: 7
+  },
+  31: {
+    title: 'Spec-Kit Plus Hands-On',
+    part: 5,
+    sections: ['Spec-Kit Introduction', 'Hands-On Practice', 'Advanced Features'],
+    estimatedTime: 60,
+    totalLessons: 9
+  },
+  32: {
+    title: 'AI Orchestra - Agent Teams Manager',
+    part: 5,
+    sections: ['Agent Teams', 'Orchestration', 'Management'],
+    estimatedTime: 55,
+    totalLessons: 8
+  },
+  33: {
+    title: 'Tessl and SpecifyPlus - The Ultimate Workflow',
+    part: 5,
+    sections: ['Tessl Framework', 'SpecifyPlus Integration', 'Complete Workflow'],
     estimatedTime: 65,
     totalLessons: 10
-  },
-  13: {
-    title: 'Real-World Projects',
-    sections: ['Project Planning', 'Implementation', 'Deployment'],
-    estimatedTime: 70,
-    totalLessons: 12
-  },
-  14: {
-    title: 'Advanced Topics & Future Trends',
-    sections: ['Emerging Technologies', 'Future of AI Coding', 'Career Path'],
-    estimatedTime: 45,
-    totalLessons: 6
   }
 };
 
@@ -504,6 +544,33 @@ class LessonController {
       return CHAPTER_METADATA[chapterNumber];
     }
     return CHAPTER_METADATA;
+  }
+
+  /**
+   * Get course structure (Parts and Chapters)
+   */
+  getCourseStructure() {
+    return COURSE_STRUCTURE;
+  }
+
+  /**
+   * Get all parts
+   */
+  getParts() {
+    return COURSE_STRUCTURE.parts;
+  }
+
+  /**
+   * Get chapters for a specific part
+   */
+  getPartChapters(partNumber) {
+    const part = COURSE_STRUCTURE.parts[partNumber];
+    if (!part) return [];
+
+    return part.chapters.map(chapterNum => ({
+      number: chapterNum,
+      ...CHAPTER_METADATA[chapterNum]
+    }));
   }
 
   /**

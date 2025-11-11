@@ -204,12 +204,55 @@
   background: rgba(255, 255, 255, 0.5);
 }
 
+/* Part Section */
+.part-section {
+  margin-bottom: var(--chatkit-space-md);
+}
+
+.part-header {
+  display: flex;
+  align-items: center;
+  gap: var(--chatkit-space-sm);
+  padding: var(--chatkit-space-md);
+  margin-bottom: var(--chatkit-space-xs);
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: var(--chatkit-radius-md);
+  cursor: pointer;
+  transition: all var(--chatkit-transition-fast) var(--chatkit-easing);
+  font-family: var(--chatkit-font-family);
+}
+
+.part-header:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateX(3px);
+}
+
+.part-icon {
+  font-size: 12px;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.part-title {
+  font-size: var(--chatkit-font-size-md);
+  font-weight: var(--chatkit-font-weight-bold);
+  font-family: var(--chatkit-font-family);
+  color: white;
+  line-height: var(--chatkit-line-height-normal);
+}
+
+/* Chapter Item */
 .chapter-item {
   display: flex;
   align-items: center;
   gap: var(--chatkit-space-md);
   padding: var(--chatkit-space-md);
   margin-bottom: var(--chatkit-space-sm);
+  margin-left: var(--chatkit-space-lg);
   background: rgba(255, 255, 255, 0.1);
   border-radius: var(--chatkit-radius-md);
   cursor: pointer;

@@ -7,7 +7,8 @@ import lessonController from '../../utils/LessonController';
  * Sidebar showing chapter list with progress tracking
  */
 const SidebarChapters = ({ onChapterSelect, currentChapter }) => {
-  const [chapters, setChapters] = useState([]);
+  const [parts, setParts] = useState({});
+  const [expandedParts, setExpandedParts] = useState({ 1: true }); // Part 1 expanded by default
   const [completedChapters, setCompletedChapters] = useState([]);
   const [chapterProgress, setChapterProgress] = useState({});
   const [overallProgress, setOverallProgress] = useState(0);
@@ -15,32 +16,36 @@ const SidebarChapters = ({ onChapterSelect, currentChapter }) => {
 
   useEffect(() => {
     loadProgress();
-    loadChapters();
+    loadParts();
   }, []);
 
-  const loadChapters = () => {
-    const metadata = lessonController.getChapterMetadata();
-    const chapterList = Object.entries(metadata).map(([num, data]) => ({
-      number: parseInt(num),
-      ...data
-    }));
-    setChapters(chapterList);
+  const loadParts = () => {
+    const courseStructure = lessonController.getParts();
+    setParts(courseStructure);
   };
 
   const loadProgress = () => {
     const progress = storage.getProgress();
     setCompletedChapters(progress.completedChapters);
 
-    // Load individual chapter progress
+    // Load individual chapter progress for all chapters
     const progressData = {};
-    chapters.forEach(ch => {
-      progressData[ch.number] = storage.getChapterProgress(ch.number);
+    const allChapters = lessonController.getChapterMetadata();
+    Object.keys(allChapters).forEach(chapterNum => {
+      progressData[chapterNum] = storage.getChapterProgress(parseInt(chapterNum));
     });
     setChapterProgress(progressData);
 
     // Calculate overall progress
     const overall = storage.getOverallProgress();
     setOverallProgress(overall);
+  };
+
+  const togglePart = (partNumber) => {
+    setExpandedParts(prev => ({
+      ...prev,
+      [partNumber]: !prev[partNumber]
+    }));
   };
 
   const handleChapterClick = (chapterNumber) => {
@@ -108,48 +113,81 @@ const SidebarChapters = ({ onChapterSelect, currentChapter }) => {
             </div>
           </div>
 
-          {/* Chapter List */}
+          {/* Parts and Chapters List */}
           <div className="chapter-list">
-            {chapters.map((chapter) => {
-              const status = getChapterStatus(chapter.number);
-              const progress = chapterProgress[chapter.number] || 0;
-              const isActive = chapter.number === currentChapter;
+            {Object.entries(parts).map(([partNumber, part]) => {
+              const isExpanded = expandedParts[partNumber];
+              const partChapters = lessonController.getPartChapters(parseInt(partNumber));
 
               return (
-                <motion.div
-                  key={chapter.number}
-                  className={`chapter-item ${status} ${isActive ? 'active' : ''}`}
-                  onClick={() => handleChapterClick(chapter.number)}
-                  whileHover={{ scale: 1.02, x: 5 }}
-                  whileTap={{ scale: 0.98 }}
-                  layout
-                >
-                  <div className="chapter-icon">
-                    {getStatusIcon(status)}
+                <div key={partNumber} className="part-section">
+                  {/* Part Header */}
+                  <div
+                    className="part-header"
+                    onClick={() => togglePart(partNumber)}
+                  >
+                    <div className="part-icon">
+                      {isExpanded ? '▼' : '▶'}
+                    </div>
+                    <div className="part-title">{part.title}</div>
                   </div>
 
-                  <div className="chapter-content">
-                    <div className="chapter-number">Chapter {chapter.number}</div>
-                    <div className="chapter-title">{chapter.title}</div>
+                  {/* Chapters under this Part */}
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        {partChapters.map((chapter) => {
+                          const status = getChapterStatus(chapter.number);
+                          const progress = chapterProgress[chapter.number] || 0;
+                          const isActive = chapter.number === currentChapter;
 
-                    {/* Chapter Progress */}
-                    {progress > 0 && (
-                      <div className="chapter-progress">
-                        <div
-                          className="chapter-progress-fill"
-                          style={{ width: `${progress}%` }}
-                        />
-                      </div>
-                    )}
+                          return (
+                            <motion.div
+                              key={chapter.number}
+                              className={`chapter-item ${status} ${isActive ? 'active' : ''}`}
+                              onClick={() => handleChapterClick(chapter.number)}
+                              whileHover={{ scale: 1.02, x: 5 }}
+                              whileTap={{ scale: 0.98 }}
+                              layout
+                            >
+                              <div className="chapter-icon">
+                                {getStatusIcon(status)}
+                              </div>
 
-                    {/* Estimated Time */}
-                    {chapter.estimatedTime && (
-                      <div className="chapter-time">
-                        ⏱️ ~{chapter.estimatedTime} min
-                      </div>
+                              <div className="chapter-content">
+                                <div className="chapter-number">Chapter {chapter.number}</div>
+                                <div className="chapter-title">{chapter.title}</div>
+
+                                {/* Chapter Progress */}
+                                {progress > 0 && (
+                                  <div className="chapter-progress">
+                                    <div
+                                      className="chapter-progress-fill"
+                                      style={{ width: `${progress}%` }}
+                                    />
+                                  </div>
+                                )}
+
+                                {/* Estimated Time */}
+                                {chapter.estimatedTime && (
+                                  <div className="chapter-time">
+                                    ⏱️ ~{chapter.estimatedTime} min
+                                  </div>
+                                )}
+                              </div>
+                            </motion.div>
+                          );
+                        })}
+                      </motion.div>
                     )}
-                  </div>
-                </motion.div>
+                  </AnimatePresence>
+                </div>
               );
             })}
           </div>
