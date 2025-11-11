@@ -26,7 +26,72 @@ const CHAPTER_METADATA = {
     estimatedTime: 50,
     totalLessons: 7
   },
-  // Add more chapters as needed
+  4: {
+    title: 'Code Generation & Refactoring',
+    sections: ['AI-Assisted Coding', 'Code Review', 'Refactoring Strategies'],
+    estimatedTime: 55,
+    totalLessons: 8
+  },
+  5: {
+    title: 'Testing with AI',
+    sections: ['Test Generation', 'Test-Driven Development', 'Quality Assurance'],
+    estimatedTime: 45,
+    totalLessons: 7
+  },
+  6: {
+    title: 'Documentation & Comments',
+    sections: ['Writing Docs', 'Code Comments', 'API Documentation'],
+    estimatedTime: 35,
+    totalLessons: 5
+  },
+  7: {
+    title: 'Debugging & Troubleshooting',
+    sections: ['Error Analysis', 'AI-Powered Debugging', 'Problem Solving'],
+    estimatedTime: 50,
+    totalLessons: 7
+  },
+  8: {
+    title: 'Architecture & Design Patterns',
+    sections: ['System Design', 'Design Patterns', 'Best Practices'],
+    estimatedTime: 60,
+    totalLessons: 9
+  },
+  9: {
+    title: 'Security & Best Practices',
+    sections: ['Secure Coding', 'Vulnerability Detection', 'Security Review'],
+    estimatedTime: 55,
+    totalLessons: 8
+  },
+  10: {
+    title: 'Performance Optimization',
+    sections: ['Performance Analysis', 'Optimization Techniques', 'Profiling'],
+    estimatedTime: 50,
+    totalLessons: 7
+  },
+  11: {
+    title: 'Collaboration & Version Control',
+    sections: ['Git Workflow', 'Code Review', 'Team Collaboration'],
+    estimatedTime: 40,
+    totalLessons: 6
+  },
+  12: {
+    title: 'AI Agent Development',
+    sections: ['Building Agents', 'Agent Patterns', 'Deployment'],
+    estimatedTime: 65,
+    totalLessons: 10
+  },
+  13: {
+    title: 'Real-World Projects',
+    sections: ['Project Planning', 'Implementation', 'Deployment'],
+    estimatedTime: 70,
+    totalLessons: 12
+  },
+  14: {
+    title: 'Advanced Topics & Future Trends',
+    sections: ['Emerging Technologies', 'Future of AI Coding', 'Career Path'],
+    estimatedTime: 45,
+    totalLessons: 6
+  }
 };
 
 class LessonController {
