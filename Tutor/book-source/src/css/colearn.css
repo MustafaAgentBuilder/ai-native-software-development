@@ -461,6 +461,9 @@
 .message-content {
   flex: 1;
   max-width: 75%;
+  display: block;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .message-badge {
@@ -498,6 +501,10 @@
   font-family: var(--chatkit-font-family);
   font-size: var(--chatkit-font-size-sm);
   line-height: var(--chatkit-line-height-normal);
+  display: block;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .chat-message.user .message-text {
@@ -509,10 +516,44 @@
 
 .message-text p {
   margin: 0 0 var(--chatkit-space-sm) 0;
+  display: block;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 .message-text p:last-child {
   margin-bottom: 0;
+}
+
+/* ReactMarkdown container fix */
+.message-text > div {
+  display: block;
+  white-space: normal;
+}
+
+/* Ensure lists display properly */
+.message-text ul,
+.message-text ol {
+  margin: var(--chatkit-space-sm) 0;
+  padding-left: var(--chatkit-space-xl);
+  display: block;
+}
+
+.message-text li {
+  margin: var(--chatkit-space-xs) 0;
+  display: list-item;
+}
+
+/* Ensure headings display properly */
+.message-text h1,
+.message-text h2,
+.message-text h3,
+.message-text h4,
+.message-text h5,
+.message-text h6 {
+  display: block;
+  margin: var(--chatkit-space-md) 0 var(--chatkit-space-sm) 0;
+  font-weight: var(--chatkit-font-weight-bold);
 }
 
 .message-text code {
