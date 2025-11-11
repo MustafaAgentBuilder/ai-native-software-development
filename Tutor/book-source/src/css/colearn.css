@@ -340,6 +340,9 @@
   color: white;
   cursor: move;
   border-bottom: 1px solid var(--chatkit-border);
+  min-height: 80px;
+  max-height: 80px;
+  flex-shrink: 0;
 }
 
 .chat-header-info {
@@ -358,6 +361,14 @@
   justify-content: center;
   font-size: 24px;
   box-shadow: var(--chatkit-shadow-md);
+  flex-shrink: 0;
+}
+
+.tutor-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .tutor-info h3 {
@@ -365,6 +376,9 @@
   font-size: var(--chatkit-font-size-lg);
   font-weight: var(--chatkit-font-weight-bold);
   font-family: var(--chatkit-font-family);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .tutor-status {
@@ -372,6 +386,20 @@
   font-size: var(--chatkit-font-size-sm);
   font-family: var(--chatkit-font-family);
   opacity: 0.9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
 }
 
 .chat-header-actions {
