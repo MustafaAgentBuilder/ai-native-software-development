@@ -56,10 +56,8 @@ const SidebarChapters = ({ onChapterSelect, currentChapter }) => {
     if (chapterNumber === currentChapter) {
       return 'active';
     }
-    if (chapterNumber < currentChapter) {
-      return 'accessible';
-    }
-    return 'locked';
+    // All chapters are now accessible - no locking
+    return 'accessible';
   };
 
   const getStatusIcon = (status) => {
@@ -70,8 +68,6 @@ const SidebarChapters = ({ onChapterSelect, currentChapter }) => {
         return '📖';
       case 'accessible':
         return '📚';
-      case 'locked':
-        return '🔒';
       default:
         return '📄';
     }
@@ -128,9 +124,9 @@ const SidebarChapters = ({ onChapterSelect, currentChapter }) => {
                 <motion.div
                   key={chapter.number}
                   className={`chapter-item ${status} ${isActive ? 'active' : ''}`}
-                  onClick={() => status !== 'locked' && handleChapterClick(chapter.number)}
-                  whileHover={status !== 'locked' ? { scale: 1.02, x: 5 } : {}}
-                  whileTap={status !== 'locked' ? { scale: 0.98 } : {}}
+                  onClick={() => handleChapterClick(chapter.number)}
+                  whileHover={{ scale: 1.02, x: 5 }}
+                  whileTap={{ scale: 0.98 }}
                   layout
                 >
                   <div className="chapter-icon">
@@ -142,7 +138,7 @@ const SidebarChapters = ({ onChapterSelect, currentChapter }) => {
                     <div className="chapter-title">{chapter.title}</div>
 
                     {/* Chapter Progress */}
-                    {status !== 'locked' && progress > 0 && (
+                    {progress > 0 && (
                       <div className="chapter-progress">
                         <div
                           className="chapter-progress-fill"
@@ -152,11 +148,11 @@ const SidebarChapters = ({ onChapterSelect, currentChapter }) => {
                     )}
 
                     {/* Estimated Time */}
-                    {status === 'accessible' || status === 'active' ? (
+                    {chapter.estimatedTime && (
                       <div className="chapter-time">
                         ⏱️ ~{chapter.estimatedTime} min
                       </div>
-                    ) : null}
+                    )}
                   </div>
                 </motion.div>
               );

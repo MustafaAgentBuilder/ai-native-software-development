@@ -218,15 +218,6 @@
   box-shadow: var(--chatkit-shadow-md);
 }
 
-.chapter-item.locked {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.chapter-item.locked:hover {
-  transform: none;
-}
-
 .chapter-item.completed .chapter-icon {
   animation: chatkit-bounce 0.5s ease;
 }
