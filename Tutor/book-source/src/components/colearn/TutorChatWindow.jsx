@@ -27,6 +27,24 @@ const TutorChatWindow = ({ onClose, onQuizRequest, isFloating = false, sessionId
   const inputRef = useRef(null);
   const wsClientRef = useRef(null);
 
+  // Listen for external messages (from text selection popover)
+  useEffect(() => {
+    const handleExternalMessage = (event) => {
+      const { text } = event.detail || {};
+      if (text && wsClientRef.current?.isConnected()) {
+        // Send the highlighted text to chat
+        wsClientRef.current.sendMessage(text);
+        setIsLoading(true);
+        setConnectionStatus('thinking');
+      }
+    };
+
+    window.addEventListener('sendToCoLearnChat', handleExternalMessage);
+    return () => {
+      window.removeEventListener('sendToCoLearnChat', handleExternalMessage);
+    };
+  }, []);
+
   // Initialize WebSocket connection for session
   useEffect(() => {
     if (!sessionId) return;

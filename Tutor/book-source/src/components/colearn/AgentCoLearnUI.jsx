@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SidebarChapters from './SidebarChapters';
 import ChatSessions from './ChatSessions';
 import TutorChatWindow from './TutorChatWindow';
 import QuizComponent from './QuizComponent';
+import CoLearnSelectionPopover from './CoLearnSelectionPopover';
 import lessonController from '../../utils/LessonController';
 import * as storage from '../../utils/localStorageService';
 
@@ -26,6 +27,7 @@ const AgentCoLearnUI = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('en');
   const [isLoading, setIsLoading] = useState(true);
   const [currentSessionId, setCurrentSessionId] = useState(() => generateSessionId());
+  const chatWindowRef = useRef(null);
 
   useEffect(() => {
     checkFirstTime();
@@ -97,6 +99,15 @@ const AgentCoLearnUI = () => {
     setCurrentSessionId(sessionId);
   };
 
+  // Handle text selection from CoLearnSelectionPopover
+  const handleSendToChat = (text) => {
+    // Trigger custom event to send text to chat window
+    const event = new CustomEvent('sendToCoLearnChat', {
+      detail: { text }
+    });
+    window.dispatchEvent(event);
+  };
+
   if (isLoading) {
     return (
       <div className="colearn-loading">
@@ -108,6 +119,9 @@ const AgentCoLearnUI = () => {
 
   return (
     <div className="colearn-container">
+      {/* Text Selection Popover - Shows "Ask Tutor" when text is highlighted */}
+      <CoLearnSelectionPopover onSendToChat={handleSendToChat} />
+
       {/* Chat Sessions Sidebar */}
       <ChatSessions
         currentSessionId={currentSessionId}
@@ -131,6 +145,7 @@ const AgentCoLearnUI = () => {
           />
         ) : (
           <TutorChatWindow
+            ref={chatWindowRef}
             sessionId={currentSessionId}
             onQuizRequest={handleQuizRequest}
             isDocked={true}

@@ -1,0 +1,56 @@
+/* CoLearnSelectionPopover - Simple "Ask Tutor" button for text selection */
+
+.colearn-selection-popover {
+  position: absolute;
+  z-index: 9999;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
+.ask-tutor-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.ask-tutor-btn:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.ask-tutor-btn:active {
+  transform: translateY(0);
+}
+
+.btn-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.btn-text {
+  line-height: 1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ask-tutor-btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .btn-icon {
+    font-size: 14px;
+  }
+}
