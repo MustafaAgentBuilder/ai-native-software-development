@@ -6,7 +6,39 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?logo=fastapi)](https://fastapi.tiangolo.com)
 [![React](https://img.shields.io/badge/React-18%2B-61dafb?logo=react)](https://react.dev)
 [![Docusaurus](https://img.shields.io/badge/Docusaurus-3.5%2B-3ECC5F?logo=docusaurus)](https://docusaurus.io)
-[![Google Gemini](https://img.shields.io/badge/Gemini-API-4285F4?logo=google)](https://ai.google.dev)
+[![Open Source](https://img.shields.io/badge/Open%20Source-MIT-green)](LICENSE)
+[![Contributions Welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen)](CONTRIBUTING.md)
+
+---
+
+## 🌟 **OPEN SOURCE PROJECT - Clone, Configure & Run!**
+
+**This is a fully open-source project!** Anyone can:
+
+✅ **Clone this repository**
+✅ **Add your own API key** (Gemini, OpenAI, or any OpenAI-compatible API)
+✅ **Change the model** (GPT-4, Claude, Gemini, DeepSeek, etc.)
+✅ **Run the entire system** in minutes
+
+### 🎯 **One File to Rule Them All: `.env`**
+
+**All configuration happens in ONE place:** `backend/.env`
+
+Change your API key and model → **All agents automatically update!**
+
+```env
+# Switch between ANY OpenAI-compatible API
+GEMINI_API_KEY=your_api_key_here
+GEMINI_MODEL=gemini-2.0-flash-exp
+
+# Want to use OpenAI instead?
+# GEMINI_API_KEY=sk-your-openai-key
+# GEMINI_MODEL=gpt-4o
+
+# Or DeepSeek, Claude, Groq, etc.
+```
+
+**No code changes needed!** The agents automatically detect and use your configuration.
 
 ---
 
@@ -76,14 +108,19 @@ Tutor/
 
 - **Python 3.11+** installed
 - **Node.js 18+** and npm
-- **UV Package Manager** (recommended)
-- **Google Gemini API Key** ([Get one free](https://aistudio.google.com/apikey))
+- **UV Package Manager** (recommended) - [Install UV](https://docs.astral.sh/uv/)
+- **API Key** from ANY of these providers (all FREE tiers available):
+  - [Google Gemini](https://aistudio.google.com/apikey) - Recommended
+  - [OpenAI](https://platform.openai.com/api-keys)
+  - [Groq](https://console.groq.com/keys) - Fast & Free
+  - [DeepSeek](https://platform.deepseek.com/)
+  - [OpenRouter](https://openrouter.ai/) - Access to 100+ models
 
-### 1. Clone & Setup
+### 1. Clone Repository
 
 ```bash
-git clone <repository-url>
-cd Tutor
+git clone https://github.com/MustafaAgentBuilder/ai-native-software-development.git
+cd ai-native-software-development/Tutor
 ```
 
 ### 2. Backend Setup
@@ -91,7 +128,7 @@ cd Tutor
 ```bash
 cd backend
 
-# Install dependencies with UV
+# Install dependencies with UV (recommended)
 uv sync
 
 # Or with pip
@@ -100,10 +137,20 @@ pip install -r requirements.txt
 # Copy environment file
 cp .env.example .env
 
-# Add your Gemini API key to .env
-# GEMINI_API_KEY=your_key_here
-# GOOGLE_API_KEY=your_key_here
+# Edit .env and add YOUR API key
+nano .env  # or use any text editor
 ```
+
+**Edit `backend/.env`:**
+```env
+# ADD YOUR API KEY HERE (required)
+GEMINI_API_KEY=your_api_key_here
+
+# ADD YOUR MODEL (optional - defaults to gemini-2.0-flash-exp)
+GEMINI_MODEL=gemini-2.0-flash-exp
+```
+
+**That's it!** All agents will automatically use your configuration.
 
 ### 3. Ingest Book Content
 
@@ -134,19 +181,92 @@ Frontend runs at: `http://localhost:3000`
 
 ---
 
-## 🔑 Configuration
+## 🔑 Configuration - Switch APIs & Models Easily!
 
-### Environment Variables (`.env`)
+### 🎯 **Core Configuration (Required)**
+
+All you need to change is in `backend/.env`:
 
 ```env
-# Google Gemini API Keys
-GEMINI_API_KEY=your_gemini_api_key_here
-GOOGLE_API_KEY=your_gemini_api_key_here
+# 1️⃣ ADD YOUR API KEY (required)
+GEMINI_API_KEY=your_api_key_here
 
-# Model Configuration
+# 2️⃣ CHOOSE YOUR MODEL (optional)
+GEMINI_MODEL=gemini-2.0-flash-exp
+
+# 3️⃣ EMBEDDING MODEL (optional - for RAG)
+EMBEDDING_MODEL=text-embedding-004
+```
+
+### 🔄 **Switch Between API Providers**
+
+**All agents automatically detect and use your configuration!** Just edit `.env`:
+
+#### Option 1: Google Gemini (Recommended - Free)
+```env
+GEMINI_API_KEY=AIzaSy...your_key
 GEMINI_MODEL=gemini-2.0-flash-exp
 EMBEDDING_MODEL=text-embedding-004
+```
+Get key: https://aistudio.google.com/apikey
 
+#### Option 2: OpenAI (GPT-4, GPT-4o)
+```env
+GEMINI_API_KEY=sk-proj-...your_openai_key
+GEMINI_MODEL=gpt-4o
+# For embeddings, use Google Gemini or OpenAI embeddings
+GOOGLE_API_KEY=AIzaSy...  # Keep for embeddings
+EMBEDDING_MODEL=text-embedding-004
+```
+Get key: https://platform.openai.com/api-keys
+
+**Note:** Change base URL in agent files to OpenAI endpoint:
+```python
+base_url="https://api.openai.com/v1"
+```
+
+#### Option 3: Groq (Ultra Fast - Free)
+```env
+GEMINI_API_KEY=gsk_...your_groq_key
+GEMINI_MODEL=llama-3.1-70b-versatile
+# Use Google for embeddings
+GOOGLE_API_KEY=AIzaSy...
+EMBEDDING_MODEL=text-embedding-004
+```
+Get key: https://console.groq.com/keys
+
+**Note:** Change base URL in agent files:
+```python
+base_url="https://api.groq.com/openai/v1"
+```
+
+#### Option 4: DeepSeek (Cheap & Powerful)
+```env
+GEMINI_API_KEY=sk-...your_deepseek_key
+GEMINI_MODEL=deepseek-chat
+# Use Google for embeddings
+GOOGLE_API_KEY=AIzaSy...
+EMBEDDING_MODEL=text-embedding-004
+```
+Get key: https://platform.deepseek.com/
+
+#### Option 5: OpenRouter (100+ Models)
+```env
+GEMINI_API_KEY=sk-or-v1-...your_openrouter_key
+GEMINI_MODEL=google/gemini-flash-1.5
+# Or any other model from OpenRouter catalog
+# GEMINI_MODEL=anthropic/claude-3.5-sonnet
+```
+Get key: https://openrouter.ai/
+
+**Note:** Change base URL:
+```python
+base_url="https://openrouter.ai/api/v1"
+```
+
+### ⚙️ **Advanced Configuration (Optional)**
+
+```env
 # Application Settings
 ENVIRONMENT=development
 HOST=0.0.0.0
@@ -157,13 +277,13 @@ DEBUG=True
 CORS_ORIGINS=http://localhost:3000,http://localhost:8000
 
 # RAG Configuration
-RAG_TOP_K=5
-CHUNK_SIZE=512
-CHUNK_OVERLAP=50
+RAG_TOP_K=5                # Number of relevant chunks to retrieve
+CHUNK_SIZE=512             # Size of text chunks for RAG
+CHUNK_OVERLAP=50           # Overlap between chunks
 
-# Agent Configuration
-AGENT_TEMPERATURE=0.5
-AGENT_MAX_TOKENS=500
+# Agent Behavior
+AGENT_TEMPERATURE=0.5      # Creativity (0.0-1.0)
+AGENT_MAX_TOKENS=500       # Max response length
 ```
 
 ---

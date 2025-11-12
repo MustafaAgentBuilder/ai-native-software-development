@@ -10,10 +10,11 @@ from app.tools.teaching_tools import TUTORGPT_TOOLS
 load_dotenv()
 set_tracing_disabled(True)
 
-# GEMINI API - Direct connection!
+# API Configuration - Automatically reads from .env
+# Change API provider and model in .env file, no code changes needed!
 Provider = AsyncOpenAI(
     api_key=os.getenv("GEMINI_API_KEY"),
-    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+    base_url=os.getenv("API_BASE_URL", "https://generativelanguage.googleapis.com/v1beta/openai/"),
 )
 
 model = OpenAIChatCompletionsModel(
