@@ -1,182 +1,329 @@
-# 🧠 AI Native Software Development
+# 🧠 TutorGPT - AI-Native Learning Companion
 
-> **Colearning Agentic AI with Python and TypeScript – The AI & Spec Driven Way**
->
-> **Empowering developers, entrepreneurs, and organizations to learn, build, and collaborate with intelligent AI agents — building systems where AI is the core.**
+> **An intelligent AI tutor integrated into the "AI-Native Software Development" book — demonstrating AI-Native development principles in action.**
 
-📚 **Live Book**: [https://ai-native.panaversity.org](https://ai-native.panaversity.org) | [Panaversity Books](https://panaversity.com/books/ai-native-software-development)
-
----
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3.13%2B-blue?logo=python" alt="Python 3.13+">
-  <img src="https://img.shields.io/badge/TypeScript-Latest-blue?logo=typescript" alt="TypeScript">
-  <img src="https://img.shields.io/badge/OpenAI-Agents%20SDK-black?logo=openai" alt="OpenAI Agents SDK">
-  <img src="https://img.shields.io/badge/MCP-FastMCP-orange" alt="Model Context Protocol">
-  <img src="https://img.shields.io/badge/Kubernetes-Cloud%20Native-326ce5?logo=kubernetes" alt="Kubernetes">
-  <img src="https://img.shields.io/badge/Dapr-Virtual%20Actors-512bd4?logo=dapr" alt="Dapr Virtual Actors">
-  <img src="https://img.shields.io/badge/VoiceAI-Realtime%20Agents-ff69b4?logo=googleassistant" alt="Voice AI">
-  <img src="https://img.shields.io/badge/AI%20Digital%20Workers-Agentic%20Automation-8a2be2?logo=robotframework" alt="AI Digital Workers">
-  <img src="https://img.shields.io/badge/Agentic%20Orgs-MultiAgent%20Systems-228b22?logo=apachesuperset" alt="Agentic Orgs">
-  <img src="https://img.shields.io/badge/Status-Active-success" alt="Status: Active">
-</p>
+[![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115%2B-009688?logo=fastapi)](https://fastapi.tiangolo.com)
+[![React](https://img.shields.io/badge/React-18%2B-61dafb?logo=react)](https://react.dev)
+[![Docusaurus](https://img.shields.io/badge/Docusaurus-3.5%2B-3ECC5F?logo=docusaurus)](https://docusaurus.io)
+[![Google Gemini](https://img.shields.io/badge/Gemini-API-4285F4?logo=google)](https://ai.google.dev)
 
 ---
 
-## CoLearning Programming & Agentic AI with Python and TypeScript
+## 🎯 What is TutorGPT?
 
-<p align="center">
-  <img src="cover.png" alt="AI Native CoLearning Programming & Agentic AI - The AI-Driven Way" width="600" />
-</p>
+TutorGPT is an **AI-Native learning companion** built to demonstrate modern AI-driven development principles. It features:
 
-## 🎯 Vision
+- **🤖 Dual AI Agents**: Olivia (Co-Learning Agent) and Sidebar Agent for contextual help
+- **📚 RAG System**: Retrieval-Augmented Generation using the complete book content
+- **💬 Real-time Chat**: WebSocket-based conversational interface
+- **🎓 Personalized Learning**: Adaptive teaching based on student progress
+- **🔍 Semantic Search**: Find relevant book sections instantly
 
-**AI Native Software Development** is a **56-chapter technical book, open specification, and development framework** that teaches you to build intelligent systems where AI is the core.
+### Tech Stack
 
-Rather than using AI to code faster, we teach you to **architect systems where intelligent agents are fundamental components** — applications that reason, learn, and collaborate. The learning journey progresses through three critical stages:
+**Backend:**
+- Python 3.11+ with FastAPI
+- OpenAI Agents SDK
+- Google Gemini API (LLM + Embeddings)
+- ChromaDB (Vector Database)
+- SQLite (Session Management)
+- WebSockets (Real-time Communication)
 
-1. **AI-Assisted Development** — Using AI tools as productivity enhancers
-2. **AI-Driven Development** — Using specifications to generate systems with AI agents
-3. **AI-Native Development** — Building products where LLMs and agents are core features
-
-You'll master:
-* **The Spec-Driven Way** — Writing executable specifications that AI can reason about and implement
-* **Agentic AI Systems** with OpenAI Agents SDK and Google Agent Development Kit
-* **Python + TypeScript bilingual stack** — reasoning (Python) + interaction (TypeScript)
-* **MCP (Model Context Protocol)** and **FastMCP** for agent integration
-* **Realtime and voice agents**, **containerized deployments**, and **event-driven architectures**
-* **Organizational AI Maturity** — how to scale AI adoption from teams to enterprises
-
----
-
-## 💡 Mission
-
-To pioneer **co-learning** — education and development where humans and intelligent agents learn together, reason together, and build together.
-
-We teach a fundamental paradigm shift:
-- **From automation to intelligence** — moving beyond tools that execute to partners that reason
-- **From "coding for machines" to "collaborating with thinking entities"** — where specifications enable mutual understanding
-- **From solo development to orchestrated intelligence** — humans as teachers, students, and orchestrators
-
-AI is:
-* a **co-learner**, observing your intent and refining its understanding
-* a **collaborator**, generating solutions and alternatives for your evaluation
-* a **creative partner**, amplifying human reasoning with machine precision
-
-This is not about replacing developers—it's about **amplifying human capability through intelligent partnership**.
+**Frontend:**
+- React 18 + TypeScript
+- Docusaurus 3.5 (Book Platform)
+- Modern UI Components
 
 ---
 
-## 🌈 The AI Development Spectrum
-
-Understanding where you are on the AI journey is essential. This book teaches all three approaches, with emphasis on **AI-Driven and AI-Native Development**:
-
-### **AI-Assisted Development**
-- **What it is**: AI as a productivity tool (Copilot, ChatGPT, Claude for code completion)
-- **Your role**: Developer who codes faster with AI suggestions
-- **Impact**: 10-20% productivity gains in coding tasks
-- **Example**: "Use GitHub Copilot to help write a REST API"
-
-### **AI-Driven Development (AIDD)**
-- **What it is**: AI generates significant code from specifications; you act as architect and reviewer
-- **Your role**: Specification engineer and co-creator with AI agents
-- **Impact**: 2-3x faster feature development; specs become living documentation
-- **Example**: "Write a spec; AI generates complete FastAPI backend with tests and docs"
-- **This book emphasizes this approach**
-
-### **AI-Native Development**
-- **What it is**: Applications where LLMs, agents, or ML models are core functional components
-- **Your role**: AI system architect designing reasoning and interaction layers
-- **Impact**: New capabilities impossible with traditional software; intelligent, adaptive systems
-- **Example**: "Build a customer support agent that reasons, learns, and coordinates autonomously"
-- **This book emphasizes this approach**
+## 📁 Project Structure
 
 ```
-AI-Assisted    →    AI-Driven    →    AI-Native
-   Helper          Co-Creator        Core System
+Tutor/
+├── backend/                    # FastAPI Backend Application
+│   ├── app/
+│   │   ├── agent/              # AI Agents (Olivia & Tutor)
+│   │   ├── api/                # API Routes (REST + WebSocket)
+│   │   ├── services/           # Business Logic & RAG
+│   │   └── tools/              # Teaching Tools & RAG Integration
+│   ├── data/                   # SQLite DB & ChromaDB Embeddings
+│   ├── tests/                  # Test Suite
+│   ├── .env                    # Environment Variables
+│   ├── main.py                 # Application Entry Point
+│   ├── quick_ingest.py         # Book Content Ingestion
+│   └── pyproject.toml          # UV Project Configuration
+│
+├── book-source/                # Docusaurus Frontend
+│   ├── docs/                   # Book Content (107 Lessons)
+│   ├── src/                    # React Components
+│   └── docusaurus.config.ts   # Docusaurus Configuration
+│
+├── .claude/                    # Claude Code Commands
+├── .specify/                   # Spec-Driven Development Templates
+├── history/                    # Prompt History Records (PHR)
+├── specs/                      # Feature Specifications
+├── CLAUDE.md                   # AI Assistant Instructions
+├── ONBOARDING_PROMPT.md        # Development Onboarding
+└── README.md                   # This File
 ```
 
 ---
 
-## 📊 Organizational AI Maturity Levels
+## 🚀 Quick Start
 
-As you scale AI adoption in your organization, you'll progress through maturity levels. Understanding where you are helps you advance strategically:
+### Prerequisites
 
-| Level | Name | Approach | Characteristics | Timeline |
-|-------|------|----------|-----------------|----------|
-| **1** | **Experiment** | AI-Assisted | Individual developers try AI tools; 10-20% productivity boost | Weeks |
-| **2** | **Standardize** | AI-Assisted | Organization-wide adoption; governance in place; 30-40% boost | Months |
-| **3** | **Transform** | AI-Driven | Workflows redesigned around AI; specs drive implementation; 2-3x faster | Quarters |
-| **4** | **Build Intelligence** | AI-Native | AI/LLMs are core product features; new capabilities enabled | 6-12 months |
-| **5** | **AI-First Enterprise** | AI-Native | Entire SDLC is AI-driven; continuous learning systems; 10x productivity | 1-2 years |
+- **Python 3.11+** installed
+- **Node.js 18+** and npm
+- **UV Package Manager** (recommended)
+- **Google Gemini API Key** ([Get one free](https://aistudio.google.com/apikey))
 
-**Key Insight**: You cannot skip levels. Master Levels 1-2 before attempting Level 3. Master Level 3 before building AI-Native products.
+### 1. Clone & Setup
 
----
+```bash
+git clone <repository-url>
+cd Tutor
+```
 
-## 📘 Structure Overview
+### 2. Backend Setup
 
-1. **AI-Driven Development Foundations**
-2. **AI Tool Landscape: Gemini, Claude, Codex**
-3. **Prompt & Context Engineering**
-4. **Python: The Language of AI Agents**
-5. **Spec-Driven Development**
-6. **OpenAI Agents SDK in Python**
-7. **MCP & FastMCP Fundamentals**
-8. **TypeScript for Realtime & Interaction**
-9. **Building Realtime & Voice Agents**
-10. **Containerization & Orchestration**
-11. **Data, State & Memory (SQL, Graph, Vector)**
-12. **Event-Driven Architecture with Kafka & Dapr**
-13. **Stateful Agents with Dapr Actors & Workflows**
+```bash
+cd backend
 
-## 🔬 Core Philosophy
+# Install dependencies with UV
+uv sync
 
-### **Co-Learning Between Humans and Machines**
+# Or with pip
+pip install -r requirements.txt
 
-This book is built on a fundamental premise: **software development is becoming a collaborative dialogue between human intent and machine intelligence.**
+# Copy environment file
+cp .env.example .env
 
-1. **Teach the AI through clarity** — The clearer your specification, the smarter your agent becomes. Ambiguity breeds confusion for both human and machine.
+# Add your Gemini API key to .env
+# GEMINI_API_KEY=your_key_here
+# GOOGLE_API_KEY=your_key_here
+```
 
-2. **Let the AI teach you through reflection** — Every piece of AI-generated code is a lesson in reasoning. Don't just copy; analyze *why* it chose that structure.
+### 3. Ingest Book Content
 
-3. **Evolve together** — Each iteration improves both your specification-writing and the AI's generation capability. This is co-evolution.
+```bash
+# This creates embeddings for the book content (one-time setup)
+uv run python quick_ingest.py
 
-### **Key Principles**
+# Expected: ~5-10 minutes for 107 lessons
+```
 
-* **AI as Collaborative Partner:** We treat AI as intelligent colleagues, not tools. You'll learn to negotiate, iterate, and co-create.
-* **Specification-First Methodology:** Clear, machine-readable specifications become executable blueprints. We use the "Spec-Kit Plus" methodology throughout.
-* **Bilingual Development:** Master both Python (reasoning layer) and TypeScript (interaction layer) to build complete AI-native systems.
-* **Learning by Doing:** Every concept is practiced through realistic, production-ready projects with AI collaboration.
-* **Transparency & Reproducibility:** All examples, projects, and methodologies are open-source and teachable.
+### 4. Start Backend
 
-## 👥 Who This Book Is For
+```bash
+uv run uvicorn app.main:app --reload --port 8000
+```
 
-* **Beginners** — Learn programming from day one with AI as your co-learner. No prior coding experience needed.
-* **Professional developers** — Transition from traditional coding to AI-driven and AI-native development.
-* **Entrepreneurs and product leaders** — Understand how to build AI-native products and scale AI adoption in your organization.
-* **Educators** — Learn how to teach programming in the age of AI tutors and agents.
-* **Tech leaders** — Understand AI maturity levels and chart your organization's path to AI-first development.
+Backend runs at: `http://localhost:8000`
 
----
+### 5. Start Frontend
 
-## 🚀 Get Started
+```bash
+cd ../book-source
+npm install
+npm start
+```
 
-The future of software development is collaborative, conversational, and powered by reasoning systems.
-
-**Start your journey today:**
-
-1. **Read the Preface** — Understand the AI development spectrum and why this paradigm shift matters
-2. **Chapter 1** — Introducing AI-Driven Development — the fundamentals you need
-3. **Build alongside AI** — Start with Python basics, gradually master AI-native architectures
-4. **Deploy to production** — By the end, you'll be running scalable, intelligent systems
-
-📘 **Read the book**: [https://ai-native.panaversity.org](https://ai-native.panaversity.org)
-
-🎓 **Panaversity Programs**: [https://panaversity.com/books/ai-native-software-development](https://panaversity.com/books/ai-native-software-development)
+Frontend runs at: `http://localhost:3000`
 
 ---
 
-*Part of **AI Native Software Development** — redefining how we learn, build, and collaborate with intelligent systems.*
+## 🔑 Configuration
 
-**Open Source • Continuously Updated • Community-Driven** 🌍
+### Environment Variables (`.env`)
+
+```env
+# Google Gemini API Keys
+GEMINI_API_KEY=your_gemini_api_key_here
+GOOGLE_API_KEY=your_gemini_api_key_here
+
+# Model Configuration
+GEMINI_MODEL=gemini-2.0-flash-exp
+EMBEDDING_MODEL=text-embedding-004
+
+# Application Settings
+ENVIRONMENT=development
+HOST=0.0.0.0
+PORT=8000
+DEBUG=True
+
+# CORS Origins
+CORS_ORIGINS=http://localhost:3000,http://localhost:8000
+
+# RAG Configuration
+RAG_TOP_K=5
+CHUNK_SIZE=512
+CHUNK_OVERLAP=50
+
+# Agent Configuration
+AGENT_TEMPERATURE=0.5
+AGENT_MAX_TOKENS=500
+```
+
+---
+
+## 🤖 AI Agents
+
+### Olivia - Co-Learning Agent
+
+**Personality:** Enthusiastic, motivational, friendly teacher
+**Role:** Guide students through the book content with engaging teaching style
+**Features:**
+- Greets students once and remembers context
+- Searches book content before teaching
+- Provides real-world analogies and examples
+- Tracks student progress and adapts difficulty
+
+**Usage:**
+```python
+from app.agent.colearning_agent import create_colearning_agent
+
+agent = create_colearning_agent(
+    session_id="student_123",
+    student_profile={"name": "Alex", "level": "beginner"}
+)
+
+response = await agent.teach("teach me Chapter 1")
+```
+
+### TutorGPT - Sidebar Agent
+
+**Personality:** Fast, accurate, context-aware helper
+**Role:** Answer quick questions while student reads
+**Features:**
+- Instant answers with book citations
+- Context-aware (knows current chapter/lesson)
+- Semantic search across all content
+
+**Usage:**
+```python
+from app.agent.tutor_agent import create_tutor_agent
+
+agent = create_tutor_agent(
+    current_chapter="Chapter 1",
+    current_lesson="Introduction"
+)
+
+response = await agent.teach("What is AI-Native Development?")
+```
+
+---
+
+## 📚 RAG System
+
+The RAG (Retrieval-Augmented Generation) system uses ChromaDB for semantic search:
+
+**Book Content:**
+- 107 markdown lessons
+- 13 chapters across 5 parts
+- Semantic embeddings using Google's `text-embedding-004`
+
+**Search Capabilities:**
+```python
+from app.services.rag_service import search_content
+
+results = search_content(
+    query="How do I build AI agents?",
+    scope="chapter",  # or "book", "lesson"
+    top_k=5
+)
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+cd backend
+
+# Run all tests
+uv run pytest
+
+# Run specific test file
+uv run pytest tests/integration/test_agent_with_llm.py
+
+# Check API health
+curl http://localhost:8000/health
+```
+
+---
+
+## 📖 API Documentation
+
+Once the backend is running, visit:
+
+- **Swagger UI:** `http://localhost:8000/docs`
+- **ReDoc:** `http://localhost:8000/redoc`
+
+### Key Endpoints
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/health` | GET | Health check |
+| `/api/chat` | POST | Send message to agent |
+| `/api/colearn/chat` | WebSocket | Real-time chat with Olivia |
+| `/api/sidebar/chat` | WebSocket | Quick help sidebar |
+| `/api/search` | POST | Search book content |
+
+---
+
+## 🛠️ Development Workflow
+
+This project follows **Spec-Driven Development (SDD)** methodology:
+
+1. **Write Specification** → `/sp.specify`
+2. **Clarify Requirements** → `/sp.clarify`
+3. **Plan Architecture** → `/sp.plan`
+4. **Generate Tasks** → `/sp.tasks`
+5. **Implement** → `/sp.implement`
+6. **Create ADR** → `/sp.adr` (for significant decisions)
+7. **Record History** → `/sp.phr` (automatic)
+
+See `.claude/commands/` for all available slash commands.
+
+---
+
+## 📝 Contributing
+
+This project is part of the **AI-Native Software Development** book and follows:
+
+- **Spec-Driven Development** principles
+- **PHR (Prompt History Records)** for all AI interactions
+- **ADR (Architecture Decision Records)** for significant decisions
+- **Constitution-based development** (see `.specify/memory/constitution.md`)
+
+---
+
+## 🔗 Links
+
+- **Live Book:** [https://ai-native.panaversity.org](https://ai-native.panaversity.org)
+- **Panaversity:** [https://panaversity.com](https://panaversity.com)
+- **Google Gemini API:** [https://ai.google.dev](https://ai.google.dev)
+- **OpenAI Agents SDK:** [https://github.com/openai/agents-sdk](https://github.com/openai/agents-sdk)
+
+---
+
+## 📄 License
+
+This project is part of the **AI-Native Software Development** open-source curriculum.
+
+---
+
+## 🎓 Learn More
+
+This TutorGPT application demonstrates:
+- ✅ AI-Native architecture (AI as core feature)
+- ✅ RAG implementation with real-world data
+- ✅ Multi-agent systems (Olivia + Sidebar)
+- ✅ Real-time WebSocket communication
+- ✅ Spec-Driven Development workflow
+- ✅ Production-ready Python backend
+- ✅ Modern React frontend integration
+
+**Built with AI, for teaching AI development.** 🚀

@@ -10,14 +10,14 @@ from app.tools.teaching_tools import TUTORGPT_TOOLS
 load_dotenv()
 set_tracing_disabled(True)
 
-# OPENROUTER API - FREE DeepSeek model!
+# GEMINI API - Direct connection!
 Provider = AsyncOpenAI(
-    api_key=os.getenv("openrouter_api_key"),
-    base_url="https://openrouter.ai/api/v1",
+    api_key=os.getenv("GEMINI_API_KEY"),
+    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
 )
 
 model = OpenAIChatCompletionsModel(
-    model=os.getenv("OPENROUTER_MODEL", "google/gemini-flash-1.5"),
+    model=os.getenv("GEMINI_MODEL", "gemini-2.0-flash-exp"),
     openai_client=Provider,
 )
 
