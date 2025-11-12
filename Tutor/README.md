@@ -69,6 +69,70 @@ TutorGPT is an **AI-Native learning companion** built to demonstrate modern AI-d
 
 ---
 
+## 🏗️ **System Architecture**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    USER'S BROWSER                            │
+│                  http://localhost:3000                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  📚 Docusaurus Book UI (107 Lessons, 13 Chapters)          │
+│                                                              │
+│  ┌──────────────────┐         ┌──────────────────┐         │
+│  │  🤖 Olivia Chat  │         │ 📌 Sidebar Help  │         │
+│  │  (Bottom Right)  │         │  (Right Side)    │         │
+│  │  Co-Learning     │         │  Quick Answers   │         │
+│  └────────┬─────────┘         └────────┬─────────┘         │
+│           │                            │                    │
+└───────────┼────────────────────────────┼────────────────────┘
+            │                            │
+            │ WebSocket                  │ WebSocket
+            │                            │
+┌───────────▼────────────────────────────▼────────────────────┐
+│              FASTAPI BACKEND SERVER                          │
+│              http://localhost:8000                           │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  🔌 REST API          📡 WebSocket API                      │
+│  /health              /api/colearn/chat                      │
+│  /api/search          /api/sidebar/chat                      │
+│                                                              │
+│  ┌──────────────────────────────────────────────────┐      │
+│  │           AI AGENTS (Olivia + Sidebar)            │      │
+│  │  • Reads from .env (API key + model)              │      │
+│  │  • Dynamic provider switching (no code changes)   │      │
+│  └────────┬─────────────────────────────────┬────────┘      │
+│           │                                 │                │
+│           ▼                                 ▼                │
+│  ┌─────────────────┐             ┌──────────────────┐      │
+│  │   🧠 LLM API    │             │  📚 RAG System   │      │
+│  │  (Your Choice)  │             │  (ChromaDB)      │      │
+│  │                 │             │                  │      │
+│  │  • Gemini       │             │  • 107 Lessons   │      │
+│  │  • OpenAI       │             │  • Embeddings    │      │
+│  │  • Groq         │             │  • Semantic      │      │
+│  │  • DeepSeek     │             │    Search        │      │
+│  │  • OpenRouter   │             │                  │      │
+│  └─────────────────┘             └──────────────────┘      │
+│                                                              │
+│  💾 SQLite (Session Storage)                                │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**Data Flow:**
+1. **User** reads book in browser (Frontend UI)
+2. **User** asks question via Olivia or Sidebar chat
+3. **Frontend** sends WebSocket message to Backend
+4. **Backend Agent** searches RAG system for relevant book content
+5. **Backend Agent** sends context + query to LLM API (your chosen provider)
+6. **LLM** generates response based on book content
+7. **Backend** sends response back via WebSocket
+8. **Frontend** displays answer in chat UI
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -161,23 +225,117 @@ uv run python quick_ingest.py
 # Expected: ~5-10 minutes for 107 lessons
 ```
 
-### 4. Start Backend
+### 4. Start Backend Server
 
 ```bash
+# Make sure you're in backend/ directory
 uv run uvicorn app.main:app --reload --port 8000
 ```
 
-Backend runs at: `http://localhost:8000`
+**Backend is now running!**
+- 🌐 API Server: `http://localhost:8000`
+- 📚 API Docs: `http://localhost:8000/docs`
+- 📖 ReDoc: `http://localhost:8000/redoc`
+- ✅ Health Check: `http://localhost:8000/health`
 
-### 5. Start Frontend
+**Keep this terminal running!**
+
+### 5. Start Frontend (New Terminal)
+
+Open a **NEW terminal window** and run:
 
 ```bash
-cd ../book-source
+# Navigate to frontend
+cd book-source
+
+# Install dependencies (first time only)
 npm install
+
+# Start development server
 npm start
 ```
 
-Frontend runs at: `http://localhost:3000`
+**Frontend is now running!**
+- 🎨 Website: `http://localhost:3000`
+- 📚 AI-Native Book with integrated TutorGPT agents
+- 💬 Real-time chat with Olivia (Co-Learning Agent)
+- 🔍 Sidebar help from TutorGPT
+
+**Your browser will automatically open to `http://localhost:3000`**
+
+---
+
+## 🎨 **Using the TutorGPT UI**
+
+Once both backend and frontend are running, you'll see:
+
+### **📚 Main Book Interface**
+
+The Docusaurus-based book website with:
+- **107 lessons** across 13 chapters
+- **Interactive navigation**
+- **Dark/Light mode toggle**
+- **Search functionality**
+
+### **🤖 Olivia - Co-Learning Agent**
+
+**Location:** Click the chat icon (bottom right corner)
+
+**Features:**
+- ✅ Greets you warmly on first interaction
+- ✅ Teaches book content with enthusiasm
+- ✅ Searches the book before answering
+- ✅ Provides real-world analogies
+- ✅ Tracks your progress through chapters
+- ✅ Adaptive teaching based on your level
+
+**Try asking:**
+- "Hey Olivia, teach me Chapter 1"
+- "What is AI-Native Development?"
+- "Explain Spec-Driven Development"
+- "Show me Python examples"
+
+### **📌 Sidebar Agent - Quick Help**
+
+**Location:** Sidebar (right side of page)
+
+**Features:**
+- ✅ Context-aware (knows which lesson you're reading)
+- ✅ Fast answers with book citations
+- ✅ Semantic search across all content
+- ✅ Perfect for quick clarifications
+
+**Try asking:**
+- "Summarize this lesson"
+- "What are the key concepts here?"
+- "How does RAG work?"
+
+---
+
+## 🚀 **Complete Startup Workflow**
+
+**Terminal 1 (Backend):**
+```bash
+cd ai-native-software-development/Tutor/backend
+uv run uvicorn app.main:app --reload --port 8000
+# Wait for "Application startup complete"
+```
+
+**Terminal 2 (Frontend):**
+```bash
+cd ai-native-software-development/Tutor/book-source
+npm start
+# Wait for browser to open at localhost:3000
+```
+
+**Access Points:**
+| Service | URL | Purpose |
+|---------|-----|---------|
+| 📚 **Book UI** | `http://localhost:3000` | Main learning interface |
+| 🤖 **Olivia Chat** | Click chat icon in UI | Co-learning agent |
+| 📌 **Sidebar Agent** | Right sidebar in UI | Quick help |
+| 🔌 **Backend API** | `http://localhost:8000` | REST + WebSocket API |
+| 📖 **API Docs** | `http://localhost:8000/docs` | Interactive API documentation |
 
 ---
 
@@ -432,6 +590,146 @@ This project is part of the **AI-Native Software Development** book and follows:
 ## 📄 License
 
 This project is part of the **AI-Native Software Development** open-source curriculum.
+
+---
+
+## 🔧 **Troubleshooting**
+
+### **Backend Issues**
+
+#### ❌ "Authentication Error" or "API Rate Limit"
+**Problem:** API key invalid or rate limit exceeded
+
+**Solution:**
+1. Check your `.env` file has correct `GEMINI_API_KEY`
+2. Verify API key is active at provider dashboard
+3. For rate limits: Wait 60 seconds or get additional API key
+4. Try different provider (e.g., switch from Gemini to Groq)
+
+```bash
+# Test your API key
+curl http://localhost:8000/health
+```
+
+#### ❌ "ModuleNotFoundError" or Import Errors
+**Problem:** Dependencies not installed
+
+**Solution:**
+```bash
+cd backend
+uv sync          # Recommended
+# OR
+pip install -r requirements.txt
+```
+
+#### ❌ "Database not found" or RAG Errors
+**Problem:** Book content not ingested
+
+**Solution:**
+```bash
+cd backend
+uv run python quick_ingest.py
+# Wait 5-10 minutes for ingestion to complete
+```
+
+#### ❌ "Port 8000 already in use"
+**Problem:** Another process using port 8000
+
+**Solution:**
+```bash
+# Windows
+netstat -ano | findstr :8000
+taskkill /PID <PID> /F
+
+# Linux/Mac
+lsof -ti:8000 | xargs kill -9
+
+# OR use different port
+uvicorn app.main:app --reload --port 8001
+```
+
+---
+
+### **Frontend Issues**
+
+#### ❌ "Cannot connect to backend" or CORS Errors
+**Problem:** Backend not running or wrong URL
+
+**Solution:**
+1. Ensure backend is running at `http://localhost:8000`
+2. Check `backend/.env` has:
+   ```env
+   CORS_ORIGINS=http://localhost:3000,http://localhost:8000
+   ```
+3. Restart both backend and frontend
+
+#### ❌ "npm install" Fails
+**Problem:** Node version incompatible or corrupted cache
+
+**Solution:**
+```bash
+# Clear cache
+npm cache clean --force
+
+# Use correct Node version (18+)
+node --version  # Should be 18.x or higher
+
+# Delete and reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
+
+#### ❌ "Port 3000 already in use"
+**Problem:** Another app using port 3000
+
+**Solution:**
+```bash
+# Kill process on port 3000
+# Windows
+netstat -ano | findstr :3000
+taskkill /PID <PID> /F
+
+# Linux/Mac
+lsof -ti:3000 | xargs kill -9
+
+# OR use different port
+PORT=3001 npm start
+```
+
+#### ❌ Agents Not Responding in UI
+**Problem:** WebSocket connection failed
+
+**Solution:**
+1. Check browser console for errors (F12)
+2. Verify backend is running and accessible
+3. Test API directly:
+   ```bash
+   curl http://localhost:8000/health
+   ```
+4. Check firewall isn't blocking connections
+5. Restart both backend and frontend
+
+---
+
+### **Common Questions**
+
+**Q: Can I use this without a paid API key?**
+✅ Yes! Google Gemini, Groq, and DeepSeek offer generous free tiers.
+
+**Q: Do I need both backend and frontend running?**
+✅ Yes! Backend provides AI agents, frontend provides the UI.
+
+**Q: Can I deploy this to production?**
+✅ Yes! See deployment guides in `docs/` folder.
+
+**Q: How do I switch models?**
+✅ Just edit `backend/.env` and change `GEMINI_MODEL` - no code changes!
+
+**Q: The ingestion is taking too long!**
+⏱️ It processes 107 lessons (5-10 min is normal). Progress shows in terminal.
+
+**Q: Can I use my own book content?**
+✅ Yes! Replace files in `book-source/docs/` and re-run ingestion.
 
 ---
 
