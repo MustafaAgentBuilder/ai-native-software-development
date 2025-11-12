@@ -501,6 +501,7 @@ The RAG (Retrieval-Augmented Generation) system uses ChromaDB for semantic searc
 - 107 markdown lessons
 - 13 chapters across 5 parts
 - Semantic embeddings using Google's `text-embedding-004`
+- **~19 MB pre-computed embeddings** (reusable in other projects!)
 
 **Search Capabilities:**
 ```python
@@ -512,6 +513,47 @@ results = search_content(
     top_k=5
 )
 ```
+
+### **📤 Export & Reuse Embeddings**
+
+The embeddings are stored in `backend/data/embeddings/` and can be:
+- ✅ **Exported** to other projects
+- ✅ **Reused** in your own applications
+- ✅ **Extended** with more content
+- ✅ **Shared** with your team
+
+**Quick Export:**
+```bash
+# Copy to another project
+cp -r backend/data/embeddings /path/to/other-project/
+
+# Create portable archive
+zip -r embeddings.zip backend/data/embeddings/
+```
+
+**Use in Another Project:**
+```python
+import chromadb
+
+# Load the embeddings
+client = chromadb.PersistentClient(path="./embeddings")
+collection = client.get_collection(name="book_content")
+
+# Search instantly!
+results = collection.query(
+    query_texts=["Your question"],
+    n_results=5
+)
+```
+
+📖 **Complete Guide:** See [EMBEDDINGS_GUIDE.md](EMBEDDINGS_GUIDE.md) for:
+- Detailed export instructions
+- Integration with LangChain/LlamaIndex
+- Adding custom content
+- Backup and restore
+- Sharing with team
+
+📋 **Quick Reference:** See [QUICK_EMBEDDINGS_REFERENCE.md](QUICK_EMBEDDINGS_REFERENCE.md) for fast commands
 
 ---
 
